@@ -135,9 +135,9 @@ export default function BottomContactStripe() {
                     />
                   </span>
                   <span className="option">
-                    <label htmlFor="bcf_CaseType">Inquiry Type / Scope:</label>
+                    <label htmlFor="footerInquiryType">Inquiry Type / Scope:</label>
                     <select
-                      id="bcf_CaseType"
+                      id="footerInquiryType"
                       name="project_scope"
                       aria-label="Inquiry Type"
                       value={formData.projectType}

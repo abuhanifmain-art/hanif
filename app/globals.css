@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "./reference-source.css";
+@import "./portfolio-layout.css";
 @import "./site-footer.css";
 
 :root {
@@ -70,7 +70,7 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-#source-page-root { display: contents; }
+#portfolio-page-root { display: contents; }
 
 /* Purge button gradient overlays to enforce solid colors */
 .widget button:after,
@@ -171,8 +171,8 @@ button:after,
   gap: 1px !important;
 }
 
-.imgwrap #img2 .pabttn,
-#index .imgwrap #img2 .pabttn {
+.imgwrap #img2 .hero-quick-btn,
+#index .imgwrap #img2 .hero-quick-btn {
   position: relative !important;
   float: left !important;
   flex: 1 !important;
@@ -195,28 +195,22 @@ button:after,
   transition: all 0.18s ease !important;
 }
 
-.imgwrap #img2 .pabttn:first-child,
-#index .imgwrap #img2 .pabttn:first-child {
+.imgwrap #img2 .hero-quick-btn:first-child,
+#index .imgwrap #img2 .hero-quick-btn:first-child {
   border-left: none !important;
 }
 
-.imgwrap #img2 .pabttn:hover,
-#index .imgwrap #img2 .pabttn:hover {
+.imgwrap #img2 .hero-quick-btn:hover,
+#index .imgwrap #img2 .hero-quick-btn:hover {
   background-color: #1a2f5a !important;
   color: var(--accent-sky) !important;
 }
 
-/* Eradicate all legacy practice area / dental malpractice sprite overlays */
-.pabttn:after,
-.pabttn:before,
-.pa1:after,
-.pa2:after,
-.pa3:after,
-.imgwrap #img2 .pabttn:after,
-.imgwrap #img2 .pabttn:before,
-.imgwrap #img2 .pa1:after,
-.imgwrap #img2 .pa2:after,
-.imgwrap #img2 .pa3:after {
+/* Disable pseudo-element overlays on hero quick action buttons and header wrap */
+.hero-quick-btn:after,
+.hero-quick-btn:before,
+.imgwrap #img2 .hero-quick-btn:after,
+.imgwrap #img2 .hero-quick-btn:before {
   display: none !important;
   content: none !important;
   background: none !important;
@@ -343,10 +337,10 @@ button:after,
 }
 
 /* =========================================================================
-   Top Bar (.top-numbers-v3) - Dark Midnight Theme & Cobalt Action Button
+   Top Bar (.top-status-bar) - Dark Midnight Theme & Cobalt Action Button
    ========================================================================= */
-#top-numbers-v3,
-.top-numbers-v3 {
+#top-status-bar,
+.top-status-bar {
   display: flex !important;
   height: 40px !important;
   line-height: 40px !important;
@@ -362,16 +356,16 @@ button:after,
   top: auto !important;
 }
 
-#top-numbers-v3 ul,
-.top-numbers-v3 ul {
+#top-status-bar ul,
+.top-status-bar ul {
   width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
   list-style: none !important;
 }
 
-#top-numbers-v3 ul li,
-.top-numbers-v3 ul li {
+#top-status-bar ul li,
+.top-status-bar ul li {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
@@ -380,13 +374,13 @@ button:after,
   font-size: 13px !important;
 }
 
-#top-numbers-v3 ul li strong,
-.top-numbers-v3 ul li strong {
+#top-status-bar ul li strong,
+.top-status-bar ul li strong {
   color: var(--accent-sky) !important;
 }
 
-#top-numbers-v3 .tnv3-button,
-.top-numbers-v3 .tnv3-button {
+#top-status-bar .top-status-btn,
+.top-status-bar .top-status-btn {
   background-color: var(--accent-interactive) !important;
   color: #ffffff !important;
   border: 1px solid var(--accent-interactive-hover) !important;
@@ -405,8 +399,8 @@ button:after,
   transition: all 0.15s ease !important;
 }
 
-#top-numbers-v3 .tnv3-button:hover,
-.top-numbers-v3 .tnv3-button:hover {
+#top-status-bar .top-status-btn:hover,
+.top-status-bar .top-status-btn:hover {
   background-color: var(--accent-interactive-hover) !important;
   color: #ffffff !important;
 }
@@ -762,8 +756,8 @@ a, button, input, select, textarea {
     flex-direction: column !important;
   }
 
-  .imgwrap #img2 .pabttn,
-  #index .imgwrap #img2 .pabttn {
+  .imgwrap #img2 .hero-quick-btn,
+  #index .imgwrap #img2 .hero-quick-btn {
     width: 100% !important;
     flex: none !important;
     height: 48px !important;
@@ -864,10 +858,10 @@ a, button, input, select, textarea {
     transform: scale(0.95);
   }
 
-  /* 1. Eliminate the legacy white top bar on mobile entirely */
-  #top-numbers-v3,
-  .top-numbers-v3,
-  .top-numbers-v3.tnv3-sticky {
+  /* Hide top status strip on compact mobile screens */
+  #top-status-bar,
+  .top-status-bar,
+  .top-status-bar.top-status-sticky {
     display: none !important;
   }
 
@@ -1002,7 +996,7 @@ a, button, input, select, textarea {
   .imgwrap,
   .tcfrags,
   .stpr,
-  #top-numbers-v3 {
+  #top-status-bar {
     display: none !important;
   }
   #container, #main, .cwrap, .mwrap, #content, .bodytext, .description {
@@ -1026,8 +1020,7 @@ a, button, input, select, textarea {
     page-break-before: always;
   }
 }/* =========================================================================
-   Executive Theme Color & WCAG AAA Contrast Overrides
-   Replaces legacy law firm #053056 / #9CBE41 with Midnight Slate & Cobalt
+   Midnight Slate & Cobalt Theme Color Overrides
    ========================================================================= */
 #header {
   background-color: var(--surface-dark-midnight) !important;
@@ -1149,8 +1142,8 @@ h1, h2, h3, h4,
   letter-spacing: 0.5px !important;
 }
 
-#contactform.widget .formdesc span.free-consultation,
-.widget.contactform .formdesc span.free-consultation {
+#contactform.widget .formdesc span.inquiry-kicker,
+.widget.contactform .formdesc span.inquiry-kicker {
   background: none !important;
   color: #38bdf8 !important;
   padding-left: 0 !important;
@@ -1203,9 +1196,9 @@ h1, h2, h3, h4,
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7) !important;
 }
 
-/* Breadcrumbs Polish: Eliminate legacy 9001px text-indent overflow scrollbar */
+/* Breadcrumbs layout polish */
 #index #breadcrumbs,
-.source-page-body.home #breadcrumbs {
+.portfolio-shell-body.home #breadcrumbs {
   display: none !important;
 }
 

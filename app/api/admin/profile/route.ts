@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { isRequestAuthorized } from "../../../lib/admin-auth";
 import { getProfile, updateProfileSettings } from "../../../lib/portfolio-store";
+import { isPrivilegedSupabaseConfigured } from "../../../lib/supabase-admin";
 
 export async function GET(req: NextRequest) {
   const isAuth = await isRequestAuthorized(req);
@@ -17,6 +18,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       success: true,
       profile,
+      persistenceMode: isPrivilegedSupabaseConfigured() ? "supabase-secret-key" : "local-fallback",
     });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to load profile settings.";

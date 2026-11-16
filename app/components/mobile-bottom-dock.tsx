@@ -7,7 +7,7 @@ import {
   Home,
   Briefcase,
   Zap,
-  CircleDollarSign,
+  FileText,
   Search,
   Menu,
   X,
@@ -130,21 +130,21 @@ export default function MobileBottomDock() {
         <span className="dock-label">Lab</span>
       </Link>
 
-      {/* 4. Transparent Pricing & SOW Route */}
+      {/* 4. Resume / CV Route (Quick access for UK/EU recruiters) */}
       <Link
-        href="/pricing"
+        href="/resume"
         onClick={triggerHaptic}
-        className={`dock-item ${isActive("/pricing") ? "active" : ""}`}
-        title="Transparent Pricing & SOW"
+        className={`dock-item ${isActive("/resume") ? "active" : ""}`}
+        title="Full CV, Work History & UK/EU Availability"
       >
         <span className="dock-icon-wrapper">
-          <CircleDollarSign
+          <FileText
             size={20}
-            strokeWidth={isActive("/pricing") ? 2.5 : 1.9}
+            strokeWidth={isActive("/resume") ? 2.5 : 1.9}
             className="dock-svg-icon"
           />
         </span>
-        <span className="dock-label">Pricing</span>
+        <span className="dock-label">CV</span>
       </Link>
 
       {/* 5. Spotlight Search Action */}

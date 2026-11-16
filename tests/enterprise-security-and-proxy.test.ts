@@ -6,7 +6,7 @@ import {
   timingSafeEqualString,
   ADMIN_COOKIE_NAME,
 } from "../app/lib/admin-auth-edge";
-import { createSessionToken, verifySessionToken } from "../app/lib/admin-auth";
+import { createSessionToken, verifySessionToken, getAdminSecret } from "../app/lib/admin-auth";
 import {
   base32ToBuffer,
   bufferToBase32,
@@ -16,7 +16,7 @@ import {
 } from "../app/lib/totp-auth";
 
 describe("Enterprise Security & Zero-Trust Edge Perimeter", () => {
-  const secretKey = "hanif2026";
+  const secretKey = getAdminSecret();
   const testBase32Secret = "JBSWY3DPEHPK3PXP"; // Standard RFC test vector for TOTP
 
   describe("Web Crypto Edge Session Verification", () => {

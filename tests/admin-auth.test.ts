@@ -1,9 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { POST, GET } from "../app/api/admin/auth/route";
-import { createSessionToken, verifySessionToken } from "../app/lib/admin-auth";
+import { createSessionToken, verifySessionToken, getAdminSecret } from "../app/lib/admin-auth";
 import { NextRequest } from "next/server";
 
 describe("Admin Authentication API Route (/api/admin/auth)", () => {
+  const adminSecret = getAdminSecret();
+
   it("should reject invalid passcodes with 401 status", async () => {
     const req = new NextRequest("http://localhost:3000/api/admin/auth", {
       method: "POST",
@@ -21,7 +23,7 @@ describe("Admin Authentication API Route (/api/admin/auth)", () => {
   it("should accept valid passcode with 200 status and issue a signed HMAC token", async () => {
     const req = new NextRequest("http://localhost:3000/api/admin/auth", {
       method: "POST",
-      body: JSON.stringify({ passcode: "hanif2026" }),
+      body: JSON.stringify({ passcode: adminSecret }),
     });
 
     const res = await POST(req);
@@ -32,7 +34,7 @@ describe("Admin Authentication API Route (/api/admin/auth)", () => {
 
     const token = createSessionToken();
     expect(verifySessionToken(token)).toBe(true);
-    expect(verifySessionToken("hanif2026")).toBe(false);
+    expect(verifySessionToken(adminSecret)).toBe(false);
     expect(verifySessionToken("forged.signature")).toBe(false);
   });
 
@@ -52,7 +54,7 @@ describe("Admin Authentication API Route (/api/admin/auth)", () => {
     const req = new NextRequest("http://localhost:3000/api/admin/auth", {
       method: "GET",
       headers: {
-        Authorization: "Bearer hanif2026",
+        Authorization: `Bearer ${adminSecret}`,
       },
     });
 

@@ -50,12 +50,12 @@ describe("Event Notification & Webhook Mesh Engine", () => {
         id: "evt-test-2",
         type: "MILESTONE_APPROVED",
         title: "Milestone Phase 2 Signed Off",
-        description: "Marcus Thorne approved Phase 2 deliverables.",
+        description: "Test Client B approved Phase 2 deliverables.",
         data: {
           orderNumber: "ORD-2026-1002",
           milestoneIndex: 2,
-          phaseTitle: "BRIN/B-Tree Indexing",
-          approverName: "Marcus Thorne, Chief Architect",
+          phaseTitle: "Database Indexing",
+          approverName: "Test Client B",
           signatureHash: "sig_sha256_31a7bc819024fba9182371",
         },
         createdAt: "2026-10-26T14:30:00Z",
@@ -76,10 +76,10 @@ describe("Event Notification & Webhook Mesh Engine", () => {
         id: "evt-test-3",
         type: "ORDER_CREATED",
         title: "New Contract: ORD-2026-1005",
-        description: "CloudScale engaged for $15,000 sprint.",
+        description: "Example Cloud Co engaged for $15,000 sprint.",
         data: {
           orderNumber: "ORD-2026-1005",
-          companyName: "CloudScale",
+          companyName: "Example Cloud Co",
           totalAmount: 15000,
         },
         createdAt: "2026-10-26T15:00:00Z",
@@ -104,7 +104,7 @@ describe("Event Notification & Webhook Mesh Engine", () => {
         description: "Milestone payment of $11,250 recorded.",
         data: {
           orderNumber: "ORD-2026-1001",
-          companyName: "Apex Ventures",
+          companyName: "Example Ventures",
           totalAmount: 22500,
           trackerUrl: "https://abuhanifmia.com/orders/tracker?token=test_token",
         },
@@ -115,7 +115,7 @@ describe("Event Notification & Webhook Mesh Engine", () => {
 
       expect(html).toContain("<!DOCTYPE html>");
       expect(html).toContain(event.title);
-      expect(html).toContain("Apex Ventures");
+      expect(html).toContain("Example Ventures");
       expect(html).toContain("Open Live Client Portal ↗");
       expect(html).toContain("Abu Hanif Mia");
     });

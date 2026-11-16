@@ -7,6 +7,8 @@ import { getServices } from "../lib/portfolio-store";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abuhanifmia.com";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Web Development & Digital Services",
   description:
@@ -134,7 +136,7 @@ export default async function ServicesHubPage() {
   };
 
   return (
-    <div id="source-page-root" data-source-path="/services">
+    <div id="portfolio-page-root" data-route="/services">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
@@ -148,7 +150,7 @@ export default async function ServicesHubPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <div id="source-page-body" className="source-page-body js l2 section_10 abuhanif-portfolio-shell">
+      <div id="portfolio-shell-body" className="portfolio-shell-body js abuhanif-portfolio-shell">
         <SiteHeader activePath="/services" />
 
         <div className="index" id="container">

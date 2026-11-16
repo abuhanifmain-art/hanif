@@ -473,20 +473,20 @@ values
   now() - interval '5 days'
 ),
 (
-  'Why We Swapped Microservices for a Modular Monolith (And Saved $140k/yr)',
+  'Modular Monolith vs. Microservices: Architecture Trade-Offs Study',
   'swapping-microservices-for-modular-monolith',
-  'A pragmatic engineering retrospective on consolidating 11 distributed microservices into a single modular TypeScript repository.',
-  '# Why We Swapped Microservices for a Modular Monolith\n\nMicroservice complexity often exceeds business requirements for teams under 50 engineers. This retrospective details how consolidating 11 microservices into a unified TypeScript codebase reduced cloud hosting costs by $140,000 annually while improving release velocity.\n\n## 1. Network Overhead & Distributed Tracing\nInter-service gRPC and HTTP calls introduced compounding failure modes. A modular monolith restored in-process function calls with zero network serialization overhead.\n\n## 2. Developer Velocity\nSingle repository pull requests eliminated coordinated multi-service deployments and drift between API versions.',
-  ARRAY['Architecture', 'Monolith', 'TypeScript', 'Cost Optimization'],
-  10,
+  'Comparing distributed microservice serialization overhead against clean modular TypeScript boundaries for small engineering teams.',
+  '# Modular Monolith vs. Microservices\n\nEarly-stage products benefit from clear module boundaries inside a single repository rather than premature distributed services.',
+  ARRAY['Architecture', 'Monolith', 'TypeScript'],
+  5,
   true,
   now() - interval '12 days'
 ),
 (
-  'Mastering PostgreSQL Indexing: From B-Trees to Partial and BRIN Indexes',
+  'Mastering PostgreSQL Composite & Partial Indexing with EXPLAIN ANALYZE',
   'mastering-postgres-indexing-query-optimization',
-  'Practical strategies for diagnosing slow queries with EXPLAIN ANALYZE and selecting the optimal index types for high-write workloads.',
-  '# Mastering PostgreSQL Indexing\n\nIndexes are the single highest-leverage lever for database scalability. This comprehensive guide reviews B-Tree, GIN, GiST, and BRIN indexes with real-world query execution examples.\n\n## 1. EXPLAIN (ANALYZE, BUFFERS)\nAlways inspect shared hit blocks and filter conditions before adding indexes. Avoid indexing low-cardinality columns without partial filters.\n\n## 2. Partial Indexes\nIndex only active rows (`WHERE is_active = true`) to minimize index footprint and accelerate the most frequent query patterns.',
+  'Study notes on reading EXPLAIN ANALYZE query plans and selecting composite vs. partial B-Tree indexes for filtered queries.',
+  '# Mastering PostgreSQL Indexing\n\nIndexes are a foundational lever for PostgreSQL performance. Always inspect shared buffer reads with `EXPLAIN (ANALYZE, BUFFERS)` before creating composite or partial indexes.',
   ARRAY['PostgreSQL', 'Database', 'Indexing', 'Performance'],
   7,
   true,

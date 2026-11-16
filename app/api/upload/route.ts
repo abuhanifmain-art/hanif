@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
-import { supabase, isSupabaseConfigured } from "../../lib/supabase";
+import { supabase, isSupabaseConfigured, getServiceSupabase } from "../../lib/supabase";
 import { isRequestAuthorized } from "../../lib/admin-auth";
 
 export const dynamic = "force-dynamic";
@@ -114,9 +114,10 @@ async function processSingleFile(file: File): Promise<{
   const cleanFilename = sanitizeFilename(file.name, verifiedMime);
 
   // 1. Attempt Supabase Storage Upload if configured
-  if (isSupabaseConfigured && supabase) {
+  const storageClient = getServiceSupabase() || supabase;
+  if (isSupabaseConfigured && storageClient) {
     try {
-      const { data, error } = await supabase.storage
+      const { data, error } = await storageClient.storage
         .from("project-assets")
         .upload(cleanFilename, buffer, {
           contentType: verifiedMime,
@@ -124,7 +125,7 @@ async function processSingleFile(file: File): Promise<{
         });
 
       if (!error && data?.path) {
-        const { data: publicUrlData } = supabase.storage
+        const { data: publicUrlData } = storageClient.storage
           .from("project-assets")
           .getPublicUrl(data.path);
 

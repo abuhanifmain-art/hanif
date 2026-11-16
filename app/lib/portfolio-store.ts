@@ -506,9 +506,10 @@ export async function createService(serviceData: Omit<ServicePricing, "id"> & { 
 
   dynamicServicesStore = [newRecord, ...dynamicServicesStore];
 
-  if (isSupabaseConfigured && supabase) {
+  const dbClient = getServiceSupabase() || supabase;
+  if (isSupabaseConfigured && dbClient) {
     try {
-      supabase
+      dbClient
         .from("services")
         .insert([
           {
@@ -549,9 +550,10 @@ export async function updateService(
 
   dynamicServicesStore[index] = updated;
 
-  if (isSupabaseConfigured && supabase) {
+  const dbClient = getServiceSupabase() || supabase;
+  if (isSupabaseConfigured && dbClient) {
     try {
-      supabase
+      dbClient
         .from("services")
         .update({
           title: updated.title,
@@ -579,9 +581,10 @@ export async function deleteService(id: string): Promise<boolean> {
   dynamicServicesStore = dynamicServicesStore.filter((s) => s.id !== id && s.slug !== id);
   const deleted = dynamicServicesStore.length < prevLen;
 
-  if (deleted && isSupabaseConfigured && supabase) {
+  const dbClient = getServiceSupabase() || supabase;
+  if (deleted && isSupabaseConfigured && dbClient) {
     try {
-      supabase.from("services").delete().eq("id", id).then(() => {}, () => {});
+      dbClient.from("services").delete().eq("id", id).then(() => {}, () => {});
     } catch {
       // Graceful fallback
     }
@@ -872,32 +875,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
   return [...dynamicBlogStore];
 }
 
-let dynamicInquiriesStore: InquiryRecord[] = [
-  {
-    id: "inq-1",
-    name: "Sarah Jenkins",
-    email: "sarah@apexventures.co",
-    phone: "+1 (415) 555-0192",
-    projectType: "Full-Stack Web Application (Next.js/React)",
-    budgetRange: "$15,000 – $30,000 (Full-Stack Platform)",
-    message:
-      "We need an edge-deployed customer portal with Supabase authentication and Stripe subscription billing. Our target launch is 6 weeks.",
-    status: "new",
-    createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-  },
-  {
-    id: "inq-2",
-    name: "Marcus Thorne",
-    email: "m.thorne@cloudscale.io",
-    phone: "+1 (555) 019-2834",
-    projectType: "Database Optimization & Scale (PostgreSQL)",
-    budgetRange: "$5,000 – $15,000 (MVP / Feature Sprint)",
-    message:
-      "Our primary PostgreSQL database is hitting 90% CPU spikes during peak hours. Need an architectural query audit and indexing strategy.",
-    status: "reviewed",
-    createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
-  },
-];
+let dynamicInquiriesStore: InquiryRecord[] = [];
 
 export async function getAllInquiriesAdmin(): Promise<InquiryRecord[]> {
   const dbClient = getServiceSupabase() || supabase;
@@ -1059,9 +1037,10 @@ export async function submitInquiry(formData: {
     }
   }
 
-  if (isSupabaseConfigured && supabase) {
+  const dbClient = getServiceSupabase() || supabase;
+  if (isSupabaseConfigured && dbClient) {
     try {
-      const { error } = await supabase.from("inquiries").insert([
+      const { error } = await dbClient.from("inquiries").insert([
         {
           name: formData.name,
           email: formData.email,

@@ -37,6 +37,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const revalidate = 60;
+
 export default async function HomePage() {
   const [profile, projects, blogPosts, testimonials] = await Promise.all([
     getProfile(),
@@ -47,9 +49,9 @@ export default async function HomePage() {
 
   return (
     <>
-      <div id="source-page-root" data-source-path="/">
-        <div id="index" className="source-page-body js abuhanif-portfolio-shell">
-          <SiteHeader activePath="/" />
+      <div id="portfolio-page-root" data-route="/">
+        <div id="index" className="portfolio-shell-body js home abuhanif-portfolio-shell">
+          <SiteHeader activePath="/" profilePhotoUrl={profile.visualAssets.profilePhotoUrl} />
 
           <div id="container" className="index">
             <div className="cwrap">

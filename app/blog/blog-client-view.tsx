@@ -42,8 +42,8 @@ export default function BlogClientView({
   const featuredPost = posts[0];
 
   return (
-    <div id="source-page-root" data-source-path="/blog">
-      <div id="source-page-body" className="source-page-body js l2 section_83 abuhanif-portfolio-shell">
+    <div id="portfolio-page-root" data-route="/blog">
+      <div id="portfolio-shell-body" className="portfolio-shell-body js abuhanif-portfolio-shell">
         <SiteHeader activePath="/blog" />
 
         <div className="index" id="container">
@@ -555,8 +555,8 @@ export default function BlogClientView({
                         <Link href="/pricing" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
                           &rsaquo; Work Prices &amp; Sprints
                         </Link>
-                        <Link href="/admin" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
-                          &rsaquo; Admin Publishing Portal
+                        <Link href="/resume" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
+                          &rsaquo; Resume / CV &amp; Credentials
                         </Link>
                       </div>
                     </div>

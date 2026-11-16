@@ -321,8 +321,8 @@ export default function SiteFooter() {
               <Link href="/terms">Terms</Link>
             </li>
             <li className="last">
-              <Link href="/admin" style={{ color: "#38bdf8", fontWeight: "700" }}>
-                Admin Portal
+              <Link href="/status" style={{ color: "#38bdf8", fontWeight: "700" }}>
+                Diagnostics &amp; Status
               </Link>
             </li>
           </ul>
@@ -353,10 +353,6 @@ export default function SiteFooter() {
               </Link>
               <span className="divider">•</span>
               <span>Zero Ad-Tech Trackers</span>
-              <span className="divider">•</span>
-              <Link href="/admin" className="admin-access-link">
-                Admin Console
-              </Link>
             </div>
           </div>
         </div>

@@ -26,6 +26,7 @@ async function dispatchSecurityAlertWebhook(
   req: NextRequest
 ): Promise<void> {
   const webhookUrl =
+    process.env.SECURITY_ALERT_WEBHOOK_URL ||
     process.env.SECURITY_WEBHOOK_URL ||
     process.env.DISCORD_WEBHOOK_URL ||
     process.env.INQUIRY_WEBHOOK_URL;

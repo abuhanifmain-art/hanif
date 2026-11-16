@@ -206,8 +206,8 @@ export default function PricingClientView({
   ];
 
   return (
-    <div id="source-page-root" data-source-path="/pricing">
-      <div id="source-page-body" className="source-page-body js l2 section_29 abuhanif-portfolio-shell">
+    <div id="portfolio-page-root" data-route="/pricing">
+      <div id="portfolio-shell-body" className="portfolio-shell-body js abuhanif-portfolio-shell">
         <SiteHeader activePath="/pricing" />
 
         <div className="index" id="container">
@@ -1146,8 +1146,8 @@ export default function PricingClientView({
                         <Link href="/blog" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
                           &rsaquo; Technical Architecture Blog
                         </Link>
-                        <Link href="/admin" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
-                          &rsaquo; Admin Management Portal
+                        <Link href="/resume" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
+                          &rsaquo; Resume / CV &amp; Availability
                         </Link>
                       </div>
                     </div>

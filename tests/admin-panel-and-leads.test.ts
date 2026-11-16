@@ -28,6 +28,7 @@ import {
   DELETE as deleteAdminBlog,
 } from "../app/api/admin/blog/route";
 import { recordInboundInquiry } from "../app/lib/portfolio-store";
+import { getAdminSecret } from "../app/lib/admin-auth";
 
 describe("Admin Panel & Inbound Lead Engine", () => {
   const sampleLeads: InquiryRecord[] = [
@@ -55,11 +56,11 @@ describe("Admin Panel & Inbound Lead Engine", () => {
     },
     {
       id: "inq-103",
-      name: "Marcus Vance",
-      email: "marcus@vancecloud.org",
-      projectType: "Fractional Staff Software Engineer Retainer",
-      budgetRange: "$10,000 / month",
-      message: "Looking for an experienced distributed systems architect for 20 hrs/week fractional retainer.",
+      name: "Jordan Patel",
+      email: "jordan@patelcloud.org",
+      projectType: "Full-Stack Web Engineering Retainer",
+      budgetRange: "$4,000 / month",
+      message: "Looking for TypeScript & Next.js support for UK timezone hours.",
       status: "contacted",
       createdAt: "2026-10-24T09:15:00.000Z",
     },
@@ -227,7 +228,7 @@ describe("Admin Panel & Inbound Lead Engine", () => {
 
   describe("Protected Admin Inquiries API (/api/admin/inquiries)", () => {
     const authHeaders = {
-      Authorization: "Bearer hanif2026",
+      Authorization: `Bearer ${getAdminSecret()}`,
       "Content-Type": "application/json",
     };
 
@@ -321,7 +322,7 @@ describe("Admin Panel & Inbound Lead Engine", () => {
 
   describe("Protected Admin Projects API (/api/admin/projects)", () => {
     const authHeaders = {
-      Authorization: "Bearer hanif2026",
+      Authorization: `Bearer ${getAdminSecret()}`,
       "Content-Type": "application/json",
     };
 
@@ -412,7 +413,7 @@ describe("Admin Panel & Inbound Lead Engine", () => {
 
   describe("Protected Admin Blog API (/api/admin/blog)", () => {
     const authHeaders = {
-      Authorization: "Bearer hanif2026",
+      Authorization: `Bearer ${getAdminSecret()}`,
       "Content-Type": "application/json",
     };
 

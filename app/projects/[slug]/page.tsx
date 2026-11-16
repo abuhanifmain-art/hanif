@@ -279,7 +279,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   };
 
   return (
-    <div id="source-page-root" data-source-path={`/projects/${project.slug}`}>
+    <div id="portfolio-page-root" data-route={`/projects/${project.slug}`}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(projectSchema) }}
@@ -288,7 +288,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <div id="source-page-body" className="source-page-body js l2 section_10 abuhanif-portfolio-shell">
+      <div id="portfolio-shell-body" className="portfolio-shell-body js abuhanif-portfolio-shell">
         <SiteHeader activePath="/projects" />
 
         <div className="index" id="container">
@@ -688,17 +688,17 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                     </div>
                   </div>
 
-                  <div className="widget" id="wdgt-admin">
+                  <div className="widget" id="wdgt-cv-shortcut">
                     <div style={{ padding: "14px", backgroundColor: "#f8fafc", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "12px" }}>
-                      <strong style={{ color: "#0f172a" }}>Admin Portal</strong>
+                      <strong style={{ color: "#0f172a" }}>CV &amp; Hiring Dossier</strong>
                       <p style={{ margin: "4px 0 8px 0", color: "#64748b" }}>
-                        Edit or update case study parameters.
+                        Open MD Abu Hanif Mia&apos;s full CV, work history, and contact channels.
                       </p>
                       <Link
-                        href="/admin"
+                        href="/resume"
                         style={{ color: "#2563eb", fontWeight: "bold", textDecoration: "underline" }}
                       >
-                        Open Admin Panel ›
+                        Open CV / Resume ›
                       </Link>
                     </div>
                   </div>
@@ -712,7 +712,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               <div className="stripewrap">
                 <div className="widget contactform" id="bottom-scf">
                   <div className="formdesc">
-                    <span className="free-consultation">Technical Consultation</span>
+                    <span className="inquiry-kicker">Technical Consultation</span>
                     <span className="phone-numbers">
                       <a href="mailto:abuhanifmain@gmail.com" style={{ color: "#38bdf8", textDecoration: "none" }}>
                         abuhanifmain@gmail.com

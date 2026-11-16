@@ -71,9 +71,9 @@ ${profile.educationHistory
   }
 
   return (
-    <div id="source-page-root" data-source-path="/resume">
-      <div id="source-page-body" className="source-page-body js l2 section_10 abuhanif-portfolio-shell">
-        <SiteHeader activePath="/resume" />
+    <div id="portfolio-page-root" data-route="/resume">
+      <div id="portfolio-shell-body" className="portfolio-shell-body js abuhanif-portfolio-shell">
+        <SiteHeader activePath="/resume" profilePhotoUrl={profile.visualAssets.profilePhotoUrl} />
 
         <div className="index" id="container">
           <div className="cwrap">
@@ -409,7 +409,7 @@ ${profile.educationHistory
             color: #000000 !important;
             font-size: 11pt !important;
           }
-          #top-numbers-v3,
+          #top-status-bar,
           #header,
           #breadcrumbs,
           #img1,

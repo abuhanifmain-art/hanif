@@ -4,6 +4,8 @@ import ProjectsClientView from "./projects-client-view";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abuhanifmia.com";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Web Projects & Systems Showcase",
   description:

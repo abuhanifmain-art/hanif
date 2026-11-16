@@ -38,7 +38,7 @@
 }
 
 #index #breadcrumbs,
-.source-page-body.home #breadcrumbs,
+.portfolio-shell-body.home #breadcrumbs,
 .contactform.widget label:not([for*="Disclaimer"]):not([for*="disclaimer"]),
 .detailedform legend,
 .visuallyhidden,

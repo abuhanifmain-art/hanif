@@ -67,13 +67,17 @@ async function run() {
   await sendCommand('Page.navigate', { url: 'http://localhost:3000/admin/login' });
   await sleep(2000);
 
-  // Enter passcode and submit
-  console.log('Entering passcode hanif2026 and submitting...');
+  // Enter passcode from env var and submit
+  const adminSecret = process.env.ADMIN_SECRET_KEY;
+  if (!adminSecret) {
+    throw new Error('Set ADMIN_SECRET_KEY environment variable before running capture-admin-mobile.mjs');
+  }
+  console.log('Entering admin passcode from ADMIN_SECRET_KEY and submitting...');
   await sendCommand('Runtime.evaluate', {
     expression: `
       const input = document.querySelector('input[type="password"]');
       if (input) {
-        input.value = 'hanif2026';
+        input.value = ${JSON.stringify(adminSecret)};
         input.dispatchEvent(new Event('input', { bubbles: true }));
         const form = document.querySelector('form');
         if (form) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));

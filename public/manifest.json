@@ -1,11 +1,11 @@
 {
-  "name": "Abu Hanif (MD Abu Hanif Mia) | Staff Software Engineer",
+  "name": "Abu Hanif (MD Abu Hanif Mia) | Full-Stack Web Developer & Int'l Ops",
   "short_name": "Abu Hanif",
-  "description": "Portfolio of Staff Software Engineer Abu Hanif specializing in distributed systems, PostgreSQL query tuning, Cloudflare edge compute, and Next.js 16.",
+  "description": "Portfolio & OMS platform of MD Abu Hanif Mia — Full-Stack Web Developer (Next.js, TypeScript, PostgreSQL) & International Operations Professional. Open to Remote, B2B & On-Site roles in UK & Europe.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#053056",
-  "theme_color": "#053056",
+  "background_color": "#0a192f",
+  "theme_color": "#0a192f",
   "orientation": "portrait-primary",
   "icons": [
     {

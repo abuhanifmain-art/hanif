@@ -12,9 +12,9 @@ import {
   ServicePricing,
   BlogPost,
 } from "../data/portfolio-data";
-import { isSupabaseConfigured, supabase } from "../lib/supabase";
 import AdminBlogSeoAssistant from "../components/admin-blog-seo-assistant";
 import AdminImageUploader from "../components/admin-image-uploader";
+import ProfileAssetsTab from "./components/profile-assets-tab";
 import {
   InquiryRecord,
   exportInquiriesToCsv,
@@ -36,30 +36,6 @@ import {
 } from "../lib/oms-service";
 import { NotificationEvent } from "../lib/notification-service";
 
-const mockInquiries: InquiryRecord[] = [
-  {
-    id: "inq-1",
-    name: "Sarah Jenkins",
-    email: "sarah@apexventures.co",
-    phone: "+1 (415) 555-0192",
-    projectType: "Full-Stack Web Application (Next.js/React)",
-    budgetRange: "$15,000 – $30,000 (Full-Stack Platform)",
-    message: "We need an edge-deployed customer portal with Supabase authentication and Stripe subscription billing. Our target launch is 6 weeks.",
-    status: "new",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "inq-2",
-    name: "Marcus Thorne",
-    email: "m.thorne@cloudscale.io",
-    projectType: "Database Optimization & Scale (PostgreSQL)",
-    budgetRange: "$5,000 – $15,000 (MVP / Feature Sprint)",
-    message: "Our primary PostgreSQL database is hitting 90% CPU spikes during peak hours. Need an architectural query audit and indexing strategy.",
-    status: "reviewed",
-    createdAt: new Date(Date.now() - 86400000).toISOString(),
-  },
-];
-
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<
     "overview" | "orders" | "projects" | "services" | "blog" | "inquiries" | "profile"
@@ -68,10 +44,11 @@ export default function AdminPage() {
   // State stores
   const [profile, setProfile] = useState<ProfileData>(initialProfile);
   const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [persistenceMode, setPersistenceMode] = useState<"supabase-secret-key" | "local-fallback">("local-fallback");
   const [projects, setProjects] = useState<ProjectItem[]>(initialProjects);
   const [services, setServices] = useState<ServicePricing[]>(initialServices);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>(initialBlogPosts);
-  const [inquiries, setInquiries] = useState<InquiryRecord[]>(mockInquiries);
+  const [inquiries, setInquiries] = useState<InquiryRecord[]>([]);
 
   // CRM & OMS State Stores
   const [orders, setOrders] = useState<OrderRecord[]>(initialOrders);
@@ -278,6 +255,9 @@ export default function AdminPage() {
         if (data.success && data.profile) {
           setProfile(data.profile);
         }
+        if (data.persistenceMode === "supabase-secret-key" || data.persistenceMode === "local-fallback") {
+          setPersistenceMode(data.persistenceMode);
+        }
       })
       .catch(() => {});
 
@@ -285,36 +265,11 @@ export default function AdminPage() {
     fetch("/api/admin/inquiries")
       .then((res) => res.json())
       .then((data) => {
-        if (data.success && Array.isArray(data.inquiries) && data.inquiries.length > 0) {
+        if (data.success && Array.isArray(data.inquiries)) {
           setInquiries(data.inquiries);
-        } else {
-          throw new Error("No admin inquiries returned");
         }
       })
-      .catch(() => {
-        if (isSupabaseConfigured && supabase) {
-          supabase
-            .from("inquiries")
-            .select("*")
-            .order("created_at", { ascending: false })
-            .then(({ data, error }) => {
-              if (!error && data && data.length > 0) {
-                const mapped: InquiryRecord[] = data.map((d: any) => ({
-                  id: d.id,
-                  name: d.name,
-                  email: d.email,
-                  phone: d.phone,
-                  projectType: d.project_type,
-                  budgetRange: d.budget_range,
-                  message: d.message,
-                  status: d.status,
-                  createdAt: d.created_at,
-                }));
-                setInquiries(mapped);
-              }
-            });
-        }
-      });
+      .catch(() => {});
 
     // 3. Fetch Projects via protected admin API
     fetch("/api/admin/projects")
@@ -322,87 +277,19 @@ export default function AdminPage() {
       .then((data) => {
         if (data.success && Array.isArray(data.projects) && data.projects.length > 0) {
           setProjects(data.projects);
-        } else {
-          throw new Error("No admin projects returned");
         }
       })
-      .catch(() => {
-        if (isSupabaseConfigured && supabase) {
-          supabase
-            .from("projects")
-            .select("*")
-            .order("sort_order", { ascending: true })
-            .then(({ data, error }) => {
-              if (!error && data && data.length > 0) {
-                setProjects(
-                  data.map((d: any) => ({
-                    id: d.id,
-                    title: d.title,
-                    slug: d.slug,
-                    summary: d.summary,
-                    descriptionMarkdown: d.description_markdown,
-                    clientName: d.client_name,
-                    demoUrl: d.demo_url,
-                    githubUrl: d.github_url,
-                    priceTag: d.price_tag,
-                    impactMetric: d.impact_metric,
-                    techStack: d.tech_stack || [],
-                    isFeatured: d.is_featured,
-                    published: d.is_published,
-                    imageUrl: d.image_url || d.thumbnail_url || undefined,
-                    screenshots: d.screenshots || [],
-                  }))
-                );
-              }
-            });
-        }
-      });
+      .catch(() => {});
 
     // 4. Fetch Services via protected admin API
     fetch("/api/admin/services")
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success && Array.isArray(data.services) && data.services.length > 0) {
-            setServices(data.services);
-          } else {
-            throw new Error("API services empty");
-          }
-        })
-        .catch(() => {
-          if (isSupabaseConfigured && supabase) {
-            supabase
-              .from("services")
-              .select("*")
-              .order("sort_order", { ascending: true })
-              .then(({ data, error }) => {
-                if (!error && data && data.length > 0) {
-                  const sMap = new Map(data.map((d: any) => [d.slug, d]));
-                  const merged = initialServices.map((initS) => {
-                    const item = sMap.get(initS.slug);
-                    if (item) {
-                      return {
-                        ...initS,
-                        id: item.id || initS.id,
-                        title: item.title || initS.title,
-                        description: item.description || initS.description,
-                        pricingType: item.pricing_type || initS.pricingType,
-                        priceDisplay: item.price_display || initS.priceDisplay,
-                        timeline: item.timeline || initS.timeline,
-                        deliverables:
-                          item.deliverables && item.deliverables.length > 0
-                            ? item.deliverables
-                            : initS.deliverables,
-                        isPopular: item.is_popular !== undefined ? item.is_popular : initS.isPopular,
-                        isActive: item.is_active !== undefined ? item.is_active : initS.isActive,
-                      };
-                    }
-                    return initS;
-                  });
-                  setServices(merged);
-                }
-              });
-          }
-        });
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.services) && data.services.length > 0) {
+          setServices(data.services);
+        }
+      })
+      .catch(() => {});
 
     // 5. Fetch Blog posts via protected admin API
     fetch("/api/admin/blog")
@@ -410,71 +297,9 @@ export default function AdminPage() {
       .then((data) => {
         if (data.success && Array.isArray(data.posts) && data.posts.length > 0) {
           setBlogPosts(data.posts);
-        } else {
-          throw new Error("No admin blog posts returned");
         }
       })
-      .catch(() => {
-        if (isSupabaseConfigured && supabase) {
-          supabase
-            .from("blog_posts")
-            .select("*")
-            .order("published_at", { ascending: false })
-            .then(({ data, error }) => {
-              if (!error && data && data.length > 0) {
-                setBlogPosts(
-                  data.map((d: any) => ({
-                    id: d.id,
-                    title: d.title,
-                    slug: d.slug,
-                    excerpt: d.excerpt,
-                    contentMarkdown: d.content_markdown,
-                    tags: d.tags || [],
-                    readingTimeMinutes: d.reading_time_minutes,
-                    publishedAt: d.published_at,
-                    isPublished: d.is_published,
-                  }))
-                );
-              }
-            });
-        }
-      });
-
-    // Profile is synchronized via /api/admin/profile; keep functional state merge fallback if Supabase row loads directly
-    if (isSupabaseConfigured && supabase) {
-      supabase
-        .from("profiles")
-        .select("*")
-        .limit(1)
-        .single()
-        .then(({ data, error }) => {
-          if (!error && data) {
-            const rawSocial = (data.social_links || {}) as Record<string, any>;
-            const ext = (rawSocial._extended && typeof rawSocial._extended === "object" ? rawSocial._extended : {}) as Record<string, any>;
-            const { _extended: _drop, ...cleanSocial } = rawSocial;
-            void _drop;
-            setProfile((prev) => ({
-              ...prev,
-              fullName: data.full_name || prev.fullName,
-              kicker: data.kicker || prev.kicker,
-              headline: data.headline || prev.headline,
-              bio: data.bio || prev.bio,
-              email: data.email || prev.email,
-              phone: data.phone || prev.phone,
-              location: data.location || prev.location,
-              availabilityStatus: data.availability_status || prev.availabilityStatus,
-              isAvailable: typeof data.is_available === "boolean" ? data.is_available : prev.isAvailable,
-              socialLinks: { ...prev.socialLinks, ...cleanSocial },
-              spokenLanguages: ext.spokenLanguages || prev.spokenLanguages,
-              workPreferences: ext.workPreferences || prev.workPreferences,
-              educationHistory: ext.educationHistory || prev.educationHistory,
-              workHistory: ext.workHistory || prev.workHistory,
-              visualAssets: ext.visualAssets || prev.visualAssets,
-              legalGdpr: ext.legalGdpr || prev.legalGdpr,
-            }));
-          }
-        });
-    }
+      .catch(() => {});
   }, [isAuthenticated]);
 
   // Add project handler
@@ -504,26 +329,7 @@ export default function AdminPage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(item),
-    }).catch(() => {
-      if (isSupabaseConfigured && supabase) {
-        supabase.from("projects").insert([{
-          title: item.title,
-          slug: item.slug,
-          summary: item.summary,
-          description_markdown: item.descriptionMarkdown,
-          client_name: item.clientName,
-          price_tag: item.priceTag,
-          impact_metric: item.impactMetric,
-          tech_stack: item.techStack,
-          demo_url: item.demoUrl,
-          github_url: item.githubUrl,
-          is_featured: true,
-          is_published: true,
-          image_url: item.imageUrl,
-          screenshots: item.screenshots,
-        }]).then();
-      }
-    });
+    }).catch(() => {});
 
     setNewProject({
       title: "",
@@ -554,30 +360,7 @@ export default function AdminPage() {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editingProject),
-    }).catch(() => {
-      if (isSupabaseConfigured && supabase) {
-        supabase
-          .from("projects")
-          .update({
-            title: editingProject.title,
-            slug: editingProject.slug,
-            summary: editingProject.summary,
-            description_markdown: editingProject.descriptionMarkdown,
-            client_name: editingProject.clientName,
-            price_tag: editingProject.priceTag,
-            impact_metric: editingProject.impactMetric,
-            tech_stack: editingProject.techStack,
-            demo_url: editingProject.demoUrl || null,
-            github_url: editingProject.githubUrl || null,
-            is_featured: editingProject.isFeatured,
-            is_published: editingProject.published,
-            image_url: editingProject.imageUrl || null,
-            screenshots: editingProject.screenshots || [],
-          })
-          .eq("id", editingProject.id)
-          .then();
-      }
-    });
+    }).catch(() => {});
 
     setEditingProject(null);
     showNotification("Project successfully updated in database!");
@@ -592,11 +375,7 @@ export default function AdminPage() {
     // Delete via protected server API
     fetch(`/api/admin/projects?id=${encodeURIComponent(projectToDelete.id)}`, {
       method: "DELETE",
-    }).catch(() => {
-      if (isSupabaseConfigured && supabase) {
-        supabase.from("projects").delete().eq("id", projectToDelete.id).then();
-      }
-    });
+    }).catch(() => {});
 
     setProjectToDelete(null);
     showNotification("Project deleted from portfolio and database.");
@@ -611,11 +390,7 @@ export default function AdminPage() {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ action: "toggle_published", id }),
-        }).catch(() => {
-          if (isSupabaseConfigured && supabase) {
-            supabase.from("projects").update({ is_published: nextPub }).eq("id", id).then();
-          }
-        });
+        }).catch(() => {});
         return { ...p, published: nextPub };
       }
       return p;
@@ -629,9 +404,11 @@ export default function AdminPage() {
     const updated = projects.map((p) => {
       if (p.id === id) {
         const nextFeat = !p.isFeatured;
-        if (isSupabaseConfigured && supabase) {
-          supabase.from("projects").update({ is_featured: nextFeat }).eq("id", id).then();
-        }
+        fetch("/api/admin/projects", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, isFeatured: nextFeat }),
+        }).catch(() => {});
         return { ...p, isFeatured: nextFeat };
       }
       return p;
@@ -683,26 +460,6 @@ export default function AdminPage() {
       body: JSON.stringify(item),
     }).catch(() => {});
 
-    if (isSupabaseConfigured && supabase) {
-      supabase
-        .from("services")
-        .insert([
-          {
-            id: item.id,
-            title: item.title,
-            slug: item.slug,
-            description: item.description,
-            pricing_type: item.pricingType,
-            price_display: item.priceDisplay,
-            timeline: item.timeline,
-            deliverables: item.deliverables,
-            is_popular: item.isPopular,
-            is_active: item.isActive,
-          },
-        ])
-        .then(() => {}, () => {});
-    }
-
     setNewService({
       title: "",
       slug: "",
@@ -736,24 +493,6 @@ export default function AdminPage() {
       body: JSON.stringify(editingService),
     }).catch(() => {});
 
-    if (isSupabaseConfigured && supabase) {
-      supabase
-        .from("services")
-        .update({
-          title: editingService.title,
-          slug: editingService.slug,
-          description: editingService.description,
-          pricing_type: editingService.pricingType,
-          price_display: editingService.priceDisplay,
-          timeline: editingService.timeline,
-          deliverables: editingService.deliverables,
-          is_popular: editingService.isPopular,
-          is_active: editingService.isActive,
-        })
-        .eq("id", editingService.id)
-        .then(() => {}, () => {});
-    }
-
     setEditingService(null);
     showNotification("Pricing package successfully updated in database!");
   }
@@ -769,10 +508,6 @@ export default function AdminPage() {
       method: "DELETE",
     }).catch(() => {});
 
-    if (isSupabaseConfigured && supabase) {
-      supabase.from("services").delete().eq("id", idToDelete).then(() => {}, () => {});
-    }
-
     setServiceToDelete(null);
     showNotification("Pricing package deleted from database.");
   }
@@ -787,10 +522,6 @@ export default function AdminPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ action: "toggle_active", id }),
         }).catch(() => {});
-
-        if (isSupabaseConfigured && supabase) {
-          supabase.from("services").update({ is_active: nextActive }).eq("id", id).then(() => {}, () => {});
-        }
         return { ...s, isActive: nextActive };
       }
       return s;
@@ -809,10 +540,6 @@ export default function AdminPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ action: "toggle_popular", id }),
         }).catch(() => {});
-
-        if (isSupabaseConfigured && supabase) {
-          supabase.from("services").update({ is_popular: nextPopular }).eq("id", id).then(() => {}, () => {});
-        }
         return { ...s, isPopular: nextPopular };
       }
       return s;
@@ -888,21 +615,7 @@ export default function AdminPage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(item),
-    }).catch(() => {
-      if (isSupabaseConfigured && supabase) {
-        supabase.from("blog_posts").insert([{
-          title: item.title,
-          slug: item.slug,
-          excerpt: item.excerpt,
-          content_markdown: item.contentMarkdown,
-          tags: item.tags,
-          reading_time_minutes: item.readingTimeMinutes,
-          cover_image_url: item.coverImageUrl || null,
-          published_at: item.publishedAt,
-          is_published: true,
-        }]).then();
-      }
-    });
+    }).catch(() => {});
 
     setNewPost({
       title: "",
@@ -928,24 +641,7 @@ export default function AdminPage() {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editingPost),
-    }).catch(() => {
-      if (isSupabaseConfigured && supabase) {
-        supabase
-          .from("blog_posts")
-          .update({
-            title: editingPost.title,
-            slug: editingPost.slug,
-            excerpt: editingPost.excerpt,
-            content_markdown: editingPost.contentMarkdown,
-            tags: editingPost.tags,
-            reading_time_minutes: editingPost.readingTimeMinutes,
-            cover_image_url: editingPost.coverImageUrl || null,
-            is_published: editingPost.isPublished,
-          })
-          .eq("id", editingPost.id)
-          .then();
-      }
-    });
+    }).catch(() => {});
 
     setEditingPost(null);
     showNotification("Article successfully updated in database!");
@@ -960,11 +656,7 @@ export default function AdminPage() {
     // Delete via protected server API
     fetch(`/api/admin/blog?id=${encodeURIComponent(postToDelete.id)}`, {
       method: "DELETE",
-    }).catch(() => {
-      if (isSupabaseConfigured && supabase) {
-        supabase.from("blog_posts").delete().eq("id", postToDelete.id).then();
-      }
-    });
+    }).catch(() => {});
 
     setPostToDelete(null);
     showNotification("Article deleted from technical blog and database.");
@@ -979,11 +671,7 @@ export default function AdminPage() {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ action: "toggle_published", id }),
-        }).catch(() => {
-          if (isSupabaseConfigured && supabase) {
-            supabase.from("blog_posts").update({ is_published: nextPub }).eq("id", id).then();
-          }
-        });
+        }).catch(() => {});
         return { ...p, isPublished: nextPub };
       }
       return p;
@@ -1002,11 +690,7 @@ export default function AdminPage() {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id, status }),
-    }).catch(() => {
-      if (isSupabaseConfigured && supabase) {
-        supabase.from("inquiries").update({ status }).eq("id", id).then();
-      }
-    });
+    }).catch(() => {});
 
     showNotification(`Inquiry status updated to ${status}`);
   }
@@ -1020,11 +704,7 @@ export default function AdminPage() {
 
     fetch(`/api/admin/inquiries?id=${encodeURIComponent(id)}`, {
       method: "DELETE",
-    }).catch(() => {
-      if (isSupabaseConfigured && supabase) {
-        supabase.from("inquiries").delete().eq("id", id).then();
-      }
-    });
+    }).catch(() => {});
 
     showNotification("Inquiry record deleted from system.");
   }
@@ -1066,28 +746,21 @@ export default function AdminPage() {
     setDiagnosticState((prev) => ({ ...prev, isRunning: true }));
     const t0 = performance.now();
     try {
-      // 1. Edge Ping & Region Probe
-      const pingRes = await fetch("/api/ping", { cache: "no-store" });
-      const pingElapsed = Math.round(performance.now() - t0);
-      const pingData = await pingRes.json().catch(() => ({}));
-
-      // 2. Database Connection & Latency Probe
-      let dbLatency: number | null = null;
-      let dbStatus: "connected" | "fallback" | "error" = "fallback";
-      if (isSupabaseConfigured && supabase) {
-        const dbT0 = performance.now();
-        const { error } = await supabase.from("profiles").select("id").limit(1);
-        dbLatency = Math.round(performance.now() - dbT0);
-        dbStatus = error ? "error" : "connected";
-      }
+      // 1. Live Edge & Database Probe via /api/health
+      const res = await fetch("/api/health", { cache: "no-store" });
+      const elapsed = Math.round(performance.now() - t0);
+      const data = await res.json().catch(() => ({}));
+      const dbSvc = Array.isArray(data.services)
+        ? data.services.find((s: { name: string }) => s.name.includes("Supabase"))
+        : undefined;
 
       setDiagnosticState({
         isRunning: false,
         lastRun: new Date().toLocaleTimeString(),
-        edgeLatency: pingElapsed,
-        dbLatency: dbLatency ?? 22,
-        edgeRegion: pingData.region || "DAC (South Asia Edge)",
-        dbStatus: isSupabaseConfigured ? dbStatus : "fallback",
+        edgeLatency: elapsed,
+        dbLatency: dbSvc?.latencyMs ?? elapsed,
+        edgeRegion: dbSvc?.region || "Runtime Probe",
+        dbStatus: dbSvc?.status === "operational" ? "connected" : dbSvc?.status === "degraded" ? "error" : "fallback",
       });
       showNotification("Infrastructure health diagnostics completed successfully!");
     } catch {
@@ -1393,12 +1066,12 @@ export default function AdminPage() {
               fontSize: "11px",
               padding: "2px 8px",
               borderRadius: "4px",
-              backgroundColor: isSupabaseConfigured ? "#064e3b" : "#3b82f6",
+              backgroundColor: persistenceMode === "supabase-secret-key" ? "#064e3b" : "#3b82f6",
               color: "#ffffff",
               fontWeight: "600",
             }}
           >
-            {isSupabaseConfigured ? "● Supabase Connected" : "● Interactive Preview Mode"}
+            {persistenceMode === "supabase-secret-key" ? "● Supabase Secret Key Active" : "● Publishable / Fallback Mode"}
           </span>
         </div>
 
@@ -1691,7 +1364,7 @@ export default function AdminPage() {
                       PostgreSQL Connection Pool
                     </div>
                     <div style={{ fontSize: "22px", fontWeight: "800", color: "#4ade80", marginTop: "6px" }}>
-                      {diagnosticState.dbLatency !== null ? `${diagnosticState.dbLatency}ms` : (isSupabaseConfigured ? "Connected" : "Local Mock")}
+                      {diagnosticState.dbLatency !== null ? `${diagnosticState.dbLatency}ms` : (persistenceMode === "supabase-secret-key" ? "Connected" : "Run Probe")}
                     </div>
                     <div style={{ fontSize: "11px", color: "#10b981", marginTop: "4px" }}>
                       ● Supabase AWS us-east-1
@@ -4731,441 +4404,38 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* TAB 6: PROFILE, VISUAL ASSETS & GDPR / LEGAL */}
+          {/* TAB 6: PROFILE, VISUAL ASSETS, BILLING & GDPR / LEGAL */}
           {activeTab === "profile" && (
-            <div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px", marginBottom: "18px" }}>
-                <div>
-                  <h2 style={{ fontSize: "24px", fontWeight: "800", margin: "0 0 4px 0" }}>
-                    Profile, Visual Assets &amp; GDPR / Legal Details
-                  </h2>
-                  <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>
-                    Replace your profile photo, hero slides, course certificate image, and customize live{" "}
-                    <Link href="/privacy" target="_blank" style={{ color: "#38bdf8", textDecoration: "underline" }}>
-                      /privacy
-                    </Link>{" "}
-                    &amp;{" "}
-                    <Link href="/terms" target="_blank" style={{ color: "#38bdf8", textDecoration: "underline" }}>
-                      /terms
-                    </Link>{" "}
-                    disclosures.
-                  </p>
-                </div>
-              </div>
-
-              <form
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  setIsSavingProfile(true);
-                  try {
-                    const res = await fetch("/api/admin/profile", {
-                      method: "PUT",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify(profile),
-                    });
-                    const data = await res.json();
-                    if (!res.ok || !data.success) {
-                      throw new Error(data.error || "Failed to save profile settings.");
-                    }
-                    if (data.profile) {
-                      setProfile(data.profile);
-                    }
-                    showNotification("Profile, Visual Assets & GDPR Legal settings saved!");
-                  } catch (err: unknown) {
-                    const msg = err instanceof Error ? err.message : "Failed to save profile.";
-                    showNotification(`Error: ${msg}`);
-                  } finally {
-                    setIsSavingProfile(false);
+            <ProfileAssetsTab
+              profile={profile}
+              setProfile={setProfile}
+              isSavingProfile={isSavingProfile}
+              persistenceMode={persistenceMode}
+              onSaveProfile={async (e) => {
+                e.preventDefault();
+                setIsSavingProfile(true);
+                try {
+                  const res = await fetch("/api/admin/profile", {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(profile),
+                  });
+                  const data = await res.json();
+                  if (!res.ok || !data.success) {
+                    throw new Error(data.error || "Failed to save profile settings.");
                   }
-                }}
-                style={{ display: "grid", gap: "20px", maxWidth: "980px" }}
-              >
-                {/* SECTION A: CORE IDENTITY & CONTACT */}
-                <div style={{ backgroundColor: "#0a192f", border: "1px solid #1e293b", borderRadius: "6px", padding: "24px" }}>
-                  <h3 style={{ margin: "0 0 16px 0", fontSize: "16px", fontWeight: "700", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                    1. Core Identity, Availability &amp; Contact
-                  </h3>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "14px", marginBottom: "14px" }}>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Full Name</label>
-                      <input
-                        value={profile.fullName}
-                        onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Role Title / Kicker</label>
-                      <input
-                        value={profile.kicker}
-                        onChange={(e) => setProfile({ ...profile, kicker: e.target.value })}
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Hero Top Tagline</label>
-                      <input
-                        value={profile.headline}
-                        onChange={(e) => setProfile({ ...profile, headline: e.target.value })}
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Availability Status</label>
-                      <input
-                        value={profile.availabilityStatus}
-                        onChange={(e) => setProfile({ ...profile, availabilityStatus: e.target.value })}
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Primary Email</label>
-                      <input
-                        type="email"
-                        value={profile.email}
-                        onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Public Phone Number</label>
-                      <input
-                        value={profile.phone}
-                        onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                  </div>
-                  <div style={{ marginBottom: "14px" }}>
-                    <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Location</label>
-                    <input
-                      value={profile.location}
-                      onChange={(e) => setProfile({ ...profile, location: e.target.value })}
-                      style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Profile Summary / Bio</label>
-                    <textarea
-                      rows={3}
-                      value={profile.bio}
-                      onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
-                      style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                    />
-                  </div>
-                </div>
-
-                {/* SECTION B: VISUAL ASSETS REPLACE CONTROLS */}
-                <div style={{ backgroundColor: "#0a192f", border: "1px solid #1e293b", borderRadius: "6px", padding: "24px" }}>
-                  <h3 style={{ margin: "0 0 6px 0", fontSize: "16px", fontWeight: "700", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                    2. Visual Assets Replacement (Headshot, Certificate &amp; Hero Slides)
-                  </h3>
-                  <p style={{ margin: "0 0 18px 0", fontSize: "12.5px", color: "#94a3b8" }}>
-                    Upload your real photographs or paste hosted image URLs to replace any default visual asset across the homepage, bio, and credentials viewer.
-                  </p>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "18px", marginBottom: "20px" }}>
-                    <div>
-                      <AdminImageUploader
-                        label="Profile Headshot Photo"
-                        helperText="Displayed on the Hero Card & About Section (/images/profile.png default)"
-                        mode="single"
-                        value={profile.visualAssets?.profilePhotoUrl || ""}
-                        onChangeSingle={(url) =>
-                          setProfile({
-                            ...profile,
-                            visualAssets: {
-                              ...profile.visualAssets,
-                              profilePhotoUrl: url,
-                            },
-                          })
-                        }
-                        onClearSingle={() =>
-                          setProfile({
-                            ...profile,
-                            visualAssets: {
-                              ...profile.visualAssets,
-                              profilePhotoUrl: "/images/profile.png",
-                            },
-                          })
-                        }
-                      />
-                    </div>
-                    <div>
-                      <AdminImageUploader
-                        label="Certificate / Credential Scan"
-                        helperText="Displayed in Credentials card (/images/programming-hero-certificate.png default)"
-                        mode="single"
-                        value={profile.visualAssets?.certificatePhotoUrl || ""}
-                        onChangeSingle={(url) =>
-                          setProfile({
-                            ...profile,
-                            visualAssets: {
-                              ...profile.visualAssets,
-                              certificatePhotoUrl: url,
-                            },
-                          })
-                        }
-                        onClearSingle={() =>
-                          setProfile({
-                            ...profile,
-                            visualAssets: {
-                              ...profile.visualAssets,
-                              certificatePhotoUrl: "/images/programming-hero-certificate.png",
-                            },
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-
-                  <div style={{ borderTop: "1px solid #1e293b", paddingTop: "16px" }}>
-                    <h4 style={{ margin: "0 0 12px 0", fontSize: "14px", color: "#e2e8f0" }}>
-                      Hero Banner Slides (4 Workspace Background Visuals)
-                    </h4>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "16px" }}>
-                      {(profile.visualAssets?.heroSlides || []).map((slide, idx) => (
-                        <div key={slide.id || idx} style={{ backgroundColor: "#071324", border: "1px solid #1e293b", borderRadius: "6px", padding: "14px" }}>
-                          <div style={{ fontSize: "12px", fontWeight: "700", color: "#38bdf8", marginBottom: "8px" }}>
-                            Hero Slide #{idx + 1}
-                          </div>
-                          <AdminImageUploader
-                            label={`Replace Slide #${idx + 1} Image`}
-                            mode="single"
-                            value={slide.src}
-                            onChangeSingle={(url) => {
-                              const nextSlides = [...(profile.visualAssets?.heroSlides || [])];
-                              nextSlides[idx] = { ...slide, src: url };
-                              setProfile({
-                                ...profile,
-                                visualAssets: { ...profile.visualAssets, heroSlides: nextSlides },
-                              });
-                            }}
-                          />
-                          <div style={{ marginTop: "8px", display: "grid", gap: "8px" }}>
-                            <input
-                              value={slide.title}
-                              placeholder="Slide Title"
-                              onChange={(e) => {
-                                const nextSlides = [...(profile.visualAssets?.heroSlides || [])];
-                                nextSlides[idx] = { ...slide, title: e.target.value };
-                                setProfile({
-                                  ...profile,
-                                  visualAssets: { ...profile.visualAssets, heroSlides: nextSlides },
-                                });
-                              }}
-                              style={{ width: "100%", padding: "6px 8px", backgroundColor: "#0a192f", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px", fontSize: "12px" }}
-                            />
-                            <input
-                              value={slide.subtitle}
-                              placeholder="Slide Subtitle"
-                              onChange={(e) => {
-                                const nextSlides = [...(profile.visualAssets?.heroSlides || [])];
-                                nextSlides[idx] = { ...slide, subtitle: e.target.value };
-                                setProfile({
-                                  ...profile,
-                                  visualAssets: { ...profile.visualAssets, heroSlides: nextSlides },
-                                });
-                              }}
-                              style={{ width: "100%", padding: "6px 8px", backgroundColor: "#0a192f", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px", fontSize: "12px" }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* SECTION C: GDPR & LEGAL DETAILS EDITOR */}
-                <div style={{ backgroundColor: "#0a192f", border: "1px solid #1e293b", borderRadius: "6px", padding: "24px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px", marginBottom: "16px" }}>
-                    <h3 style={{ margin: 0, fontSize: "16px", fontWeight: "700", color: "#10b981", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                      3. UK / EU GDPR &amp; Legal Details (Syncs to /privacy &amp; /terms)
-                    </h3>
-                    <div style={{ display: "flex", gap: "10px", fontSize: "12px" }}>
-                      <Link href="/privacy" target="_blank" style={{ color: "#38bdf8", textDecoration: "underline" }}>Preview /privacy ↗</Link>
-                      <Link href="/terms" target="_blank" style={{ color: "#38bdf8", textDecoration: "underline" }}>Preview /terms ↗</Link>
-                    </div>
-                  </div>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "14px", marginBottom: "14px" }}>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Data Controller Name</label>
-                      <input
-                        value={profile.legalGdpr?.controllerName || ""}
-                        onChange={(e) =>
-                          setProfile({
-                            ...profile,
-                            legalGdpr: { ...profile.legalGdpr, controllerName: e.target.value },
-                          })
-                        }
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Trading Name / Legal Entity Label</label>
-                      <input
-                        value={profile.legalGdpr?.tradingAs || ""}
-                        onChange={(e) =>
-                          setProfile({
-                            ...profile,
-                            legalGdpr: { ...profile.legalGdpr, tradingAs: e.target.value },
-                          })
-                        }
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Privacy Contact Email</label>
-                      <input
-                        type="email"
-                        value={profile.legalGdpr?.controllerEmail || ""}
-                        onChange={(e) =>
-                          setProfile({
-                            ...profile,
-                            legalGdpr: { ...profile.legalGdpr, controllerEmail: e.target.value },
-                          })
-                        }
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Legal / Contact Phone</label>
-                      <input
-                        value={profile.legalGdpr?.controllerPhone || ""}
-                        onChange={(e) =>
-                          setProfile({
-                            ...profile,
-                            legalGdpr: { ...profile.legalGdpr, controllerPhone: e.target.value },
-                          })
-                        }
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Registered / Mailing Address</label>
-                      <input
-                        value={profile.legalGdpr?.controllerAddress || ""}
-                        onChange={(e) =>
-                          setProfile({
-                            ...profile,
-                            legalGdpr: { ...profile.legalGdpr, controllerAddress: e.target.value },
-                          })
-                        }
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Effective / Last Updated Date</label>
-                      <input
-                        value={profile.legalGdpr?.lastUpdated || ""}
-                        onChange={(e) =>
-                          setProfile({
-                            ...profile,
-                            legalGdpr: { ...profile.legalGdpr, lastUpdated: e.target.value },
-                          })
-                        }
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                  </div>
-
-                  <div style={{ display: "grid", gap: "12px" }}>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Registration / ICO / Tax Note</label>
-                      <input
-                        value={profile.legalGdpr?.icoOrRegistrationNote || ""}
-                        onChange={(e) =>
-                          setProfile({
-                            ...profile,
-                            legalGdpr: { ...profile.legalGdpr, icoOrRegistrationNote: e.target.value },
-                          })
-                        }
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Data Retention Summary</label>
-                      <textarea
-                        rows={2}
-                        value={profile.legalGdpr?.dataRetentionSummary || ""}
-                        onChange={(e) =>
-                          setProfile({
-                            ...profile,
-                            legalGdpr: { ...profile.legalGdpr, dataRetentionSummary: e.target.value },
-                          })
-                        }
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Sub-Processors Disclosure</label>
-                      <textarea
-                        rows={2}
-                        value={profile.legalGdpr?.subProcessorsNote || ""}
-                        onChange={(e) =>
-                          setProfile({
-                            ...profile,
-                            legalGdpr: { ...profile.legalGdpr, subProcessorsNote: e.target.value },
-                          })
-                        }
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Custom Privacy Notice / UK &amp; EU Rep Addendum</label>
-                      <textarea
-                        rows={2}
-                        value={profile.legalGdpr?.privacyPolicyCustomNotes || ""}
-                        onChange={(e) =>
-                          setProfile({
-                            ...profile,
-                            legalGdpr: { ...profile.legalGdpr, privacyPolicyCustomNotes: e.target.value },
-                          })
-                        }
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Custom Terms of Service Addendum</label>
-                      <textarea
-                        rows={2}
-                        value={profile.legalGdpr?.termsCustomNotes || ""}
-                        onChange={(e) =>
-                          setProfile({
-                            ...profile,
-                            legalGdpr: { ...profile.legalGdpr, termsCustomNotes: e.target.value },
-                          })
-                        }
-                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <button
-                    type="submit"
-                    disabled={isSavingProfile}
-                    style={{
-                      padding: "12px 28px",
-                      backgroundColor: "#2563eb",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: "6px",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      cursor: isSavingProfile ? "not-allowed" : "pointer",
-                      opacity: isSavingProfile ? 0.7 : 1,
-                    }}
-                  >
-                    {isSavingProfile
-                      ? "Saving All Settings..."
-                      : "Save Profile, Visual Assets & GDPR Legal Settings"}
-                  </button>
-                </div>
-              </form>
-            </div>
+                  if (data.profile) {
+                    setProfile(data.profile);
+                  }
+                  showNotification("Profile, Visual Assets, Billing & GDPR Legal settings saved!");
+                } catch (err: unknown) {
+                  const msg = err instanceof Error ? err.message : "Failed to save profile.";
+                  showNotification(`Error: ${msg}`);
+                } finally {
+                  setIsSavingProfile(false);
+                }
+              }}
+            />
           )}
 
           {/* EDIT PROJECT MODAL */}

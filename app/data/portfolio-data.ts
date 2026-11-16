@@ -25,6 +25,11 @@ export interface LegalGdprConfig {
   privacyPolicyCustomNotes: string;
   termsCustomNotes: string;
   lastUpdated: string;
+  invoiceTaxId?: string;
+  invoiceBankName?: string;
+  invoiceSwiftBic?: string;
+  invoiceAccountOrIban?: string;
+  invoiceNotes?: string;
 }
 
 export interface SpokenLanguage {
@@ -268,12 +273,17 @@ export const initialProfile: ProfileData = {
     controllerAddress: "Sadar Upazila, Kishoreganj, Dhaka, Bangladesh",
     controllerEmail: "abuhanifmain@gmail.com",
     controllerPhone: "+880 1724-010261",
-    icoOrRegistrationNote: "Independent developer & service provider; update with local UK/EU business registration, UTR, VAT, or Data Protection registration details via the Admin Panel.",
+    icoOrRegistrationNote: "Individual software developer & sole service provider (not VAT-registered; statutory tax details supplied directly on signed client contracts).",
     dataRetentionSummary: "Contact form inquiries and project communication logs are retained only as long as necessary to evaluate employment opportunities, respond to messages, or administer active client engagements (typically up to 12 months unless extended by contract or legal obligation).",
     subProcessorsNote: "Hosted on edge/cloud infrastructure (Cloudflare Pages) with optional database storage on Supabase (PostgreSQL). Strictly necessary security cookies are set solely during authenticated Admin sign-in.",
-    privacyPolicyCustomNotes: "Replace or tailor this notice with your updated UK/EU representative, cookie audit, or company registration details directly from /admin -> Profile, Visual Assets & GDPR.",
+    privacyPolicyCustomNotes: "Under UK GDPR and EU GDPR, you may request access, correction, portability, or deletion of any inquiry data at any time by emailing abuhanifmain@gmail.com.",
     termsCustomNotes: "Any commercial freelance, B2B, or employment terms are confirmed in writing prior to project kickoff or onboarding.",
     lastUpdated: "2026-11-16",
+    invoiceTaxId: "Individual / Sole Provider (Tax reference supplied on signed engagement)",
+    invoiceBankName: "Bank Transfer / Wise Commercial Routing",
+    invoiceSwiftBic: "Provided on formal signed invoice",
+    invoiceAccountOrIban: "Provided privately on signed engagement",
+    invoiceNotes: "All agreed client intellectual property and source deliverables transfer upon final milestone settlement.",
   },
 };
 
@@ -641,7 +651,7 @@ export const initialServices: ServicePricing[] = [
       "Sub-50ms global edge TTFB via Cloudflare Pages and V8 isolate caching",
       "Interactive pricing/SOW calculator widgets and conversion-tested layout architecture",
       "Frictionless Stripe payment gateway or custom subscription onboarding integration",
-      "WCAG 2.1 AAA accessibility, 0 layout shifts (CLS = 0), and mobile-first touch optimization",
+      "Responsive mobile-first layout, semantic HTML landmarks, and zero layout shifts (CLS = 0)",
       "Privacy-first analytics telemetry (PostHog / Plausible) with zero cookie-banner latency",
       "A/B testing readiness and 30-day post-launch conversion warranty",
     ],
@@ -1206,21 +1216,21 @@ Postgres is not just a storage warehouse; configured properly, it is a high-spee
   },
   {
     id: "blog-3",
-    title: "Why We Swapped 12 Microservices for a Modular Monolith in 2026",
+    title: "Modular Monolith vs. Microservices: Architecture Trade-Offs Study",
     slug: "swapping-microservices-for-modular-monolith",
-    excerpt: "How distributed complexity, gRPC serialization overhead, and debugging friction led us back to a clean, well-tested modular codebase.",
-    contentMarkdown: `## The Microservice Hangover
+    excerpt: "Comparing distributed microservice serialization overhead against clean modular TypeScript boundaries for small engineering teams.",
+    contentMarkdown: `## Why Small Teams Struggle With Premature Microservices
 
-Over the last decade, countless startups adopted microservices prematurely. Instead of solving scaling issues, many teams traded simple in-memory function calls for network latency, distributed transactions, and complicated deployment manifests.
+Many small product teams adopt distributed microservices before hitting scaling bottlenecks. Instead of simplifying delivery, splitting a compact codebase across network boundaries can trade straightforward function calls for serialization latency, distributed transactions, and heavy local tooling.
 
-### The Hidden Costs of Distributed Systems
-1. **Network Hops**: A single user action triggers 7 internal gRPC calls, multiplying tail latency.
-2. **Schema Drift**: Maintaining synchronized protocol buffers across 12 repos burns engineering velocity.
-3. **Local Development Nightmare**: Requiring engineers to run 15 Docker containers locally just to submit a login form.
+### Key Architectural Trade-Offs
+1. **Network Hops**: Splitting tightly coupled workflows adds serialized RPC overhead and retry complexity.
+2. **Schema Synchronization**: Keeping schemas aligned across multiple services increases deployment coordination work.
+3. **Developer Onboarding**: Running many separate containers locally slows everyday iteration.
 
-## The Modular Monolith Alternative
+## The Modular Monolith Pattern
 
-A modular monolith keeps code in a single repository with strictly enforced domain boundaries. Instead of network calls, modules communicate via typed interfaces within the same process.
+A modular monolith keeps code in a single repository with clear domain interfaces. Modules interact via typed in-process contracts while remaining separable if scaling ever requires extraction.
 
 \`\`\`typescript
 // Domain boundary enforced by module interfaces
@@ -1228,17 +1238,17 @@ export interface BillingModule {
   chargeCustomer(customerId: string, amountCents: number): Promise<TransactionResult>;
 }
 
-export class StripeBillingService implements BillingModule {
+export class DirectBillingService implements BillingModule {
   async chargeCustomer(customerId: string, amountCents: number) {
-    // In-process execution: 0ms network penalty
+    // In-process execution with typed boundaries
     return processPayment(customerId, amountCents);
   }
 }
 \`\`\`
 
-## Result
+## Study Takeaway
 
-Deployment takes 2 minutes instead of 45, unit tests run in seconds, and our team shipped twice as many features with half the operational overhead.`,
+For early-stage products and solo/small-team builds (such as full-stack Next.js + PostgreSQL platforms), clean modular boundaries inside one repository keep deployments fast and debugging transparent.`,
     tags: ["System Design", "DevOps", "Microservices", "Clean Code"],
     readingTimeMinutes: 5,
     publishedAt: "2026-07-02T09:15:00Z",
@@ -1247,42 +1257,40 @@ Deployment takes 2 minutes instead of 45, unit tests run in seconds, and our tea
   },
   {
     id: "blog-4",
-    title: "Mastering Database Indexing: How We Dropped Query Times From 4.2s to 12ms",
+    title: "Mastering PostgreSQL Composite & Partial Indexing with EXPLAIN ANALYZE",
     slug: "mastering-postgres-indexing-query-optimization",
-    excerpt: "Practical guide to B-Trees, partial indexes, multi-column ordering, and analyzing execution plans with EXPLAIN ANALYZE.",
-    contentMarkdown: `## The 4.2-Second Query
+    excerpt: "Study notes on reading EXPLAIN ANALYZE query plans and selecting composite vs. partial B-Tree indexes for filtered queries.",
+    contentMarkdown: `## Diagnosing Slow Filtered Queries
 
-During an audit of an enterprise SaaS reporting dashboard, we identified a critical bottleneck: loading monthly summaries for accounts with over 2,000,000 transaction rows took more than 4 seconds.
+When reporting queries filter by both an account identifier, a status flag, and a date range without a matching composite index, PostgreSQL may fall back to scanning unnecessary heap pages.
 
 ## Reading EXPLAIN ANALYZE
 
-Running \`EXPLAIN ANALYZE\` revealed a dreaded **Sequential Scan**:
+Inspecting \`EXPLAIN ANALYZE\` helps spot sequential scans and excessive buffer reads:
 
 \`\`\`text
 Seq Scan on transactions  (cost=0.00..58914.00 rows=184100 width=72)
   Filter: ((account_id = 'acc_9281') AND (status = 'completed') AND (created_at >= '2026-01-01'))
 \`\`\`
 
-PostgreSQL was reading every single row off the disk because the existing single-column index on \`account_id\` was insufficient.
+A single-column index on \`account_id\` alone still has to inspect rows that do not match the \`status\` or timestamp filter.
 
-## Constructing the Composite Partial Index
+## Constructing a Composite Partial Index
 
-By analyzing the query access patterns, we constructed a targeted composite index covering exactly the filtered columns:
+Aligning column order and predicate filters reduces index size and narrows scans to active rows:
 
 \`\`\`sql
--- Create a high-efficiency composite index
+-- Example composite partial index for filtered lookups
 create index concurrently idx_transactions_account_date
 on transactions (account_id, created_at desc)
 where status = 'completed';
 \`\`\`
 
-## The Result
+## Key Principles
 
-The sequential scan transformed into an **Index Scan**:
-- Execution time dropped from **4,210ms** down to **11.8ms**.
-- Database buffer read IO dropped by **99.4%**.
-
-Never guess—always measure with \`EXPLAIN ANALYZE\`.`,
+- Put equality predicates (\`account_id\`) ahead of range predicates (\`created_at\`).
+- Add \`WHERE\` partial filters when queries consistently target a small subset of rows.
+- Always verify actual shared buffer reads with \`EXPLAIN (ANALYZE, BUFFERS)\` in PostgreSQL rather than guessing.`,
     tags: ["Databases", "PostgreSQL", "SQL", "Performance"],
     readingTimeMinutes: 7,
     publishedAt: "2026-05-19T11:00:00Z",

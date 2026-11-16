@@ -72,7 +72,7 @@ export default function StatusPage() {
   };
 
   return (
-    <div id="source-page-root" data-source-path="/status">
+    <div id="portfolio-page-root" data-route="/status">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(statusSchema) }}
@@ -82,7 +82,7 @@ export default function StatusPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <div id="source-page-body" className="source-page-body js l2 section_10 abuhanif-portfolio-shell">
+      <div id="portfolio-shell-body" className="portfolio-shell-body js abuhanif-portfolio-shell">
         <SiteHeader activePath="/status" />
 
         <div className="index" id="container">

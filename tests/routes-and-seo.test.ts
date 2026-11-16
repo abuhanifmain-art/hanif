@@ -81,14 +81,15 @@ describe("Routes, SEO & Topic Pillars Verification", () => {
     expect(entries.length).toBeGreaterThanOrEqual(32);
   }, 15000);
 
-  it("should return valid operational telemetry from /api/health", async () => {
+  it("should return valid runtime telemetry from /api/health", async () => {
     const { GET } = await import("../app/api/health/route");
     const response = await GET();
     expect(response.status).toBe(200);
 
     const data = await response.json();
     expect(data.status).toBe("all_systems_operational");
-    expect(data.uptime90Days).toBe("99.994%");
+    expect(data.diagnosticsMode).toBe("live-runtime-probe");
+    expect(typeof data.uptimeSeconds).toBe("number");
     expect(Array.isArray(data.services)).toBe(true);
     expect(data.services.length).toBeGreaterThanOrEqual(5);
 

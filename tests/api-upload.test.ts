@@ -1,10 +1,25 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, afterAll } from "vitest";
+import fs from "fs";
+import path from "path";
 import { POST } from "../app/api/upload/route";
+import { getAdminSecret } from "../app/lib/admin-auth";
 import { NextRequest } from "next/server";
 
-const AUTH_HEADER = { Authorization: "Bearer hanif2026" };
+const AUTH_HEADER = { Authorization: `Bearer ${getAdminSecret()}` };
 
 describe("Upload API Route (/api/upload)", () => {
+  const uploadedFiles: string[] = [];
+
+  afterAll(() => {
+    for (const relUrl of uploadedFiles) {
+      if (relUrl.startsWith("/uploads/projects/")) {
+        const diskPath = path.join(process.cwd(), "public", relUrl);
+        if (fs.existsSync(diskPath)) {
+          fs.unlinkSync(diskPath);
+        }
+      }
+    }
+  });
   it("should reject unauthenticated requests with status 401", async () => {
     const formData = new FormData();
     const req = new NextRequest("http://localhost:3000/api/upload", {
@@ -56,6 +71,9 @@ describe("Upload API Route (/api/upload)", () => {
     expect(res.status).toBe(200);
 
     const json = await res.json();
+    if (typeof json.url === "string") {
+      uploadedFiles.push(json.url);
+    }
     expect(json.success).toBe(true);
     expect(json.url).toBeDefined();
     expect(typeof json.url).toBe("string");

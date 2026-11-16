@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getOrderByIdOrToken, generateInvoiceForOrder } from "../../../lib/oms-service";
+import { getProfile } from "../../../lib/portfolio-store";
 
 export async function GET(req: NextRequest) {
   const token = req.nextUrl.searchParams.get("token");
@@ -23,7 +24,8 @@ export async function GET(req: NextRequest) {
     }
 
     const milestoneIndex = milestoneParam ? parseInt(milestoneParam, 10) : undefined;
-    const invoice = generateInvoiceForOrder(order, order.customer, milestoneIndex);
+    const profile = await getProfile();
+    const invoice = generateInvoiceForOrder(order, order.customer, milestoneIndex, profile);
 
     return NextResponse.json({
       success: true,

@@ -21,54 +21,52 @@ interface PoPHealth {
 export default function StatusDashboardClient() {
   const [loading, setLoading] = useState(false);
   const [lastChecked, setLastChecked] = useState<string>("Checking now...");
-  const [browserPingMs, setBrowserPingMs] = useState<number>(18);
+  const [browserPingMs, setBrowserPingMs] = useState<number>(0);
   const [services, setServices] = useState<ServiceHealth[]>([
     {
-      name: "Cloudflare Pages Global Edge Network",
+      name: "Cloudflare Pages Edge Network & HTTP Delivery",
       status: "operational",
-      latencyMs: 18,
-      region: "DAC (South Asia Edge)",
-      sla: "99.99%",
+      latencyMs: 0,
+      region: "Checking live probe...",
+      sla: "Live Handler Probe",
     },
     {
-      name: "Next.js 16 SSR & Server Actions Runtime",
+      name: "Next.js 16 App Router Runtime",
       status: "operational",
-      latencyMs: 12,
-      region: "Global Edge V8 Isolates",
-      sla: "99.99%",
+      latencyMs: 0,
+      region: "Server / Edge Process",
+      sla: "Active",
     },
     {
-      name: "PostgreSQL Database Connection Pool",
+      name: "Supabase PostgreSQL Query Probe",
       status: "operational",
-      latencyMs: 24,
-      region: "AWS us-east-1 (Supavisor)",
-      sla: "99.95%",
+      latencyMs: 0,
+      region: "Probing connection...",
+      sla: "Live Check",
     },
     {
-      name: "Real-Time WebSocket & CDC Telemetry Stream",
+      name: "Admin Zero-Trust Proxy & Rate Limiter",
       status: "operational",
-      latencyMs: 21,
-      region: "Global Distributed Mesh",
-      sla: "99.99%",
+      latencyMs: 0,
+      region: "HMAC-SHA256 Request Guard",
+      sla: "Env Verified",
     },
     {
-      name: "Cloudflare Global DNS & SSL Termination",
+      name: "Portfolio Static Assets & Metadata Routes",
       status: "operational",
-      latencyMs: 9,
-      region: "330+ Global PoPs",
-      sla: "100.0%",
+      latencyMs: 0,
+      region: "Sitemap, Robots, Feed & OG",
+      sla: "Verified",
     },
   ]);
 
   const [pops, setPops] = useState<PoPHealth[]>([
-    { code: "IAD", name: "US East (Ashburn)", latencyMs: 18, status: "operational" },
-    { code: "SFO", name: "US West (San Jose)", latencyMs: 22, status: "operational" },
-    { code: "LHR", name: "Europe (London)", latencyMs: 24, status: "operational" },
-    { code: "FRA", name: "Europe (Frankfurt)", latencyMs: 26, status: "operational" },
-    { code: "SIN", name: "Asia (Singapore)", latencyMs: 31, status: "operational" },
-    { code: "DAC", name: "South Asia (Dhaka)", latencyMs: 19, status: "operational" },
-    { code: "SYD", name: "Oceania (Sydney)", latencyMs: 44, status: "operational" },
-    { code: "NRT", name: "East Asia (Tokyo)", latencyMs: 36, status: "operational" },
+    { code: "LHR", name: "Europe (London)", latencyMs: 24, status: "reference" },
+    { code: "FRA", name: "Europe (Frankfurt)", latencyMs: 26, status: "reference" },
+    { code: "DAC", name: "South Asia (Dhaka)", latencyMs: 19, status: "reference" },
+    { code: "SIN", name: "Asia (Singapore)", latencyMs: 31, status: "reference" },
+    { code: "IAD", name: "US East (Ashburn)", latencyMs: 18, status: "reference" },
+    { code: "SFO", name: "US West (San Jose)", latencyMs: 22, status: "reference" },
   ]);
 
   async function fetchHealthDiagnostics() {
@@ -243,9 +241,9 @@ export default function StatusDashboardClient() {
                 </span>
               </div>
 
-              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
                 <span style={{ fontSize: "12px", fontFamily: "monospace", color: "#334155", background: "#f1f5f9", padding: "2px 8px", borderRadius: "4px" }}>
-                  {svc.latencyMs}ms
+                  {svc.latencyMs > 0 ? `${svc.latencyMs}ms` : "live"}
                 </span>
                 <span
                   style={{

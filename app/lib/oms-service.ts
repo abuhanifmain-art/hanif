@@ -10,179 +10,23 @@ import {
   InvoiceRecord,
   InvoiceLineItem,
 } from "./oms-types";
-import { supabase, isSupabaseConfigured } from "./supabase";
+import { supabase, isSupabaseConfigured, getServiceSupabase } from "./supabase";
+import type { ProfileData } from "../data/portfolio-data";
 
-const OMS_SECRET = process.env.ADMIN_SECRET_KEY || "hanif2026";
+function getOmsSigningSecret(): string {
+  const secret = (process.env.ADMIN_SECRET_KEY || "").trim();
+  if (!secret) {
+    throw new Error("ADMIN_SECRET_KEY environment variable must be configured for OMS cryptography.");
+  }
+  return secret;
+}
 
 // -----------------------------------------------------------------------------
-// SEED CUSTOMERS & ORDERS (For offline mode and local development)
+// CLEAN IN-MEMORY STORES (Populated via live Supabase records or Admin actions)
 // -----------------------------------------------------------------------------
-export const initialCustomers: CustomerRecord[] = [
-  {
-    id: "cust-apex-01",
-    companyName: "Apex Ventures & Fintech",
-    primaryContactName: "Sarah Jenkins",
-    email: "sarah@apexventures.co",
-    phone: "+1 (415) 555-0192",
-    billingAddress: {
-      street: "500 Howard Street, Suite 400",
-      city: "San Francisco",
-      state: "CA",
-      country: "United States",
-      postalCode: "94105",
-    },
-    vatTaxId: "US-CA-94105-APEX",
-    clientTier: "active_client",
-    ndaStatus: "mutual_nda_active",
-    totalSpendUsd: 22500.0,
-    internalNotes: "Edge-deployed customer portal with Supabase auth and Stripe billing.",
-    createdAt: new Date(Date.now() - 86400000 * 14).toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "cust-cloudscale-02",
-    companyName: "CloudScale Infrastructure Systems",
-    primaryContactName: "Marcus Thorne",
-    email: "m.thorne@cloudscale.io",
-    phone: "+44 20 7946 0912",
-    billingAddress: {
-      street: "1 Canada Square",
-      city: "London",
-      country: "United Kingdom",
-      postalCode: "E14 5AA",
-    },
-    vatTaxId: "GB-928374192",
-    clientTier: "vip_partner",
-    ndaStatus: "signed",
-    totalSpendUsd: 15000.0,
-    internalNotes: "PostgreSQL query optimization, partitioning, and connection pooling.",
-    createdAt: new Date(Date.now() - 86400000 * 30).toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
+export const initialCustomers: CustomerRecord[] = [];
 
-export const initialOrders: OrderRecord[] = [
-  {
-    id: "ord-apex-1001",
-    orderNumber: "ORD-2026-1001",
-    customerId: "cust-apex-01",
-    customer: initialCustomers[0],
-    title: "Edge-Deployed Customer Portal & Stripe Engine",
-    serviceTier: "Full-Stack Web Application (Next.js/React)",
-    status: "in_progress",
-    paymentStatus: "partially_paid",
-    currency: "USD",
-    subtotalAmount: 22500.0,
-    taxAmount: 0.0,
-    totalAmount: 22500.0,
-    amountPaid: 11250.0,
-    startDate: "2026-09-15",
-    targetCompletionDate: "2026-10-30",
-    clientAccessToken: "token_apex_portal_9f83ab293e8172cda89123fe",
-    milestones: [
-      {
-        id: "ms-apex-1",
-        orderId: "ord-apex-1001",
-        milestoneIndex: 1,
-        title: "Phase 1: Architecture Blueprint & Auth Engine",
-        deliverablesSummary: "Supabase RLS schema, Next.js 16 SSR architecture, session hardening",
-        amount: 11250.0,
-        dueDate: "2026-09-22",
-        status: "client_approved",
-        approvedAt: "2026-09-23T14:00:00Z",
-        approvedBy: "Sarah Jenkins, VP of Engineering",
-        approvalSignatureHash: "sig_sha256_8f93ab0192e8ca92bfa041",
-        deliverableArtifacts: [
-          { label: "Architecture Spec & RFC", url: "/lab", type: "docs" },
-          { label: "GitHub Repository Showcase", url: "https://github.com/abuhanif254", type: "github" },
-        ],
-        createdAt: "2026-09-15T09:00:00Z",
-      },
-      {
-        id: "ms-apex-2",
-        orderId: "ord-apex-1001",
-        milestoneIndex: 2,
-        title: "Phase 2: Customer Portal & Stripe Subscriptions",
-        deliverablesSummary: "Webhook idempotency, customer billing portal, role management",
-        amount: 6750.0,
-        dueDate: "2026-10-15",
-        status: "in_progress",
-        deliverableArtifacts: [
-          { label: "Staging Preview Portal", url: "https://apex.abuhanifmia.com", type: "staging" },
-        ],
-        createdAt: "2026-09-15T09:00:00Z",
-      },
-      {
-        id: "ms-apex-3",
-        orderId: "ord-apex-1001",
-        milestoneIndex: 3,
-        title: "Phase 3: Production Hardening & Handover",
-        deliverablesSummary: "k6 load tests (10k VUs), 100% IP transfer, 30-day bug warranty",
-        amount: 4500.0,
-        dueDate: "2026-10-30",
-        status: "pending",
-        createdAt: "2026-09-15T09:00:00Z",
-      },
-    ],
-    createdAt: "2026-09-15T09:00:00Z",
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "ord-cloudscale-1002",
-    orderNumber: "ORD-2026-1002",
-    customerId: "cust-cloudscale-02",
-    customer: initialCustomers[1],
-    title: "PostgreSQL Scale & P99 Query Optimization Sprint",
-    serviceTier: "Database Optimization & High-Throughput Sprints",
-    status: "milestone_review",
-    paymentStatus: "paid",
-    currency: "USD",
-    subtotalAmount: 15000.0,
-    taxAmount: 0.0,
-    totalAmount: 15000.0,
-    amountPaid: 15000.0,
-    startDate: "2026-10-01",
-    targetCompletionDate: "2026-10-28",
-    completedAt: undefined,
-    clientAccessToken: "token_cloudscale_postgres_8271fe98231ba71625bcda41",
-    milestones: [
-      {
-        id: "ms-cloud-1",
-        orderId: "ord-cloudscale-1002",
-        milestoneIndex: 1,
-        title: "Phase 1: Deep Slow-Query Log Analysis & EXPLAIN Audit",
-        deliverablesSummary: "pg_stat_statements profiling, index bloat remediation plan",
-        amount: 7500.0,
-        dueDate: "2026-10-12",
-        status: "client_approved",
-        approvedAt: "2026-10-13T10:00:00Z",
-        approvedBy: "Marcus Thorne, Chief Architect",
-        approvalSignatureHash: "sig_sha256_31a7bc819024fba9182371",
-        deliverableArtifacts: [
-          { label: "EXPLAIN Query Audit Report", url: "/blog/mastering-postgres-indexing-query-optimization", type: "report" },
-        ],
-        createdAt: "2026-10-01T09:00:00Z",
-      },
-      {
-        id: "ms-cloud-2",
-        orderId: "ord-cloudscale-1002",
-        milestoneIndex: 2,
-        title: "Phase 2: BRIN/B-Tree Indexing & Supavisor Pooling",
-        deliverablesSummary: "P99 reduced from 420ms to 24ms under 50k QPS load spike",
-        amount: 7500.0,
-        dueDate: "2026-10-26",
-        status: "submitted",
-        deliverableArtifacts: [
-          { label: "Live Cluster Benchmarks", url: "/status", type: "benchmark" },
-          { label: "GitHub Repository Showcase", url: "https://github.com/abuhanif254", type: "github" },
-        ],
-        createdAt: "2026-10-01T09:00:00Z",
-      },
-    ],
-    createdAt: "2026-10-01T09:00:00Z",
-    updatedAt: new Date().toISOString(),
-  },
-];
+export const initialOrders: OrderRecord[] = [];
 
 // In-memory fallback stores
 let customersStore = [...initialCustomers];
@@ -198,7 +42,7 @@ export function generateClientAccessToken(
 ): string {
   const payload = `order:${orderId}:${customerId}:${createdAt}`;
   const sig = crypto
-    .createHmac("sha256", OMS_SECRET)
+    .createHmac("sha256", getOmsSigningSecret())
     .update(payload)
     .digest("hex");
   return `ord_live_${sig.substring(0, 36)}`;
@@ -389,17 +233,18 @@ export function generateApprovalSignature(
   approvedAt: string
 ): string {
   const payload = `signoff:${orderId}:${milestoneId}:${approverName}:${approvedAt}`;
-  const hash = crypto.createHmac("sha256", OMS_SECRET).update(payload).digest("hex");
+  const hash = crypto.createHmac("sha256", getOmsSigningSecret()).update(payload).digest("hex");
   return `sig_sha256_${hash.substring(0, 32)}`;
 }
 
 // -----------------------------------------------------------------------------
-// INSTITUTIONAL TAX INVOICE GENERATOR (INV-YYYY-XXXX)
+// COMMERCIAL INVOICE GENERATOR (INV-YYYY-XXXX)
 // -----------------------------------------------------------------------------
 export function generateInvoiceForOrder(
   order: OrderRecord,
   customer?: CustomerRecord,
-  milestoneIndex?: number
+  milestoneIndex?: number,
+  issuerProfile?: Partial<ProfileData>
 ): InvoiceRecord {
   const cust = customer || order.customer || {
     id: order.customerId,
@@ -475,16 +320,23 @@ export function generateInvoiceForOrder(
       vatTaxId: cust.vatTaxId,
     },
     issuer: {
-      name: "Abu Hanif Mia",
-      title: "Full-Stack Web Developer & Technical Services",
-      email: "abuhanifmain@gmail.com",
-      address: "Sadar Upazila, Kishoreganj, Dhaka, Bangladesh",
-      taxId: "TAX-ENG-2026-HANIF",
+      name: issuerProfile?.legalGdpr?.controllerName || issuerProfile?.fullName || "MD Abu Hanif Mia",
+      title: issuerProfile?.kicker || "Full-Stack Web Developer & Technical Services",
+      email: issuerProfile?.legalGdpr?.controllerEmail || issuerProfile?.email || "abuhanifmain@gmail.com",
+      address: issuerProfile?.legalGdpr?.controllerAddress || issuerProfile?.location || "Sadar Upazila, Kishoreganj, Dhaka, Bangladesh",
+      taxId:
+        issuerProfile?.legalGdpr?.invoiceTaxId ||
+        "Individual / Sole Provider (Tax reference supplied on signed engagement)",
       wireDetails: {
-        bankName: "Standard Chartered Bank / Wise Commercial Routing",
-        swiftBic: "SCBLBDDX",
-        accountOrIban: "BD29SCBL00025491823901",
-        cryptoUsdtErc20: "0x71C...b9F1 (USDT / USDC ERC-20 on request)",
+        bankName:
+          issuerProfile?.legalGdpr?.invoiceBankName ||
+          "Bank Transfer / Wise Commercial Routing",
+        swiftBic:
+          issuerProfile?.legalGdpr?.invoiceSwiftBic ||
+          "Provided on formal signed invoice",
+        accountOrIban:
+          issuerProfile?.legalGdpr?.invoiceAccountOrIban ||
+          "Provided privately on signed engagement",
       },
     },
     lineItems,
@@ -495,7 +347,8 @@ export function generateInvoiceForOrder(
     balanceDue,
     paymentStatus,
     notes:
-      "All intellectual property, source repositories, and deployment credentials transfer 100% upon milestone settlement. Includes standard 30-day bug warranty.",
+      issuerProfile?.legalGdpr?.invoiceNotes ||
+      "All agreed client intellectual property and source deliverables transfer upon final milestone settlement.",
   };
 }
 
@@ -556,10 +409,11 @@ export async function approveOrderMilestone(
   }
   order.updatedAt = approvedAt;
 
-  // If Supabase is configured, persist
-  if (isSupabaseConfigured && supabase) {
+  // If Supabase is configured, persist via privileged server client when available
+  const dbClient = getServiceSupabase() || supabase;
+  if (isSupabaseConfigured && dbClient) {
     try {
-      await supabase
+      await dbClient
         .from("order_milestones")
         .update({
           status: "client_approved",
@@ -570,7 +424,7 @@ export async function approveOrderMilestone(
         .eq("id", milestone.id);
 
       if (allApproved) {
-        await supabase
+        await dbClient
           .from("orders")
           .update({
             status: order.status,
@@ -580,7 +434,7 @@ export async function approveOrderMilestone(
           .eq("id", order.id);
       }
 
-      await supabase.from("order_audit_logs").insert([
+      await dbClient.from("order_audit_logs").insert([
         {
           order_id: order.id,
           actor: `Client: ${approverName.trim()}`,
@@ -608,9 +462,10 @@ export async function approveOrderMilestone(
 // DATA ACCESS LAYER (Supabase with Local In-Memory Fallback)
 // -----------------------------------------------------------------------------
 export async function getOrders(): Promise<OrderRecord[]> {
-  if (isSupabaseConfigured && supabase) {
+  const dbClient = getServiceSupabase() || supabase;
+  if (isSupabaseConfigured && dbClient) {
     try {
-      const { data: ordersData, error: ordersErr } = await supabase
+      const { data: ordersData, error: ordersErr } = await dbClient
         .from("orders")
         .select(`
           *,
@@ -692,9 +547,10 @@ export async function getOrderByIdOrToken(
 }
 
 export async function getCustomers(): Promise<CustomerRecord[]> {
-  if (isSupabaseConfigured && supabase) {
+  const dbClient = getServiceSupabase() || supabase;
+  if (isSupabaseConfigured && dbClient) {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await dbClient
         .from("customers")
         .select("*")
         .order("total_spend_usd", { ascending: false });
@@ -767,9 +623,10 @@ export async function createOrder(
       customerId = newCust.id;
       customerRecord = newCust;
 
-      if (isSupabaseConfigured && supabase) {
+      const dbClient = getServiceSupabase() || supabase;
+      if (isSupabaseConfigured && dbClient) {
         try {
-          await supabase.from("customers").insert([
+          await dbClient.from("customers").insert([
             {
               id: newCust.id,
               company_name: newCust.companyName,
@@ -840,9 +697,10 @@ export async function createOrder(
   ordersStore.unshift(newOrder);
 
   // Sync with Supabase if online
-  if (isSupabaseConfigured && supabase) {
+  const dbClient = getServiceSupabase() || supabase;
+  if (isSupabaseConfigured && dbClient) {
     try {
-      await supabase.from("orders").insert([
+      await dbClient.from("orders").insert([
         {
           id: newOrder.id,
           order_number: newOrder.orderNumber,
@@ -874,9 +732,9 @@ export async function createOrder(
         status: m.status,
       }));
 
-      await supabase.from("order_milestones").insert(milestonesRows);
+      await dbClient.from("order_milestones").insert(milestonesRows);
 
-      await supabase.from("order_audit_logs").insert([
+      await dbClient.from("order_audit_logs").insert([
         {
           order_id: newOrder.id,
           actor,
@@ -929,9 +787,10 @@ export async function updateOrder(
   if (payload.sowDocumentUrl) order.sowDocumentUrl = payload.sowDocumentUrl;
   order.updatedAt = new Date().toISOString();
 
-  if (isSupabaseConfigured && supabase) {
+  const dbClient = getServiceSupabase() || supabase;
+  if (isSupabaseConfigured && dbClient) {
     try {
-      await supabase
+      await dbClient
         .from("orders")
         .update({
           status: order.status,
@@ -944,7 +803,7 @@ export async function updateOrder(
         })
         .eq("id", order.id);
 
-      await supabase.from("order_audit_logs").insert([
+      await dbClient.from("order_audit_logs").insert([
         {
           order_id: order.id,
           actor,
@@ -965,19 +824,23 @@ export async function deleteOrder(id: string, actor: string = "Admin"): Promise<
   const index = ordersStore.findIndex((o) => o.id === id);
   if (index === -1) return false;
 
-  const deleted = ordersStore.splice(index, 1)[0];
+  ordersStore.splice(index, 1);
 
-  if (isSupabaseConfigured && supabase) {
+  const dbClient = getServiceSupabase() || supabase;
+  if (isSupabaseConfigured && dbClient) {
     try {
-      await supabase.from("orders").delete().eq("id", id);
+      await dbClient.from("orders").delete().eq("id", id);
     } catch {}
   }
 
   return true;
 }
 
-// Reset state helper for testing
-export function _resetOmsStoresForTesting(): void {
-  customersStore = JSON.parse(JSON.stringify(initialCustomers));
-  ordersStore = JSON.parse(JSON.stringify(initialOrders));
+// Reset state helper for testing (accepts isolated synthetic test fixtures without polluting production seeds)
+export function _resetOmsStoresForTesting(
+  seedOrders: OrderRecord[] = initialOrders,
+  seedCustomers: CustomerRecord[] = initialCustomers
+): void {
+  customersStore = JSON.parse(JSON.stringify(seedCustomers));
+  ordersStore = JSON.parse(JSON.stringify(seedOrders));
 }

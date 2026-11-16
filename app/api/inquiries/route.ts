@@ -91,20 +91,34 @@ export async function POST(request: Request) {
 
     let generatedId = `inq-${Date.now()}`;
 
-    // 1. Insert into Supabase if configured (using privileged service client if available)
-    const dbClient = getServiceSupabase() || supabase;
-    if (dbClient) {
+    // 1. Insert into Supabase if configured
+    // Note: Only call .select("id").single() when using privileged Secret Key client;
+    // anon/publishable inserts satisfy RLS "Public can insert inquiries" without requiring SELECT permission.
+    const adminClient = getServiceSupabase();
+    if (adminClient) {
       try {
-        const { data: dbData, error: dbError } = await dbClient
+        const { data: dbData, error: dbError } = await adminClient
           .from("inquiries")
           .insert([recordToInsert])
           .select("id")
           .single();
 
         if (dbError) {
-          console.error("Supabase insert inquiry error:", dbError);
+          console.error("Supabase privileged insert inquiry error:", dbError);
         } else if (dbData?.id) {
           generatedId = dbData.id;
+        }
+      } catch (err) {
+        console.error("Supabase admin client connection error:", err);
+      }
+    } else if (isSupabaseConfigured && supabase) {
+      try {
+        const { error: dbError } = await supabase
+          .from("inquiries")
+          .insert([recordToInsert]);
+
+        if (dbError) {
+          console.error("Supabase public insert inquiry error:", dbError);
         }
       } catch (err) {
         console.error("Supabase client connection error:", err);

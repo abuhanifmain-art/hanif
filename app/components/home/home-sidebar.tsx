@@ -80,7 +80,7 @@ export default function HomeSidebar({ profile }: { profile?: ProfileData }) {
   return (
     <div className="sidebar secondary-sidebar">
       {/* Work Modes & Availability Card */}
-      <div className="widget" id="articles-thumbs">
+      <div className="widget" id="availability-thumbs">
         <div className="description" style={{ textAlign: "center", padding: "6px 0" }}>
           <div style={{ background: "#0b132b", border: "1px solid #1e293b", color: "#ffffff", padding: "18px 16px", borderRadius: "8px", boxShadow: "0 2px 8px rgba(11,25,44,0.3)" }}>
             <div
@@ -126,7 +126,7 @@ export default function HomeSidebar({ profile }: { profile?: ProfileData }) {
         ) : (
           <form onSubmit={handleSubmit} id="genericcontactform" name="genericcontactform">
             <div className="formdesc">
-              <span className="free-consultation">Direct Inquiry</span>
+              <span className="inquiry-kicker">Direct Inquiry</span>
               <span className="phone-numbers">
                 <a href={`mailto:${email}`} style={{ color: "#38bdf8", textDecoration: "none" }}>
                   {email}
@@ -183,9 +183,9 @@ export default function HomeSidebar({ profile }: { profile?: ProfileData }) {
               </span>
             </div>
             <span className="option">
-              <label htmlFor="CaseType">Inquiry Type / Scope:</label>
+              <label htmlFor="inquiryType">Inquiry Type / Scope:</label>
               <select
-                id="CaseType"
+                id="inquiryType"
                 name="project_scope"
                 aria-label="Inquiry Type"
                 value={formData.projectType}
@@ -266,8 +266,8 @@ export default function HomeSidebar({ profile }: { profile?: ProfileData }) {
         )}
       </div>
 
-      {/* High-Conversion Discovery & SOW Widget */}
-      <div className="widget amp-include" id="wdgt-evaluation-button">
+      {/* Quick Hiring & SOW Widget */}
+      <div className="widget" id="sidebar-cta-widget">
         <div className="description" style={{ padding: 0 }}>
           <div
             style={{
@@ -337,7 +337,7 @@ export default function HomeSidebar({ profile }: { profile?: ProfileData }) {
         </strong>
         <div className="fragcontent">
           <ul className="toplevel">
-            <li className="li2 practiceareasub_11">
+            <li className="li2 nav-secondary-item">
               <strong>
                 <Link href="#work">Web &amp; Backend Stack</Link>
               </strong>
@@ -349,7 +349,7 @@ export default function HomeSidebar({ profile }: { profile?: ProfileData }) {
                 <li className="li5"><Link href="/resume">Python, Rust &amp; C++ Study</Link></li>
               </ul>
             </li>
-            <li className="li3 practiceareasub_21">
+            <li className="li3 nav-secondary-item">
               <strong>
                 <Link href="/resume">Operations &amp; Work Experience</Link>
               </strong>

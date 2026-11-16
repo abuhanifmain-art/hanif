@@ -64,12 +64,12 @@ export default function SystemsLabPage() {
   };
 
   return (
-    <div id="source-page-root" data-source-path="/lab">
+    <div id="portfolio-page-root" data-route="/lab">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(labSchema) }}
       />
-      <div id="source-page-body" className="source-page-body js l2 section_10 abuhanif-portfolio-shell">
+      <div id="portfolio-shell-body" className="portfolio-shell-body js abuhanif-portfolio-shell">
         <SiteHeader activePath="/lab" />
 
         <div className="index" id="container">

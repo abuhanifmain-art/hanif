@@ -5,8 +5,6 @@ import {
   generateClientAccessToken,
   calculatePipelineMetrics,
   convertInquiryToOrderPayload,
-  initialCustomers,
-  initialOrders,
   getOrderByIdOrToken,
   updateOrder,
   _resetOmsStoresForTesting,
@@ -203,9 +201,20 @@ describe("Customer & Order Management System (CRM / OMS)", () => {
         },
       ];
 
+      const baseCustomer: CustomerRecord = {
+        id: "c1",
+        companyName: "Example Co 1",
+        primaryContactName: "Contact 1",
+        email: "c1@example.com",
+        clientTier: "active_client",
+        ndaStatus: "none",
+        totalSpendUsd: 10000,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
       const testCustomers: CustomerRecord[] = [
-        { ...initialCustomers[0], id: "c1" },
-        { ...initialCustomers[1], id: "c2" },
+        baseCustomer,
+        { ...baseCustomer, id: "c2", companyName: "Example Co 2", email: "c2@example.com" },
       ];
 
       const metrics = calculatePipelineMetrics(testOrders, testCustomers);
@@ -271,15 +280,56 @@ describe("Customer & Order Management System (CRM / OMS)", () => {
   });
 
   describe("Zero-Trust Public Order Tracker Access", () => {
-    it("should retrieve initial order by client access token", async () => {
-      _resetOmsStoresForTesting();
-      const seedOrder = initialOrders[0];
-      const retrieved = await getOrderByIdOrToken(seedOrder.clientAccessToken);
+    const fixtureCustomer: CustomerRecord = {
+      id: "cust-fix-1",
+      companyName: "Sample Fixture Co",
+      primaryContactName: "Fixture Contact",
+      email: "fixture@example.com",
+      clientTier: "active_client",
+      ndaStatus: "signed",
+      totalSpendUsd: 15000,
+      createdAt: "2026-10-01T00:00:00Z",
+      updatedAt: "2026-10-01T00:00:00Z",
+    };
+    const fixtureOrder: OrderRecord = {
+      id: "ord-fix-1",
+      orderNumber: "ORD-2026-9001",
+      customerId: "cust-fix-1",
+      customer: fixtureCustomer,
+      title: "Sample Web Sprint",
+      serviceTier: "Full-Stack Web",
+      status: "in_progress",
+      paymentStatus: "unpaid",
+      currency: "USD",
+      subtotalAmount: 15000,
+      taxAmount: 0,
+      totalAmount: 15000,
+      amountPaid: 0,
+      clientAccessToken: "token_fixture_9001_secure_test",
+      milestones: [
+        {
+          id: "ms-fix-1",
+          orderId: "ord-fix-1",
+          milestoneIndex: 1,
+          title: "Phase 1",
+          deliverablesSummary: "Setup",
+          amount: 15000,
+          status: "in_progress",
+          createdAt: "2026-10-01T00:00:00Z",
+        },
+      ],
+      createdAt: "2026-10-01T00:00:00Z",
+      updatedAt: "2026-10-01T00:00:00Z",
+    };
+
+    it("should retrieve order by client access token", async () => {
+      _resetOmsStoresForTesting([fixtureOrder], [fixtureCustomer]);
+      const retrieved = await getOrderByIdOrToken(fixtureOrder.clientAccessToken);
 
       expect(retrieved).not.toBeNull();
-      expect(retrieved?.id).toBe(seedOrder.id);
-      expect(retrieved?.orderNumber).toBe(seedOrder.orderNumber);
-      expect(retrieved?.customer?.companyName).toBe(initialCustomers[0].companyName);
+      expect(retrieved?.id).toBe(fixtureOrder.id);
+      expect(retrieved?.orderNumber).toBe(fixtureOrder.orderNumber);
+      expect(retrieved?.customer?.companyName).toBe(fixtureCustomer.companyName);
       expect(retrieved?.milestones.length).toBeGreaterThan(0);
     });
 
@@ -290,26 +340,40 @@ describe("Customer & Order Management System (CRM / OMS)", () => {
   });
 
   describe("Payment Settlement & State Progression Ledger", () => {
-    it("should record partial and full payments, automatically updating paymentStatus", async () => {
-      _resetOmsStoresForTesting();
-      const seedOrder = initialOrders[1]; // Subtotal 15000
+    const fixtureOrder: OrderRecord = {
+      id: "ord-pay-1",
+      orderNumber: "ORD-2026-9002",
+      customerId: "cust-pay-1",
+      title: "Payment Ledger Test",
+      serviceTier: "Web App",
+      status: "in_progress",
+      paymentStatus: "unpaid",
+      currency: "USD",
+      subtotalAmount: 15000,
+      taxAmount: 0,
+      totalAmount: 15000,
+      amountPaid: 0,
+      clientAccessToken: "token_pay_test_9002",
+      milestones: [],
+      createdAt: "2026-10-01T00:00:00Z",
+      updatedAt: "2026-10-01T00:00:00Z",
+    };
 
-      // Update payment to partial
-      const partial = await updateOrder(seedOrder.id, { amountPaid: 7500 });
+    it("should record partial and full payments, automatically updating paymentStatus", async () => {
+      _resetOmsStoresForTesting([fixtureOrder], []);
+
+      const partial = await updateOrder(fixtureOrder.id, { amountPaid: 7500 });
       expect(partial.paymentStatus).toBe("partially_paid");
       expect(partial.amountPaid).toBe(7500);
 
-      // Update payment to full
-      const full = await updateOrder(seedOrder.id, { amountPaid: 15000 });
+      const full = await updateOrder(fixtureOrder.id, { amountPaid: 15000 });
       expect(full.paymentStatus).toBe("paid");
       expect(full.amountPaid).toBe(15000);
     });
 
     it("should reject illegal status transition through updateOrder", async () => {
-      _resetOmsStoresForTesting();
-      const seedOrder = initialOrders[0]; // in_progress
-      // in_progress -> draft is not allowed
-      await expect(updateOrder(seedOrder.id, { status: "draft" as any })).rejects.toThrow();
+      _resetOmsStoresForTesting([fixtureOrder], []);
+      await expect(updateOrder(fixtureOrder.id, { status: "draft" as any })).rejects.toThrow();
     });
   });
 });

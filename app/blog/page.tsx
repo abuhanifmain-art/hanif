@@ -4,6 +4,8 @@ import { getBlogPosts } from "../lib/portfolio-store";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abuhanifmia.com";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Technical Architecture Blog",
   description:

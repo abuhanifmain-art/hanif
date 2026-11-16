@@ -30,6 +30,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const revalidate = 60;
+
 export default async function TermsPage() {
   const profile = await getProfile();
   const legal = profile.legalGdpr;
@@ -49,7 +51,7 @@ export default async function TermsPage() {
   };
 
   return (
-    <div id="source-page-root" data-source-path="/terms">
+    <div id="portfolio-page-root" data-route="/terms">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -57,10 +59,10 @@ export default async function TermsPage() {
         }}
       />
       <div
-        id="source-page-body"
-        className="source-page-body js l2 section_10 abuhanif-portfolio-shell"
+        id="portfolio-shell-body"
+        className="portfolio-shell-body js abuhanif-portfolio-shell"
       >
-        <SiteHeader activePath="/terms" />
+        <SiteHeader activePath="/terms" profilePhotoUrl={profile.visualAssets.profilePhotoUrl} />
 
         <div className="index" id="container">
           <div className="cwrap">

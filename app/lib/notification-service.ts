@@ -1,4 +1,4 @@
-import { supabase, isSupabaseConfigured } from "./supabase";
+import { supabase, isSupabaseConfigured, getServiceSupabase } from "./supabase";
 
 export type NotificationEventType =
   | "INQUIRY_RECEIVED"
@@ -27,38 +27,7 @@ export interface NotificationEvent<T = Record<string, any>> {
 
 // In-memory ring buffer of recent events (keeps latest 50)
 const MAX_IN_MEMORY_EVENTS = 50;
-let recentEventsStore: NotificationEvent[] = [
-  {
-    id: "evt-seed-1",
-    type: "ORDER_CREATED",
-    title: "New Contract Order Issued: ORD-2026-1001",
-    description: "Apex Ventures & Fintech engaged for Full-Stack Web Application ($22,500 USD).",
-    data: {
-      orderNumber: "ORD-2026-1001",
-      clientName: "Sarah Jenkins",
-      companyName: "Apex Ventures & Fintech",
-      totalAmount: 22500,
-      currency: "USD",
-    },
-    createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-    deliveryStatus: { discord: "delivered", slack: "skipped", email: "delivered" },
-  },
-  {
-    id: "evt-seed-2",
-    type: "MILESTONE_APPROVED",
-    title: "Phase 1 Deliverables Accepted & Signed Off",
-    description: "Sarah Jenkins formally signed off Phase 1 for ORD-2026-1001 with cryptographic audit hash.",
-    data: {
-      orderNumber: "ORD-2026-1001",
-      milestoneIndex: 1,
-      phaseTitle: "Architecture Blueprint & Auth Engine",
-      approverName: "Sarah Jenkins, VP of Engineering",
-      signatureHash: "sig_sha256_8f93ab0192e8ca92bfa041",
-    },
-    createdAt: new Date(Date.now() - 86400000).toISOString(),
-    deliveryStatus: { discord: "delivered", slack: "skipped", email: "delivered" },
-  },
-];
+let recentEventsStore: NotificationEvent[] = [];
 
 // Color mapping for Discord embeds
 const EVENT_COLORS: Record<NotificationEventType, number> = {
@@ -328,10 +297,11 @@ export async function dispatchNotification<T extends Record<string, any> = Recor
   // Prepend to in-memory store
   recentEventsStore = [completeEvent as NotificationEvent, ...recentEventsStore.slice(0, MAX_IN_MEMORY_EVENTS - 1)];
 
-  // Persist to Supabase if configured (fire-and-forget)
-  if (isSupabaseConfigured && supabase) {
+  // Persist to Supabase if configured (fire-and-forget using privileged secret client when available)
+  const dbClient = getServiceSupabase() || supabase;
+  if (isSupabaseConfigured && dbClient) {
     try {
-      supabase
+      dbClient
         .from("notification_events")
         .insert([
           {
@@ -344,7 +314,7 @@ export async function dispatchNotification<T extends Record<string, any> = Recor
             created_at: completeEvent.createdAt,
           },
         ])
-        .then();
+        .then(() => {}, () => {});
     } catch {
       // Non-blocking
     }
@@ -358,9 +328,10 @@ export async function dispatchNotification<T extends Record<string, any> = Recor
 // -----------------------------------------------------------------------------
 
 export async function getRecentNotificationEvents(limit: number = 20): Promise<NotificationEvent[]> {
-  if (isSupabaseConfigured && supabase) {
+  const dbClient = getServiceSupabase() || supabase;
+  if (isSupabaseConfigured && dbClient) {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await dbClient
         .from("notification_events")
         .select("*")
         .order("created_at", { ascending: false })

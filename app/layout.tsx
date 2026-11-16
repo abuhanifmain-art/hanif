@@ -184,7 +184,7 @@ const jsonLd = {
         "https://www.facebook.com/bitulla",
         "https://www.instagram.com/bitullah_aj",
       ],
-      priceRange: "$2,500 - $18,500",
+      priceRange: "Custom B2B / Fixed Scope",
       areaServed: ["United Kingdom", "Europe", "Worldwide"],
       founder: { "@id": `${siteUrl}/#person` },
     },

@@ -707,11 +707,11 @@ export default function ArchitectureTopologyExplorer() {
             Interactive Systems Architecture Topology Simulator
           </h3>
           <span style={{ fontSize: "12px", color: "#10b981", fontWeight: "bold" }}>
-            ● Production-Proven Blueprints
+            ● Interactive Reference Study (Simulated Model)
           </span>
         </div>
         <p style={{ margin: "6px 0 0 0", fontSize: "13px", color: "#cbd5e1" }}>
-          Select an enterprise architecture to inspect real-world data flow, latency budgets, failure resiliency, and cloud cost savings:
+          Select a reference system blueprint to inspect simulated data flow, latency budgets, failure recovery logic, and architectural trade-offs:
         </p>
       </div>
 

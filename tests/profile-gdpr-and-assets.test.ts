@@ -4,8 +4,9 @@ import path from "path";
 import { NextRequest } from "next/server";
 import { GET, PUT } from "../app/api/admin/profile/route";
 import { getProfile } from "../app/lib/portfolio-store";
+import { getAdminSecret } from "../app/lib/admin-auth";
 
-const AUTH_HEADER = { Authorization: "Bearer hanif2026" };
+const AUTH_HEADER = { Authorization: `Bearer ${getAdminSecret()}` };
 
 describe("Truthful Profile, Admin Visual Asset Replacement & UK/EU GDPR Compliance", () => {
   it("loads accurate education, languages, and work history in default profile", async () => {

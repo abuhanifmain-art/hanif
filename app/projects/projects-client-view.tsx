@@ -97,8 +97,8 @@ export default function ProjectsClientView({ initialProjects }: ProjectsClientVi
   }, [initialProjects, activeDomain, searchQuery]);
 
   return (
-    <div id="source-page-root" data-source-path="/projects">
-      <div id="source-page-body" className="source-page-body js l2 section_10 abuhanif-portfolio-shell">
+    <div id="portfolio-page-root" data-route="/projects">
+      <div id="portfolio-shell-body" className="portfolio-shell-body js abuhanif-portfolio-shell">
         <SiteHeader activePath="/projects" />
 
         <div className="index" id="container">
@@ -717,18 +717,18 @@ export default function ProjectsClientView({ initialProjects }: ProjectsClientVi
                     </div>
                   </div>
 
-                  {/* Admin Shortcut */}
-                  <div className="widget" id="wdgt-admin">
+                  {/* Quick Navigation Card */}
+                  <div className="widget" id="wdgt-cv-shortcut">
                     <div style={{ padding: "14px", backgroundColor: "#f8fafc", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "12px" }}>
-                      <strong style={{ color: "#0f172a" }}>Project Management Portal</strong>
+                      <strong style={{ color: "#0f172a" }}>Candidate Dossier &amp; Availability</strong>
                       <p style={{ margin: "4px 0 8px 0", color: "#334155" }}>
-                        Add, edit, or delete portfolio projects and manage client inquiries.
+                        Review education, Oman &amp; Bangladesh work history, and download ATS-ready CV.
                       </p>
                       <Link
-                        href="/admin"
+                        href="/resume"
                         style={{ color: "#2563eb", fontWeight: "bold", textDecoration: "underline" }}
                       >
-                        Open Admin Panel ›
+                        View Full CV / Resume ›
                       </Link>
                     </div>
                   </div>
@@ -742,7 +742,7 @@ export default function ProjectsClientView({ initialProjects }: ProjectsClientVi
               <div className="stripewrap">
                 <div className="widget contactform" id="bottom-scf">
                   <div className="formdesc">
-                    <span className="free-consultation">Technical Consultation</span>
+                    <span className="inquiry-kicker">Technical Consultation</span>
                     <span className="phone-numbers">
                       <a href="mailto:abuhanifmain@gmail.com" style={{ color: "#38bdf8", textDecoration: "none" }}>
                         abuhanifmain@gmail.com

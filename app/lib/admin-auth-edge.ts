@@ -22,10 +22,10 @@ export function timingSafeEqualString(a: string, b: string): boolean {
  */
 export async function verifySessionTokenWebCrypto(
   token: string | undefined | null,
-  secret: string = process.env.ADMIN_SECRET_KEY || "hanif2026",
+  secret: string = process.env.ADMIN_SECRET_KEY || "",
   requiredVersion: string = ADMIN_SESSION_VERSION
 ): Promise<boolean> {
-  if (!token || typeof token !== "string") return false;
+  if (!token || typeof token !== "string" || !secret || !secret.trim()) return false;
   const clean = token.trim();
   const parts = clean.split(".");
 

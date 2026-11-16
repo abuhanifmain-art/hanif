@@ -8,6 +8,7 @@ import {
   toggleProjectPublished,
 } from "../../../lib/portfolio-store";
 import { dispatchNotification } from "../../../lib/notification-service";
+import { safeRevalidatePaths } from "../../../lib/revalidate-helpers";
 
 export async function GET(req: NextRequest) {
   const isAuth = await isRequestAuthorized(req);
@@ -52,6 +53,7 @@ export async function POST(req: NextRequest) {
     }
 
     const project = await createProject(body);
+    safeRevalidatePaths(["/", "/projects", `/projects/${project.slug}`]);
 
     await dispatchNotification({
       type: "ORDER_CREATED",
@@ -100,6 +102,7 @@ export async function PUT(req: NextRequest) {
         { status: 404 }
       );
     }
+    safeRevalidatePaths(["/", "/projects", `/projects/${updated.slug}`]);
 
     return NextResponse.json({
       success: true,
@@ -134,11 +137,15 @@ export async function PATCH(req: NextRequest) {
           { status: 404 }
         );
       }
+      safeRevalidatePaths(["/", "/projects", `/projects/${updated.slug}`]);
       return NextResponse.json({ success: true, project: updated });
     }
 
     if (id) {
       const updated = await updateProject(id, body);
+      if (updated) {
+        safeRevalidatePaths(["/", "/projects", `/projects/${updated.slug}`]);
+      }
       return NextResponse.json({ success: Boolean(updated), project: updated });
     }
 
@@ -179,6 +186,9 @@ export async function DELETE(req: NextRequest) {
     }
 
     const deleted = await deleteProject(id);
+    if (deleted) {
+      safeRevalidatePaths(["/", "/projects"]);
+    }
     return NextResponse.json({
       success: deleted,
       message: deleted

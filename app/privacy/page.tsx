@@ -30,6 +30,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const revalidate = 60;
+
 export default async function PrivacyPolicyPage() {
   const profile = await getProfile();
   const legal = profile.legalGdpr;
@@ -50,7 +52,7 @@ export default async function PrivacyPolicyPage() {
   };
 
   return (
-    <div id="source-page-root" data-source-path="/privacy">
+    <div id="portfolio-page-root" data-route="/privacy">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -58,10 +60,10 @@ export default async function PrivacyPolicyPage() {
         }}
       />
       <div
-        id="source-page-body"
-        className="source-page-body js l2 section_10 abuhanif-portfolio-shell"
+        id="portfolio-shell-body"
+        className="portfolio-shell-body js abuhanif-portfolio-shell"
       >
-        <SiteHeader activePath="/privacy" />
+        <SiteHeader activePath="/privacy" profilePhotoUrl={profile.visualAssets.profilePhotoUrl} />
 
         <div className="index" id="container">
           <div className="cwrap">

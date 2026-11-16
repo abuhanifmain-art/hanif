@@ -8,6 +8,7 @@ import {
   toggleBlogPostPublished,
 } from "../../../lib/portfolio-store";
 import { dispatchNotification } from "../../../lib/notification-service";
+import { safeRevalidatePaths } from "../../../lib/revalidate-helpers";
 
 export async function GET(req: NextRequest) {
   const isAuth = await isRequestAuthorized(req);
@@ -52,6 +53,7 @@ export async function POST(req: NextRequest) {
     }
 
     const post = await createBlogPost(body);
+    safeRevalidatePaths(["/", "/blog", `/blog/${post.slug}`]);
 
     await dispatchNotification({
       type: "ORDER_CREATED",
@@ -99,6 +101,7 @@ export async function PUT(req: NextRequest) {
         { status: 404 }
       );
     }
+    safeRevalidatePaths(["/", "/blog", `/blog/${updated.slug}`]);
 
     return NextResponse.json({
       success: true,
@@ -133,11 +136,13 @@ export async function PATCH(req: NextRequest) {
           { status: 404 }
         );
       }
+      safeRevalidatePaths(["/", "/blog", `/blog/${updated.slug}`]);
       return NextResponse.json({ success: true, post: updated });
     }
 
     if (id) {
       const updated = await updateBlogPost(id, body);
+      if (updated) safeRevalidatePaths(["/", "/blog", `/blog/${updated.slug}`]);
       return NextResponse.json({ success: Boolean(updated), post: updated });
     }
 
@@ -178,6 +183,9 @@ export async function DELETE(req: NextRequest) {
     }
 
     const deleted = await deleteBlogPost(id);
+    if (deleted) {
+      safeRevalidatePaths(["/", "/blog"]);
+    }
     return NextResponse.json({
       success: deleted,
       message: deleted

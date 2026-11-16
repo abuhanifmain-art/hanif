@@ -22,8 +22,8 @@ describe("Automated SOW PDF & Print Engine", () => {
     const printData: SowPrintData = {
       service,
       breakdown,
-      clientCompany: "Acme Corp International",
-      clientContact: "Sarah Jenkins, VP of Engineering",
+      clientCompany: "Example Client Ltd",
+      clientContact: "Engineering Lead",
       targetStartDate: "Immediate (Within 7 Days)",
       documentId: "SOW-2026-DATA-9876",
     };
@@ -44,8 +44,8 @@ describe("Automated SOW PDF & Print Engine", () => {
     expect(html).toContain("page-break-inside: avoid");
 
     // Verify parties & credentials
-    expect(html).toContain("Acme Corp International");
-    expect(html).toContain("Sarah Jenkins, VP of Engineering");
+    expect(html).toContain("Example Client Ltd");
+    expect(html).toContain("Engineering Lead");
     expect(html).toContain("MD Abu Hanif Mia");
     expect(html).toContain("Wali Neowaj Khan College");
     expect(html).toContain("WEB12-3991");

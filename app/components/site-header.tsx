@@ -6,9 +6,13 @@ import { Menu, X, Search } from "lucide-react";
 
 interface SiteHeaderProps {
   activePath?: string;
+  profilePhotoUrl?: string;
 }
 
-export default function SiteHeader({ activePath = "/" }: SiteHeaderProps) {
+export default function SiteHeader({
+  activePath = "/",
+  profilePhotoUrl = "/images/profile.png",
+}: SiteHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -145,8 +149,8 @@ export default function SiteHeader({ activePath = "/" }: SiteHeaderProps) {
         />
       </div>
 
-      {/* Sticky Top Numbers & Action Bar */}
-      <div className="top-numbers-v3 tnv3-sticky" id="top-numbers-v3">
+      {/* Sticky Top Availability & Quick Action Bar */}
+      <div className="top-status-bar top-status-sticky" id="top-status-bar">
         <ul>
           <li
             style={{
@@ -225,8 +229,8 @@ export default function SiteHeader({ activePath = "/" }: SiteHeaderProps) {
                   Ctrl+K
                 </kbd>
               </button>
-              <Link className="tnv3-button" href="/pricing#inquiry">
-                Request Project Quote
+              <Link className="top-status-btn" href="/resume">
+                CV &amp; Hire / Contact
               </Link>
             </div>
           </li>
@@ -380,7 +384,7 @@ export default function SiteHeader({ activePath = "/" }: SiteHeaderProps) {
                   }}
                 >
                   <img
-                    src="/images/profile.png"
+                    src={profilePhotoUrl}
                     alt="Abu Hanif"
                     width={40}
                     height={40}

@@ -119,7 +119,7 @@ export default async function BlogCategoryPage({ params }: CategoryPageProps) {
   };
 
   return (
-    <div id="source-page-root" data-source-path={`/blog/category/${pillar.slug}`}>
+    <div id="portfolio-page-root" data-route={`/blog/category/${pillar.slug}`}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
@@ -129,7 +129,7 @@ export default async function BlogCategoryPage({ params }: CategoryPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <div id="source-page-body" className="source-page-body js l2 section_10 abuhanif-portfolio-shell">
+      <div id="portfolio-shell-body" className="portfolio-shell-body js abuhanif-portfolio-shell">
         <SiteHeader activePath="/blog" />
 
         <div className="index" id="container">

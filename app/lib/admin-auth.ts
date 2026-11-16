@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import crypto from "crypto";
 import { ADMIN_SESSION_VERSION, ADMIN_COOKIE_NAME } from "./admin-auth-edge";
 
-const ADMIN_SECRET = process.env.ADMIN_SECRET_KEY || "hanif2026";
 const COOKIE_NAME = ADMIN_COOKIE_NAME;
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
 
@@ -18,21 +17,26 @@ function safeEqual(a: string, b: string): boolean {
 }
 
 export function getAdminSecret(): string {
-  return ADMIN_SECRET;
+  return (process.env.ADMIN_SECRET_KEY || "").trim();
 }
 
 export function createSessionToken(version: string = ADMIN_SESSION_VERSION): string {
+  const secret = getAdminSecret();
+  if (!secret) {
+    throw new Error("ADMIN_SECRET_KEY environment variable is not configured.");
+  }
   const expiresAt = Date.now() + SESSION_TTL_MS;
   const payload = `admin.${expiresAt}.${version}`;
   const signature = crypto
-    .createHmac("sha256", ADMIN_SECRET)
+    .createHmac("sha256", secret)
     .update(payload)
     .digest("hex");
   return `${payload}.${signature}`;
 }
 
 export function verifySessionToken(token: string, requiredVersion: string = ADMIN_SESSION_VERSION): boolean {
-  if (!token) return false;
+  const secret = getAdminSecret();
+  if (!token || !secret) return false;
   const clean = token.trim();
   const parts = clean.split(".");
 
@@ -51,7 +55,7 @@ export function verifySessionToken(token: string, requiredVersion: string = ADMI
     }
     const payload = `${parts[0]}.${parts[1]}.${parts[2]}`;
     const expectedSig = crypto
-      .createHmac("sha256", ADMIN_SECRET)
+      .createHmac("sha256", secret)
       .update(payload)
       .digest("hex");
     return safeEqual(parts[3], expectedSig);
@@ -61,7 +65,7 @@ export function verifySessionToken(token: string, requiredVersion: string = ADMI
   if (parts.length === 3) {
     const payload = `${parts[0]}.${parts[1]}`;
     const expectedSig = crypto
-      .createHmac("sha256", ADMIN_SECRET)
+      .createHmac("sha256", secret)
       .update(payload)
       .digest("hex");
     return safeEqual(parts[2], expectedSig);
@@ -71,10 +75,11 @@ export function verifySessionToken(token: string, requiredVersion: string = ADMI
 }
 
 export function validatePasscode(input: string): boolean {
-  if (!input || typeof input !== "string") return false;
+  const secret = getAdminSecret();
+  if (!secret || !input || typeof input !== "string") return false;
   const cleanInput = input.trim();
   if (!cleanInput) return false;
-  return safeEqual(cleanInput, ADMIN_SECRET);
+  return safeEqual(cleanInput, secret);
 }
 
 export async function isRequestAuthorized(request?: Request): Promise<boolean> {

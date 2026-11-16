@@ -10,6 +10,7 @@ import {
   reorderServices,
 } from "../../../lib/portfolio-store";
 import { dispatchNotification } from "../../../lib/notification-service";
+import { safeRevalidatePaths } from "../../../lib/revalidate-helpers";
 
 export async function GET(req: NextRequest) {
   const isAuth = await isRequestAuthorized(req);
@@ -54,6 +55,7 @@ export async function POST(req: NextRequest) {
     }
 
     const service = await createService(body);
+    safeRevalidatePaths(["/services", "/pricing", `/services/${service.slug}`]);
 
     await dispatchNotification({
       type: "ORDER_CREATED",
@@ -102,6 +104,7 @@ export async function PUT(req: NextRequest) {
         { status: 404 }
       );
     }
+    safeRevalidatePaths(["/services", "/pricing", `/services/${updated.slug}`]);
 
     return NextResponse.json({
       success: true,
@@ -134,6 +137,9 @@ export async function DELETE(req: NextRequest) {
     }
 
     const deleted = await deleteService(id);
+    if (deleted) {
+      safeRevalidatePaths(["/services", "/pricing"]);
+    }
     return NextResponse.json({
       success: deleted,
       message: deleted ? "Service deleted successfully." : "Service not found.",
@@ -159,16 +165,19 @@ export async function PATCH(req: NextRequest) {
 
     if (action === "toggle_active" && id) {
       const updated = await toggleServiceActive(id);
+      if (updated) safeRevalidatePaths(["/services", "/pricing", `/services/${updated.slug}`]);
       return NextResponse.json({ success: Boolean(updated), service: updated });
     }
 
     if (action === "toggle_popular" && id) {
       const updated = await toggleServicePopular(id);
+      if (updated) safeRevalidatePaths(["/services", "/pricing", `/services/${updated.slug}`]);
       return NextResponse.json({ success: Boolean(updated), service: updated });
     }
 
     if (action === "reorder" && Array.isArray(orderedIds)) {
       const services = await reorderServices(orderedIds);
+      safeRevalidatePaths(["/services", "/pricing"]);
       return NextResponse.json({ success: true, services });
     }
 

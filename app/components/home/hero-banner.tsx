@@ -780,16 +780,16 @@ export default function HeroBanner({ profile }: { profile?: ProfileData }) {
         </div>
       </section>
 
-      {/* Bottom 3 Quick Access Buttons (Preserved exactly) */}
+      {/* Bottom 3 Quick Access Buttons */}
       <div id="img2">
         <div className="wrapper">
-          <Link className="pabttn pa1" href="/projects/nexus-calculator-platform" title="View Live Production Web Platform: NexusCalculator.net">
+          <Link className="hero-quick-btn" href="/projects/nexus-calculator-platform" title="View Live Production Web Platform: NexusCalculator.net">
             NexusCalculator.net ⚡
           </Link>
-          <Link className="pabttn pa2" href="/projects" title="Explore Web Projects & Architecture Blueprints">
+          <Link className="hero-quick-btn" href="/projects" title="Explore Web Projects & Architecture Blueprints">
             Projects &amp; Work 🛠
           </Link>
-          <Link className="pabttn pa3" href="/resume" title="Open Full CV, Work History & UK/EU Availability">
+          <Link className="hero-quick-btn" href="/resume" title="Open Full CV, Work History & UK/EU Availability">
             CV &amp; Availability 📄
           </Link>
         </div>

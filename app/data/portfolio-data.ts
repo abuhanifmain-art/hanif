@@ -179,8 +179,8 @@ export const initialProfile: ProfileData = {
     discord: "https://discord.com",
   },
   spokenLanguages: [
-    { language: "Bengali", level: "Native" },
-    { language: "English", level: "Conversational" },
+    { language: "Bengali", level: "Native (C2)" },
+    { language: "English", level: "Conversational (Working Proficiency)" },
     { language: "Hindi & Urdu", level: "Conversational" },
   ],
   workPreferences: {
@@ -400,6 +400,31 @@ Built and launched from scratch as an independent full-stack web developer using
     screenshots: [
       "/images/nexuscalculator-homepage.png",
       "/images/gsc-performance-3months.png",
+    ],
+  },
+  {
+    id: "proj-portfolio-oms",
+    title: "Abu Hanif Portfolio, Admin CMS & Client OMS Platform",
+    slug: "portfolio-crm-oms-platform",
+    summary: "Full-stack Next.js 16 + TypeScript + Supabase PostgreSQL application powering this website: zero-trust HMAC admin portal, multi-currency B2B invoices, milestone tracking, and GDPR disclosures.",
+    descriptionMarkdown: `### Live Production Application (abuhanifmia.com)
+Engineered as a dual-purpose international career portfolio and B2B Client & Order Management System (OMS) running on Next.js 16 App Router, React 19, Supabase PostgreSQL, and Cloudflare edge hosting.
+
+### Key Implemented Modules
+- **Zero-Trust Auth & Security**: Stateless HMAC-SHA256 cookie sessions, Edge \`proxy.ts\` route gating, optional TOTP 2FA, and sliding-window rate limiting on login, telemetry, and contact APIs.
+- **PostgreSQL + Supabase Storage**: Row-Level Security policies, \`SUPABASE_SECRET_KEY\` server writes, admin image uploader with binary magic-byte validation, and live \`/status\` DB health checks.
+- **Multi-Currency B2B Workflows**: Statement of Work builder, printable UK/EU GDPR-compliant invoices (\`USD\`, \`GBP\`, \`EUR\`), SHA-256 milestone client sign-off tracker, and automated Vitest test suite.`,
+    clientName: "Own Live Platform (abuhanifmia.com)",
+    demoUrl: "/status",
+    githubUrl: "https://github.com/abuhanifmain-art/hanif",
+    priceTag: "Live Production",
+    impactMetric: "Next.js 16 • Supabase RLS • Multi-Currency OMS",
+    techStack: ["Next.js 16", "TypeScript", "React 19", "Supabase", "PostgreSQL", "Vitest"],
+    isFeatured: true,
+    published: true,
+    imageUrl: "/images/og-card.png",
+    screenshots: [
+      "/images/og-card.png",
     ],
   },
   {

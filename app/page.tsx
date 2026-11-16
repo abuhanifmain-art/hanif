@@ -84,7 +84,7 @@ export default async function HomePage() {
               </div>
 
               <BottomContactStripe />
-              <SiteFooter />
+              <SiteFooter profile={profile} />
             </div>
           </div>
         </div>

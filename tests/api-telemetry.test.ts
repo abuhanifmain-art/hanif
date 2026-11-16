@@ -13,7 +13,7 @@ describe("Edge Telemetry API (/api/telemetry)", () => {
     expect(data.p50).toBeGreaterThan(0);
     expect(data.p95).toBeGreaterThanOrEqual(data.p50);
     expect(data.p99).toBeGreaterThanOrEqual(data.p95);
-    expect(data.globalSla).toBe("99.99%");
+    expect(data.globalSla).toBe("Measured Runtime Sample");
 
     expect(Array.isArray(data.regions)).toBe(true);
     expect(data.regions.length).toBe(8);

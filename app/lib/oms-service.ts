@@ -762,7 +762,11 @@ export async function updateOrder(
   payload: UpdateOrderPayload,
   actor: string = "Admin"
 ): Promise<OrderRecord> {
-  const order = ordersStore.find((o) => o.id === id);
+  let order = ordersStore.find((o) => o.id === id);
+  if (!order && isSupabaseConfigured) {
+    ordersStore = await getOrders();
+    order = ordersStore.find((o) => o.id === id);
+  }
   if (!order) {
     throw new Error(`Order ${id} not found.`);
   }
@@ -828,7 +832,11 @@ export async function updateOrder(
 }
 
 export async function deleteOrder(id: string, actor: string = "Admin"): Promise<boolean> {
-  const index = ordersStore.findIndex((o) => o.id === id);
+  let index = ordersStore.findIndex((o) => o.id === id);
+  if (index === -1 && isSupabaseConfigured) {
+    ordersStore = await getOrders();
+    index = ordersStore.findIndex((o) => o.id === id);
+  }
   if (index === -1) return false;
 
   ordersStore.splice(index, 1);

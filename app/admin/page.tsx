@@ -23,11 +23,13 @@ import {
 } from "../lib/admin-leads-exporter";
 import {
   CustomerRecord,
+  CurrencyCode,
   OrderRecord,
   OrderMilestoneRecord,
   OrderPipelineMetrics,
   OrderStatus,
   PaymentStatus,
+  formatCurrencyAmount,
 } from "../lib/oms-types";
 import {
   initialCustomers,
@@ -69,6 +71,7 @@ export default function AdminPage() {
     newPhone: "",
     title: "",
     serviceTier: "Full-Stack Web Application (Next.js/React)",
+    currency: "USD" as CurrencyCode,
     subtotalAmount: 10000,
     targetCompletionDate: "",
   });
@@ -123,8 +126,8 @@ export default function AdminPage() {
     title: "",
     slug: "",
     summary: "",
-    priceTag: "$10,000 Scope",
-    impactMetric: "<30ms P99 • 99.99% Uptime",
+    priceTag: "Custom Scope",
+    impactMetric: "Live Deployment • Clean UX",
     techStack: "Next.js, TypeScript, PostgreSQL",
     demoUrl: "",
     githubUrl: "",
@@ -335,8 +338,8 @@ export default function AdminPage() {
       title: "",
       slug: "",
       summary: "",
-      priceTag: "$10,000 Scope",
-      impactMetric: "<30ms P99 • 99.99% Uptime",
+      priceTag: "Custom Scope",
+      impactMetric: "Live Deployment • Clean UX",
       techStack: "Next.js, TypeScript, PostgreSQL",
       demoUrl: "",
       githubUrl: "",
@@ -796,7 +799,7 @@ export default function AdminPage() {
         : undefined,
       title: newOrderForm.title || `${newOrderForm.serviceTier} Engagement`,
       serviceTier: newOrderForm.serviceTier,
-      currency: "USD" as const,
+      currency: newOrderForm.currency,
       subtotalAmount: subtotal,
       taxAmount: 0,
       targetCompletionDate: newOrderForm.targetCompletionDate || undefined,
@@ -838,6 +841,7 @@ export default function AdminPage() {
           newPhone: "",
           title: "",
           serviceTier: "Full-Stack Web Application (Next.js/React)",
+          currency: "USD",
           subtotalAmount: 10000,
           targetCompletionDate: "",
         });
@@ -1397,7 +1401,7 @@ export default function AdminPage() {
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "12px", color: "#64748b", flexWrap: "wrap", gap: "8px" }}>
-                  <span>Target SLA: 99.99% Production Uptime Guarantee</span>
+                  <span>Runtime Mode: Live Edge &amp; Supabase Health Probe</span>
                   <span>{diagnosticState.lastRun ? `Last Diagnostic Verification: ${diagnosticState.lastRun}` : "Diagnostics ready • Click to probe live edge"}</span>
                 </div>
               </div>
@@ -2101,19 +2105,19 @@ export default function AdminPage() {
                                     <div>
                                       <span style={{ fontSize: "11px", color: "#94a3b8" }}>Total: </span>
                                       <strong style={{ fontSize: "15px", color: "#ffffff" }}>
-                                        ${order.totalAmount.toLocaleString()} {order.currency}
+                                        {formatCurrencyAmount(order.totalAmount, order.currency, 0)} {order.currency}
                                       </strong>
                                     </div>
                                     <div>
                                       <span style={{ fontSize: "11px", color: "#94a3b8" }}>Paid: </span>
                                       <strong style={{ fontSize: "15px", color: "#4ade80" }}>
-                                        ${order.amountPaid.toLocaleString()}
+                                        {formatCurrencyAmount(order.amountPaid, order.currency, 0)}
                                       </strong>
                                     </div>
                                     <div>
                                       <span style={{ fontSize: "11px", color: "#94a3b8" }}>Balance: </span>
                                       <strong style={{ fontSize: "15px", color: "#f87171" }}>
-                                        ${(order.totalAmount - order.amountPaid).toLocaleString()}
+                                        {formatCurrencyAmount(order.totalAmount - order.amountPaid, order.currency, 0)}
                                       </strong>
                                     </div>
                                   </div>
@@ -5537,33 +5541,53 @@ export default function AdminPage() {
                         <option value="Database Optimization & High-Throughput Sprints">Database Optimization & High-Throughput Sprints</option>
                         <option value="Cloud Native Architecture & AWS/GCP">Cloud Native Architecture & AWS/GCP</option>
                         <option value="Enterprise Security & Zero-Trust Audit">Enterprise Security & Zero-Trust Audit</option>
-                        <option value="API Design & Real-Time Sync Ecosystems">API Design & Real-Time Sync Ecosystems</option>
-                        <option value="Fractional CTO & Advisory Retainer">Fractional CTO & Advisory Retainer</option>
+                        <option value="API Design & Real-Time Sync Ecosystems">API Design &amp; Real-Time Sync Ecosystems</option>
+                        <option value="Monthly Engineering / Support Retainer">Monthly Engineering / Support Retainer</option>
                       </select>
                     </div>
 
                     <div>
                       <label style={{ fontSize: "12px", color: "#cbd5e1", display: "block", marginBottom: "4px" }}>
-                        Contract Total (USD $) *
+                        Contract Total ({newOrderForm.currency}) *
                       </label>
-                      <input
-                        required
-                        type="number"
-                        min="500"
-                        step="100"
-                        value={newOrderForm.subtotalAmount}
-                        onChange={(e) => setNewOrderForm({ ...newOrderForm, subtotalAmount: Number(e.target.value) })}
-                        style={{
-                          width: "100%",
-                          padding: "8px 10px",
-                          backgroundColor: "#071324",
-                          border: "1px solid #1e293b",
-                          color: "#4ade80",
-                          borderRadius: "4px",
-                          fontSize: "14px",
-                          fontWeight: "700",
-                        }}
-                      />
+                      <div style={{ display: "flex", gap: "8px" }}>
+                        <select
+                          aria-label="Contract currency"
+                          value={newOrderForm.currency}
+                          onChange={(e) => setNewOrderForm({ ...newOrderForm, currency: e.target.value as CurrencyCode })}
+                          style={{
+                            padding: "8px 10px",
+                            backgroundColor: "#071324",
+                            border: "1px solid #1e293b",
+                            color: "#38bdf8",
+                            borderRadius: "4px",
+                            fontSize: "13px",
+                            fontWeight: "700",
+                          }}
+                        >
+                          <option value="USD">USD ($)</option>
+                          <option value="GBP">GBP (£)</option>
+                          <option value="EUR">EUR (€)</option>
+                        </select>
+                        <input
+                          required
+                          type="number"
+                          min="100"
+                          step="50"
+                          value={newOrderForm.subtotalAmount}
+                          onChange={(e) => setNewOrderForm({ ...newOrderForm, subtotalAmount: Number(e.target.value) })}
+                          style={{
+                            width: "100%",
+                            padding: "8px 10px",
+                            backgroundColor: "#071324",
+                            border: "1px solid #1e293b",
+                            color: "#4ade80",
+                            borderRadius: "4px",
+                            fontSize: "14px",
+                            fontWeight: "700",
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
 

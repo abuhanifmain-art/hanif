@@ -3,7 +3,7 @@
 import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { InvoiceRecord } from "../../lib/oms-types";
+import { InvoiceRecord, formatCurrencyAmount } from "../../lib/oms-types";
 
 function InvoiceContent() {
   const searchParams = useSearchParams();
@@ -259,10 +259,10 @@ function InvoiceContent() {
                     {item.quantity}
                   </td>
                   <td style={{ padding: "16px", fontSize: "13px", color: "#475569", textAlign: "right", fontFamily: "monospace" }}>
-                    ${item.unitPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                    {formatCurrencyAmount(item.unitPrice, invoice.currency)}
                   </td>
                   <td style={{ padding: "16px", fontSize: "14px", fontWeight: "700", color: "#0f172a", textAlign: "right", fontFamily: "monospace" }}>
-                    ${item.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                    {formatCurrencyAmount(item.total, invoice.currency)}
                   </td>
                 </tr>
               ))}
@@ -293,19 +293,19 @@ function InvoiceContent() {
           <div>
             <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", fontSize: "13px", color: "#475569" }}>
               <span>Subtotal:</span>
-              <span style={{ fontFamily: "monospace", fontWeight: "600" }}>${invoice.subtotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+              <span style={{ fontFamily: "monospace", fontWeight: "600" }}>{formatCurrencyAmount(invoice.subtotal, invoice.currency)}</span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", fontSize: "13px", color: "#475569" }}>
-              <span>Tax / VAT (0.00% Reverse Charge):</span>
-              <span style={{ fontFamily: "monospace" }}>${invoice.taxAmount.toFixed(2)}</span>
+              <span>{invoice.customer.vatTaxId ? "Tax / VAT (0.00% Reverse Charge):" : "Tax / Export Service (0.00%):"}</span>
+              <span style={{ fontFamily: "monospace" }}>{formatCurrencyAmount(invoice.taxAmount, invoice.currency)}</span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", fontSize: "15px", fontWeight: "800", color: "#0f172a", borderTop: "1px solid #cbd5e1" }}>
               <span>Total Invoice Amount:</span>
-              <span style={{ fontFamily: "monospace" }}>${invoice.totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })} {invoice.currency}</span>
+              <span style={{ fontFamily: "monospace" }}>{formatCurrencyAmount(invoice.totalAmount, invoice.currency)} {invoice.currency}</span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", fontSize: "13px", color: "#16a34a" }}>
               <span>Amount Paid / Settled:</span>
-              <span style={{ fontFamily: "monospace", fontWeight: "600" }}>- ${invoice.amountPaid.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+              <span style={{ fontFamily: "monospace", fontWeight: "600" }}>- {formatCurrencyAmount(invoice.amountPaid, invoice.currency)}</span>
             </div>
             <div
               style={{
@@ -322,7 +322,7 @@ function InvoiceContent() {
               }}
             >
               <span>Balance Due:</span>
-              <span style={{ fontFamily: "monospace" }}>${invoice.balanceDue.toLocaleString(undefined, { minimumFractionDigits: 2 })} {invoice.currency}</span>
+              <span style={{ fontFamily: "monospace" }}>{formatCurrencyAmount(invoice.balanceDue, invoice.currency)} {invoice.currency}</span>
             </div>
           </div>
         </div>

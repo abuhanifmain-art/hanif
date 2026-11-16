@@ -63,7 +63,7 @@ export default function PricingClientView({
     { id: "addon-migration", title: "Zero-Downtime Data Migration & Cutover", price: 3500, desc: "Safe schema extraction, ETL transformation, and live replication cutover." },
     { id: "addon-security", title: "Security Hardening & Compliance Readiness", price: 2800, desc: "Security remediations, cryptographic key rotation, and RLS audit." },
     { id: "addon-ai", title: "Custom LLM & Vector RAG Pipeline Integration", price: 4200, desc: "Embedding generation, pgvector indexing, streaming UI, and tool-calling agents." },
-    { id: "addon-warranty", title: "Extended 60-Day Dedicated Post-Launch SLA", price: 1800, desc: "Doubles the standard 30-day warranty with guaranteed emergency escalation." },
+    { id: "addon-warranty", title: "Extended 60-Day Post-Launch Bug Fix Support", price: 1800, desc: "Doubles the standard 30-day bug-fix window covering regressions against the agreed scope." },
   ];
 
   // Calculate dynamic investment estimate
@@ -223,7 +223,7 @@ export default function PricingClientView({
                           Transparent Work Pricing &amp; Engineering Engagements
                         </h1>
                         <p style={{ margin: "8px 0 0 0", fontSize: "14px", fontWeight: "normal", color: "#e2e8f0" }}>
-                          Fixed-Scope Sprints • Production Platforms • Fractional Architecture Retainers
+                          Fixed-Scope Sprints • Full-Stack Web Builds • Monthly Contractor Retainers (USD / GBP / EUR)
                         </p>
                       </div>
                     </div>
@@ -562,19 +562,19 @@ export default function PricingClientView({
                               <th style={{ padding: "12px 10px", textAlign: "center" }}>Postgres Tuning</th>
                               <th style={{ padding: "12px 10px", textAlign: "center" }}>Edge Migration</th>
                               <th style={{ padding: "12px 10px", textAlign: "center", backgroundColor: "#064e3b" }}>Full MVP Sprint</th>
-                              <th style={{ padding: "12px 10px", textAlign: "center" }}>Fractional Staff</th>
+                              <th style={{ padding: "12px 10px", textAlign: "center" }}>Monthly Retainer</th>
                             </tr>
                           </thead>
                           <tbody>
                             {[
-                              { feature: "System Architecture RFC & Diagram", audit: "✓", pg: "✓", edge: "✓", mvp: "✓", frac: "✓" },
+                              { feature: "Technical Plan & System Diagram", audit: "✓", pg: "✓", edge: "✓", mvp: "✓", frac: "✓" },
                               { feature: "Full Source Code Handover (100% IP)", audit: "N/A (Report)", pg: "✓", edge: "✓", mvp: "✓", frac: "✓" },
                               { feature: "Automated CI/CD Deployment Pipeline", audit: "Recommendations", pg: "Guardrails", edge: "✓ Cloudflare", mvp: "✓ Cloudflare", frac: "✓ Ongoing" },
-                              { feature: "PostgreSQL Indexing & RLS Policies", audit: "Audit Only", pg: "✓ Comprehensive", edge: "Connection Pool", mvp: "✓ Full Schema", frac: "✓ Architectural" },
-                              { feature: "Automated k6 Load Testing Benchmarks", audit: "Synthetic", pg: "✓ Simulated", edge: "✓ Global TTFB", mvp: "✓ Core Vitals", frac: "✓ Continuous" },
-                              { feature: "30-Day Production Bug Warranty", audit: "Walkthrough Call", pg: "14-Day Monitor", edge: "30 Days", mvp: "30 Days", frac: "Active Retainer" },
-                              { feature: "Direct Private Slack/Discord Access", audit: "Email + Call", pg: "Sprint Duration", edge: "Sprint Duration", mvp: "Sprint Duration", frac: "Guaranteed 2-Hour" },
-                              { feature: "Candidate Technical Interviewing", audit: "—", pg: "—", edge: "—", mvp: "—", frac: "✓ Included" },
+                              { feature: "PostgreSQL Indexing & RLS Policies", audit: "Audit Only", pg: "✓ Focused Sprint", edge: "Connection Pool", mvp: "✓ Full Schema", frac: "✓ Ongoing" },
+                              { feature: "Performance & Test Verification", audit: "Diagnostics", pg: "✓ Benchmarks", edge: "✓ Edge TTFB", mvp: "✓ Core Vitals", frac: "✓ Continuous" },
+                              { feature: "Post-Launch Bug Fix Window", audit: "Walkthrough Call", pg: "14-Day Check", edge: "30 Days", mvp: "30 Days", frac: "Active Retainer" },
+                              { feature: "Direct Communication Channel", audit: "Email + Call", pg: "Sprint Duration", edge: "Sprint Duration", mvp: "Sprint Duration", frac: "UK / EU Overlap" },
+                              { feature: "Team Code Review & PR Support", audit: "—", pg: "—", edge: "—", mvp: "—", frac: "✓ Included" },
                             ].map((row, i) => (
                               <tr key={i} style={{ backgroundColor: i % 2 === 0 ? "#ffffff" : "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
                                 <td style={{ padding: "10px 14px", fontWeight: "700", color: "#0f172a" }}>{row.feature}</td>
@@ -589,32 +589,32 @@ export default function PricingClientView({
                         </table>
                       </div>
 
-                      {/* SECTION 4: HOURLY RATE CARD */}
+                      {/* SECTION 4: HOURLY & CUSTOM B2B RATE CARD */}
                       <div style={{ borderBottom: "2px solid #2563eb", paddingBottom: "8px", margin: "36px 0 20px 0" }}>
                         <h2 style={{ fontSize: "20px", color: "#0f172a", margin: 0, fontWeight: "800" }}>
-                          Ad-Hoc Consulting &amp; Incident Rate Card
+                          Hourly Support, Starter Web Builds &amp; Custom Quotes
                         </h2>
                       </div>
                       <p style={{ fontSize: "13px", color: "#475569", marginBottom: "18px" }}>
-                        For advisory sessions, ad-hoc architectural code pairing, and emergency database incident remediation:
+                        Flexible pricing for smaller websites, bug fixes, UK/EU trial tasks, and part-time or full-time B2B contracts (payable in USD, GBP &pound;, or EUR &euro;):
                       </p>
 
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px", marginBottom: "40px" }}>
                         <div style={{ padding: "20px", border: "1px solid #cbd5e1", borderRadius: "6px", backgroundColor: "#ffffff" }}>
-                          <span style={{ fontSize: "11px", fontWeight: "700", color: "#64748b", textTransform: "uppercase" }}>Standard Consulting</span>
-                          <h4 style={{ fontSize: "18px", color: "#0f172a", margin: "6px 0", fontWeight: "700" }}>Senior Architecture Advisory</h4>
-                          <div style={{ fontSize: "24px", fontWeight: "800", color: "#2563eb", margin: "8px 0" }}>$140 <span style={{ fontSize: "14px", fontWeight: "normal", color: "#475569" }}>/ hour</span></div>
+                          <span style={{ fontSize: "11px", fontWeight: "700", color: "#64748b", textTransform: "uppercase" }}>Flexible Hourly / Contract</span>
+                          <h4 style={{ fontSize: "18px", color: "#0f172a", margin: "6px 0", fontWeight: "700" }}>Full-Stack Feature &amp; UI Support</h4>
+                          <div style={{ fontSize: "24px", fontWeight: "800", color: "#2563eb", margin: "8px 0" }}>$30 – $55 <span style={{ fontSize: "14px", fontWeight: "normal", color: "#475569" }}>/ hour (or GBP/EUR eq.)</span></div>
                           <p style={{ fontSize: "12px", color: "#475569", lineHeight: "1.5", margin: 0 }}>
-                            1:1 pair programming, architectural design reviews, query plan troubleshooting, and technical strategy calls. Booked in 5-hour or 10-hour blocks.
+                            Next.js, React, TypeScript, Tailwind CSS UI builds, API integrations, SQL queries, and SEO improvements with direct UK/EU timezone overlap.
                           </p>
                         </div>
 
-                        <div style={{ padding: "20px", border: "1px solid #b91c1c", borderRadius: "6px", backgroundColor: "#fef2f2" }}>
-                          <span style={{ fontSize: "11px", fontWeight: "700", color: "#b91c1c", textTransform: "uppercase" }}>Critical Priority</span>
-                          <h4 style={{ fontSize: "18px", color: "#991b1b", margin: "6px 0", fontWeight: "700" }}>P0 Production Incident Triage</h4>
-                          <div style={{ fontSize: "24px", fontWeight: "800", color: "#991b1b", margin: "8px 0" }}>$220 <span style={{ fontSize: "14px", fontWeight: "normal", color: "#7f1d1d" }}>/ hour</span></div>
-                          <p style={{ fontSize: "12px", color: "#7f1d1d", lineHeight: "1.5", margin: 0 }}>
-                            Immediate response within 2 hours for active database lockups, data corruption emergencies, or critical cloud infrastructure failure.
+                        <div style={{ padding: "20px", border: "1px solid #0284c7", borderRadius: "6px", backgroundColor: "#f0f9ff" }}>
+                          <span style={{ fontSize: "11px", fontWeight: "700", color: "#0369a1", textTransform: "uppercase" }}>Starter &amp; Small Business Scope</span>
+                          <h4 style={{ fontSize: "18px", color: "#0c4a6e", margin: "6px 0", fontWeight: "700" }}>Bug Fix, Landing Page or Trial Sprint</h4>
+                          <div style={{ fontSize: "24px", fontWeight: "800", color: "#0284c7", margin: "8px 0" }}>$450+ <span style={{ fontSize: "14px", fontWeight: "normal", color: "#0c4a6e" }}>Fixed Small Scope</span></div>
+                          <p style={{ fontSize: "12px", color: "#0c4a6e", lineHeight: "1.5", margin: 0 }}>
+                            Focused performance cleanup, Supabase auth/RLS fixes, responsive landing page builds, or paid technical trial tasks before full-time hiring.
                           </p>
                         </div>
                       </div>
@@ -626,16 +626,16 @@ export default function PricingClientView({
                         </h2>
                       </div>
                       <p style={{ fontSize: "13px", color: "#475569", marginBottom: "20px" }}>
-                        How we take your product from initial requirements to verified production delivery:
+                        How we take your product from initial requirements to clean delivery:
                       </p>
 
                       <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "40px" }}>
                         {[
-                          { step: "01", title: "Technical Discovery Call (30 Minutes, Free)", desc: "We evaluate your system architecture, project requirements, existing codebase, and target delivery deadline to verify technical alignment." },
-                          { step: "02", title: "Statement of Work (SOW) & Architecture Proposal", desc: "You receive an explicit engineering SOW detailing exact deliverables, milestone delivery dates, technical topology, and a fixed price." },
-                          { step: "03", title: "High-Velocity CI/CD Sprint Execution", desc: "Work begins in your private repository. Staging preview branches are continuously deployed to Cloudflare Pages for asynchronous progress reviews." },
-                          { step: "04", title: "Automated Benchmarking & Load Testing", desc: "Prior to sign-off, automated unit test suites, Core Web Vitals checks, and k6 load tests are executed to prove production readiness." },
-                          { step: "05", title: "Production Cutover & 30-Day Bug Warranty", desc: "Full ownership handover of all git branches, DNS configuration, and documentation, backed by an unconditional 30-day bug warranty." },
+                          { step: "01", title: "Technical Discovery Call (30 Minutes, Free)", desc: "We review your project requirements, existing codebase, timezone expectations, and target delivery timeline to verify technical fit." },
+                          { step: "02", title: "Statement of Work (SOW) & Scope Agreement", desc: "You receive a clear SOW detailing exact deliverables, milestone dates, and agreed fixed or hourly pricing in USD, GBP, or EUR." },
+                          { step: "03", title: "Incremental Git & CI/CD Sprint Delivery", desc: "Work begins in your repository with regular commits and preview deployments for transparent asynchronous review." },
+                          { step: "04", title: "Automated Testing & Core Web Vitals Check", desc: "Prior to sign-off, unit tests, responsive checks, and page-speed verification run to ensure clean production quality." },
+                          { step: "05", title: "Clean Handover & 30-Day Bug Fix Support", desc: "Full ownership handover of all git branches, deployment configuration, and documentation, backed by 30 days of complimentary regression fixes." },
                         ].map((item) => (
                           <div key={item.step} style={{ display: "flex", gap: "16px", padding: "16px 20px", border: "1px solid #e2e8f0", borderRadius: "6px", backgroundColor: "#ffffff", boxShadow: "0 1px 2px rgba(0,0,0,0.03)" }}>
                             <div style={{ fontSize: "20px", fontWeight: "800", color: "#2563eb", minWidth: "36px" }}>
@@ -653,21 +653,23 @@ export default function PricingClientView({
                         ))}
                       </div>
 
-                      {/* SECTION 5.5: VERIFIED CLIENT REVIEWS & ROI PROOF */}
-                      <div style={{ borderBottom: "2px solid #2563eb", paddingBottom: "8px", margin: "36px 0 20px 0" }}>
-                        <span style={{ fontSize: "11px", fontWeight: "800", color: "#2563eb", textTransform: "uppercase", letterSpacing: "1px", display: "block", marginBottom: "4px" }}>
-                          Verified Client Outcomes
-                        </span>
-                        <h2 style={{ fontSize: "20px", color: "#0f172a", margin: 0, fontWeight: "800" }}>
-                          Proven Engineering Impact Across Scale-Ups &amp; Enterprise Platforms
-                        </h2>
-                      </div>
-                      <p style={{ fontSize: "13px", color: "#475569", marginBottom: "20px" }}>
-                        Direct feedback from engineering leaders whose platforms were accelerated, audited, or re-architected:
-                      </p>
+                      {/* SECTION 5.5: CLIENT & COLLABORATOR REVIEWS (Only shown when real reviews exist) */}
+                      {initialTestimonials.length > 0 && (
+                        <>
+                          <div style={{ borderBottom: "2px solid #2563eb", paddingBottom: "8px", margin: "36px 0 20px 0" }}>
+                            <span style={{ fontSize: "11px", fontWeight: "800", color: "#2563eb", textTransform: "uppercase", letterSpacing: "1px", display: "block", marginBottom: "4px" }}>
+                              Endorsements &amp; Reviews
+                            </span>
+                            <h2 style={{ fontSize: "20px", color: "#0f172a", margin: 0, fontWeight: "800" }}>
+                              What Collaborators &amp; Clients Say
+                            </h2>
+                          </div>
+                          <p style={{ fontSize: "13px", color: "#475569", marginBottom: "20px" }}>
+                            Verified feedback from supervisors, collaborators, and web clients:
+                          </p>
 
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px", marginBottom: "40px" }}>
-                        {initialTestimonials.map((t, idx) => (
+                          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px", marginBottom: "40px" }}>
+                            {initialTestimonials.map((t, idx) => (
                           <div
                             key={t.id || idx}
                             style={{
@@ -724,7 +726,9 @@ export default function PricingClientView({
                             </div>
                           </div>
                         ))}
-                      </div>
+                          </div>
+                        </>
+                      )}
 
                       {/* SECTION 6: FREQUENTLY ASKED QUESTIONS */}
                       <div style={{ borderBottom: "2px solid #2563eb", paddingBottom: "8px", margin: "36px 0 20px 0" }}>

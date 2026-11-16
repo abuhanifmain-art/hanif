@@ -31,7 +31,7 @@ export default function WorkShowcaseSection({ projects }: WorkShowcaseSectionPro
         </Link>
       </div>
       <p style={{ margin: "0 0 24px 0", color: "#475569", lineHeight: "1.6" }}>
-        Below is a selection of recent production systems delivered, detailing the core architectural challenge, solution, and measurable production outcome:
+        Live production web platform built from scratch alongside interactive systems, SQL, and security study blueprints:
       </p>
 
       {displayProjects.map((project) => (
@@ -95,7 +95,7 @@ export default function WorkShowcaseSection({ projects }: WorkShowcaseSectionPro
           <div style={{ fontSize: "13px", fontWeight: "600", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px", paddingTop: "10px", borderTop: "1px solid #f1f5f9" }}>
             <span style={{ color: "#047857", display: "inline-flex", alignItems: "center", gap: "6px" }}>
               <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10b981", display: "inline-block" }} />
-              Verified Outcome: {project.impactMetric}
+              {project.priceTag === "Live Production" ? "Live Metric:" : "Study Scope:"} {project.impactMetric}
             </span>
 
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>

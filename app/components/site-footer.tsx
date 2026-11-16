@@ -1,9 +1,20 @@
 import Link from "next/link";
 import DhakaTimeBadge from "./dhaka-time-badge";
 import CoreWebVitalsRadar from "./core-web-vitals-radar";
+import { ProfileData, initialProfile } from "../data/portfolio-data";
 
-export default function SiteFooter() {
+export default function SiteFooter({ profile = initialProfile }: { profile?: ProfileData }) {
   const currentYear = new Date().getFullYear();
+  const displayName = profile.fullName || initialProfile.fullName;
+  const displayKicker = profile.kicker || initialProfile.kicker;
+  const displayEmail = profile.email || initialProfile.email;
+  const displayPhone = profile.phone || initialProfile.phone;
+  const phoneHref = `tel:${displayPhone.replace(/[^+\d]/g, "")}`;
+  const displayLocation = profile.location || initialProfile.location;
+  const social = profile.socialLinks || initialProfile.socialLinks;
+  const langSummary = (profile.spokenLanguages || initialProfile.spokenLanguages)
+    .map((l) => `${l.language} (${l.level.split(" ")[0]})`)
+    .join(", ");
 
   return (
     <footer id="footer" className="global-site-footer">
@@ -43,8 +54,8 @@ export default function SiteFooter() {
           {/* Column 1: Identity & Availability Profile */}
           <div className="global-footer-col col-profile">
             <div className="footer-brand-header">
-              <strong className="footer-author-name">MD Abu Hanif Mia</strong>
-              <span className="footer-author-title">Full-Stack Web Developer &amp; International Ops</span>
+              <strong className="footer-author-name">{displayName}</strong>
+              <span className="footer-author-title">{displayKicker}</span>
             </div>
             <p className="footer-bio-text">
               Next.js 16 &amp; TypeScript developer (creator of NexusCalculator.net) with 7+ years of front-line hospitality, industrial operations, and sales experience in Oman &amp; Bangladesh.
@@ -55,39 +66,49 @@ export default function SiteFooter() {
             <div className="footer-contact-details">
               <div>
                 <strong>Direct Email:</strong>{" "}
-                <a href="mailto:abuhanifmain@gmail.com" className="footer-highlight-link">
-                  abuhanifmain@gmail.com
+                <a href={`mailto:${displayEmail}`} className="footer-highlight-link">
+                  {displayEmail}
                 </a>
               </div>
               <div>
                 <strong>Public Phone:</strong>{" "}
-                <a href="tel:+8801724010261" className="footer-highlight-link">
-                  +880 1724-010261
+                <a href={phoneHref} className="footer-highlight-link">
+                  {displayPhone}
                 </a>
               </div>
               <div>
-                <strong>Address:</strong> Sadar Upazila, Kishoreganj, Dhaka, Bangladesh
+                <strong>Location:</strong> {displayLocation}
               </div>
               <div>
-                <strong>Languages:</strong> Bengali (Native), English / Hindi / Urdu (Conv.)
+                <strong>Languages:</strong> {langSummary}
               </div>
             </div>
             <div className="footer-social-links" style={{ display: "flex", flexWrap: "wrap", gap: "6px", margin: "12px 0 10px 0" }}>
-              <a href="https://github.com/abuhanif254" target="_blank" rel="noopener noreferrer" className="eco-badge" aria-label="GitHub Profile">
-                GitHub ↗
-              </a>
-              <a href="https://www.linkedin.com/in/md-abu-hanif-mia" target="_blank" rel="noopener noreferrer" className="eco-badge" aria-label="LinkedIn Profile">
-                LinkedIn ↗
-              </a>
-              <a href="https://x.com/MohammadBitull1" target="_blank" rel="noopener noreferrer" className="eco-badge" aria-label="X (Twitter) Profile">
-                X ↗
-              </a>
-              <a href="https://www.facebook.com/bitulla" target="_blank" rel="noopener noreferrer" className="eco-badge" aria-label="Facebook Profile">
-                Facebook ↗
-              </a>
-              <a href="https://www.instagram.com/bitullah_aj" target="_blank" rel="noopener noreferrer" className="eco-badge" aria-label="Instagram Profile">
-                Instagram ↗
-              </a>
+              {social.github && (
+                <a href={social.github} target="_blank" rel="noopener noreferrer" className="eco-badge" aria-label="GitHub Profile">
+                  GitHub ↗
+                </a>
+              )}
+              {social.linkedin && (
+                <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="eco-badge" aria-label="LinkedIn Profile">
+                  LinkedIn ↗
+                </a>
+              )}
+              {social.twitter && (
+                <a href={social.twitter} target="_blank" rel="noopener noreferrer" className="eco-badge" aria-label="X (Twitter) Profile">
+                  X ↗
+                </a>
+              )}
+              {social.facebook && (
+                <a href={social.facebook} target="_blank" rel="noopener noreferrer" className="eco-badge" aria-label="Facebook Profile">
+                  Facebook ↗
+                </a>
+              )}
+              {social.instagram && (
+                <a href={social.instagram} target="_blank" rel="noopener noreferrer" className="eco-badge" aria-label="Instagram Profile">
+                  Instagram ↗
+                </a>
+              )}
             </div>
             <div className="footer-ecosystem-badges">
               <span className="eco-badge">TypeScript</span>
@@ -333,11 +354,11 @@ export default function SiteFooter() {
             ========================================================================= */}
         <div className="global-footer-legal">
           <div className="legal-sow-statement">
-            <strong>UK / EU Engagement &amp; GDPR Transparency:</strong> Available for full-time employment (Remote or On-Site/Relocation) and fixed-scope B2B web engineering engagements under clear written agreements and 30-day warranty terms.
+            <strong>UK / EU Engagement &amp; GDPR Transparency:</strong> Available for full-time employment (Remote or On-Site/Relocation) and fixed-scope B2B web engineering engagements under clear written agreements (USD / GBP / EUR invoicing) and 30-day bug-fix support terms.
           </div>
           <div className="legal-meta-row">
             <div className="copyright-text">
-              &copy; {currentYear} <strong>MD Abu Hanif Mia (Abu Hanif)</strong>. Direct: abuhanifmain@gmail.com • +880 1724-010261.
+              &copy; {currentYear} <strong>{displayName} (Abu Hanif)</strong>. Direct: {displayEmail} • {displayPhone}.
             </div>
             <div className="compliance-links">
               <Link href="/privacy" style={{ color: "#38bdf8", textDecoration: "underline" }}>

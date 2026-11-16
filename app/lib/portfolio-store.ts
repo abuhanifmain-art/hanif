@@ -240,7 +240,52 @@ export const SERVICE_SLUG_ALIASES: Record<string, string> = {
 let dynamicProjectsStore: ProjectItem[] = [...initialProjects];
 
 export async function getAllProjectsAdmin(): Promise<ProjectItem[]> {
-  await getProjects();
+  const dbClient = getServiceSupabase() || supabase;
+  if (isSupabaseConfigured && dbClient) {
+    try {
+      const { data, error } = await dbClient
+        .from("projects")
+        .select("*")
+        .order("sort_order", { ascending: true });
+      if (!error && data && data.length > 0) {
+        const initialMap = new Map(initialProjects.map((p) => [p.slug, p]));
+        const dbMapped: ProjectItem[] = data.map((item) => {
+          const initMatch = initialMap.get(item.slug);
+          return {
+            id: item.id,
+            title: item.title,
+            slug: item.slug,
+            summary: item.summary,
+            descriptionMarkdown: item.description_markdown,
+            clientName: item.client_name,
+            demoUrl: item.demo_url || initMatch?.demoUrl,
+            githubUrl: item.github_url || initMatch?.githubUrl,
+            priceTag: item.price_tag,
+            impactMetric: item.impact_metric,
+            techStack: item.tech_stack || [],
+            isFeatured: item.is_featured,
+            published: item.is_published,
+            imageUrl: item.image_url || item.thumbnail_url || initMatch?.imageUrl || undefined,
+            screenshots:
+              item.screenshots && item.screenshots.length > 0
+                ? item.screenshots
+                : initMatch?.screenshots || [],
+          };
+        });
+        const seenSlugs = new Set(dbMapped.map((p) => p.slug));
+        const combined = [...dbMapped];
+        for (const mem of dynamicProjectsStore) {
+          if (!seenSlugs.has(mem.slug)) {
+            combined.push(mem);
+            seenSlugs.add(mem.slug);
+          }
+        }
+        dynamicProjectsStore = combined;
+      }
+    } catch {
+      // Fallback to in-memory store
+    }
+  }
   return [...dynamicProjectsStore];
 }
 
@@ -261,9 +306,9 @@ export async function createProject(
     slug,
     summary: projectData.summary || "",
     descriptionMarkdown: projectData.descriptionMarkdown || projectData.summary || "",
-    clientName: projectData.clientName || "Enterprise Client",
-    priceTag: projectData.priceTag || "$10,000 Scope",
-    impactMetric: projectData.impactMetric || "<30ms P99 • 99.99% Uptime",
+    clientName: projectData.clientName || "Client / Personal Project",
+    priceTag: projectData.priceTag || "Custom Scope",
+    impactMetric: projectData.impactMetric || "Live Production Build",
     techStack: projectData.techStack || ["Next.js", "TypeScript", "PostgreSQL"],
     demoUrl: projectData.demoUrl,
     githubUrl: projectData.githubUrl,
@@ -312,6 +357,9 @@ export async function updateProject(
   id: string,
   updates: Partial<ProjectItem>
 ): Promise<ProjectItem | null> {
+  if (isSupabaseConfigured && !dynamicProjectsStore.some((p) => p.id === id || p.slug === id)) {
+    await getAllProjectsAdmin();
+  }
   const index = dynamicProjectsStore.findIndex((p) => p.id === id || p.slug === id);
   if (index === -1) return null;
 
@@ -356,6 +404,9 @@ export async function updateProject(
 }
 
 export async function deleteProject(id: string): Promise<boolean> {
+  if (isSupabaseConfigured && !dynamicProjectsStore.some((p) => p.id === id || p.slug === id)) {
+    await getAllProjectsAdmin();
+  }
   const target = dynamicProjectsStore.find((p) => p.id === id || p.slug === id);
   const prevLen = dynamicProjectsStore.length;
   dynamicProjectsStore = dynamicProjectsStore.filter((p) => p.id !== id && p.slug !== id);
@@ -375,6 +426,9 @@ export async function deleteProject(id: string): Promise<boolean> {
 }
 
 export async function toggleProjectPublished(id: string): Promise<ProjectItem | null> {
+  if (isSupabaseConfigured && !dynamicProjectsStore.some((p) => p.id === id || p.slug === id)) {
+    await getAllProjectsAdmin();
+  }
   const match = dynamicProjectsStore.find((p) => p.id === id || p.slug === id);
   if (!match) return null;
   return updateProject(match.id, { published: !match.published });
@@ -466,6 +520,13 @@ export async function getProjects(): Promise<ProjectItem[]> {
           if (!existingSlugs.has(initProj.slug) && !merged.some((m) => m.slug === initProj.slug)) {
             if (initProj.slug === "nexus-calculator-platform") {
               merged.unshift(initProj);
+            } else if (initProj.slug === "portfolio-crm-oms-platform") {
+              const nexusIdx = merged.findIndex((m) => m.slug === "nexus-calculator-platform");
+              if (nexusIdx !== -1) {
+                merged.splice(nexusIdx + 1, 0, initProj);
+              } else {
+                merged.unshift(initProj);
+              }
             } else {
               merged.push(initProj);
             }
@@ -551,6 +612,9 @@ export async function updateService(
   id: string,
   updates: Partial<ServicePricing>
 ): Promise<ServicePricing | null> {
+  if (isSupabaseConfigured && !dynamicServicesStore.some((s) => s.id === id || s.slug === id)) {
+    await getAllServicesAdmin();
+  }
   const index = dynamicServicesStore.findIndex((s) => s.id === id || s.slug === id);
   if (index === -1) return null;
 
@@ -590,6 +654,9 @@ export async function updateService(
 }
 
 export async function deleteService(id: string): Promise<boolean> {
+  if (isSupabaseConfigured && !dynamicServicesStore.some((s) => s.id === id || s.slug === id)) {
+    await getAllServicesAdmin();
+  }
   const target = dynamicServicesStore.find((s) => s.id === id || s.slug === id);
   const prevLen = dynamicServicesStore.length;
   dynamicServicesStore = dynamicServicesStore.filter((s) => s.id !== id && s.slug !== id);
@@ -609,12 +676,18 @@ export async function deleteService(id: string): Promise<boolean> {
 }
 
 export async function toggleServiceActive(id: string): Promise<ServicePricing | null> {
+  if (isSupabaseConfigured && !dynamicServicesStore.some((s) => s.id === id || s.slug === id)) {
+    await getAllServicesAdmin();
+  }
   const match = dynamicServicesStore.find((s) => s.id === id || s.slug === id);
   if (!match) return null;
   return updateService(match.id, { isActive: !match.isActive });
 }
 
 export async function toggleServicePopular(id: string): Promise<ServicePricing | null> {
+  if (isSupabaseConfigured && !dynamicServicesStore.some((s) => s.id === id || s.slug === id)) {
+    await getAllServicesAdmin();
+  }
   const match = dynamicServicesStore.find((s) => s.id === id || s.slug === id);
   if (!match) return null;
   return updateService(match.id, { isPopular: !match.isPopular });
@@ -720,7 +793,43 @@ export async function getServiceBySlug(slug: string): Promise<ServicePricing | u
 let dynamicBlogStore: BlogPost[] = [...initialBlogPosts];
 
 export async function getAllBlogPostsAdmin(): Promise<BlogPost[]> {
-  await getBlogPosts();
+  const dbClient = getServiceSupabase() || supabase;
+  if (isSupabaseConfigured && dbClient) {
+    try {
+      const { data, error } = await dbClient
+        .from("blog_posts")
+        .select("*")
+        .order("published_at", { ascending: false });
+      if (!error && data && data.length > 0) {
+        const mapped: BlogPost[] = data.map((item) => {
+          const initMatch = initialBlogPosts.find((p) => p.slug === item.slug);
+          return {
+            id: item.id,
+            title: item.title,
+            slug: item.slug,
+            excerpt: item.excerpt,
+            contentMarkdown: item.content_markdown,
+            tags: item.tags || [],
+            readingTimeMinutes: item.reading_time_minutes,
+            publishedAt: item.published_at,
+            isPublished: item.is_published,
+            coverImageUrl: item.cover_image_url || initMatch?.coverImageUrl,
+          };
+        });
+        const seenSlugs = new Set(mapped.map((b) => b.slug));
+        const combined = [...mapped];
+        for (const mem of dynamicBlogStore) {
+          if (!seenSlugs.has(mem.slug)) {
+            combined.push(mem);
+            seenSlugs.add(mem.slug);
+          }
+        }
+        dynamicBlogStore = combined;
+      }
+    } catch {
+      // Fallback to in-memory store
+    }
+  }
   return [...dynamicBlogStore];
 }
 
@@ -782,6 +891,9 @@ export async function updateBlogPost(
   id: string,
   updates: Partial<BlogPost>
 ): Promise<BlogPost | null> {
+  if (isSupabaseConfigured && !dynamicBlogStore.some((b) => b.id === id || b.slug === id)) {
+    await getAllBlogPostsAdmin();
+  }
   const index = dynamicBlogStore.findIndex((b) => b.id === id || b.slug === id);
   if (index === -1) return null;
 
@@ -824,6 +936,9 @@ export async function updateBlogPost(
 }
 
 export async function deleteBlogPost(id: string): Promise<boolean> {
+  if (isSupabaseConfigured && !dynamicBlogStore.some((b) => b.id === id || b.slug === id)) {
+    await getAllBlogPostsAdmin();
+  }
   const target = dynamicBlogStore.find((b) => b.id === id || b.slug === id);
   const prevLen = dynamicBlogStore.length;
   dynamicBlogStore = dynamicBlogStore.filter((b) => b.id !== id && b.slug !== id);
@@ -843,6 +958,9 @@ export async function deleteBlogPost(id: string): Promise<boolean> {
 }
 
 export async function toggleBlogPostPublished(id: string): Promise<BlogPost | null> {
+  if (isSupabaseConfigured && !dynamicBlogStore.some((b) => b.id === id || b.slug === id)) {
+    await getAllBlogPostsAdmin();
+  }
   const match = dynamicBlogStore.find((b) => b.id === id || b.slug === id);
   if (!match) return null;
   return updateBlogPost(match.id, { isPublished: !match.isPublished });

@@ -8,8 +8,14 @@ import { ProfileData, initialProfile } from "../data/portfolio-data";
 
 export default function ResumeClientView({ profile = initialProfile }: { profile?: ProfileData }) {
   const [copied, setCopied] = useState(false);
+  const [cvTrack, setCvTrack] = useState<"tech" | "operations">("tech");
 
   const phoneClean = profile.phone.replace(/[^+\d]/g, "");
+
+  const isTechTrack = cvTrack === "tech";
+  const trackSubtitle = isTechTrack
+    ? "Junior / Full-Stack Web Developer & Technical Support (Next.js • TypeScript • Supabase)"
+    : "International Hospitality, Production & Retail Operations Specialist (Oman & Bangladesh)";
 
   function handlePrint() {
     if (typeof window !== "undefined") {
@@ -18,49 +24,52 @@ export default function ResumeClientView({ profile = initialProfile }: { profile
   }
 
   function handleCopyText() {
-    const plainText = `
+    const coreHeader = `
 ${profile.fullName.toUpperCase()} (ABU HANIF)
-${profile.kicker}
-${profile.location} | Open to Remote, B2B Contract & On-Site / Relocation (UK, Europe & Worldwide)
+${trackSubtitle}
+Location: ${profile.location} | Open to Remote, B2B Contract & On-Site Relocation (UK, Europe & Worldwide)
+Right to Work / Visa Status: Based in Bangladesh (prior 3 yrs Oman work history). Immediately ready for Remote / B2B contracts (zero visa needed; Wise GBP/EUR/USD invoicing). Seeking Employer Visa Sponsorship / Work Permit for On-Site relocation.
 Email: ${profile.email} | Phone: ${profile.phone} | Portfolio: https://abuhanifmia.com
-LinkedIn: ${profile.socialLinks.linkedin} | GitHub: ${profile.socialLinks.github} | X: ${profile.socialLinks.twitter}
+LinkedIn: ${profile.socialLinks.linkedin} | GitHub: ${profile.socialLinks.github} | X: ${profile.socialLinks.twitter}`.trim();
 
-PROFILE SUMMARY
-${profile.bio}
-
-WORK PREFERENCES & SPOKEN LANGUAGES
-- Target Roles: ${profile.workPreferences.targetRoles}
-- Work Modes: ${profile.workPreferences.modes.join(", ")}
-- Target Regions: ${profile.workPreferences.regions.join(", ")}
+    const languagesAndAvailability = `
+WORK AVAILABILITY & SPOKEN LANGUAGES
+- Modes & Regions: ${profile.workPreferences.modes.join(", ")} — ${profile.workPreferences.regions.join(", ")}
 - Timezone Alignment: ${profile.workPreferences.timezoneOverlap}
-- Spoken Languages: ${profile.spokenLanguages.map((l) => `${l.language} (${l.level})`).join(", ")}
+- Spoken Languages: ${profile.spokenLanguages.map((l) => `${l.language} (${l.level})`).join(", ")}`.trim();
 
+    const techBlock = `
 TECHNICAL SKILLS & SELF-DIRECTED LEARNING
-- Web & Full-Stack: Next.js 16 (App Router), React 19, TypeScript, JavaScript, Node.js, Tailwind CSS, HTML5, CSS3
-- Databases & Cloud: PostgreSQL, Supabase, Cloudflare Pages, Vercel, REST APIs, Git / GitHub CI
-- Self-Learned Programming (freeCodeCamp): TypeScript, Python, Rust, C++
+- Web & Full-Stack: Next.js 15/16 (App Router), React 19, TypeScript, JavaScript, Node.js, Tailwind CSS, HTML5, CSS3
+- Databases & Cloud: PostgreSQL, Supabase (RLS & Auth), Cloudflare Pages, Vercel, REST APIs, Git / GitHub Actions
+- Self-Learned Languages (freeCodeCamp): TypeScript, Python, Rust, C++
 
 LIVE WEB PROJECTS
-1. NexusCalculator.net (Live Product) - 312 interactive calculators & developer tools, 190+ guides, 3,200+ static pages across English, Spanish, French, and German using Next.js, TypeScript, and next-intl.
-2. Abu Hanif Portfolio & Client Portal (abuhanifmia.com) - Full-stack Next.js 16 + Supabase portfolio, CRM, SOW builder, and HMAC-protected Admin dashboard.
+1. NexusCalculator.net (Live Production) - 312 interactive calculators & developer tools, 190+ guides, 3,200+ static pages across English, Spanish, French, and German using Next.js, TypeScript, and next-intl.
+2. Abu Hanif Portfolio, CMS & Order Portal (abuhanifmia.com) - Full-stack Next.js 16 + Supabase PostgreSQL portfolio, Admin panel, multi-currency B2B invoice & milestone tracker.`.trim();
 
-WORK EXPERIENCE
+    const workBlock = `
+WORK EXPERIENCE (2017–2025)
 ${profile.workHistory
   .map(
     (w) => `${w.role} | ${w.company} (${w.location})
 ${w.period}
 - ${w.summary}`
   )
-  .join("\n\n")}
+  .join("\n\n")}`.trim();
 
+    const eduBlock = `
 EDUCATION & TRAINING
 ${profile.educationHistory
   .map(
     (edu) => `- ${edu.credential} — ${edu.institution} (${edu.period})
   ${edu.details}`
   )
-  .join("\n")}
-    `.trim();
+  .join("\n")}`.trim();
+
+    const plainText = isTechTrack
+      ? `${coreHeader}\n\nPROFILE SUMMARY\n${profile.bio}\n\n${languagesAndAvailability}\n\n${techBlock}\n\n${eduBlock}\n\n${workBlock}`
+      : `${coreHeader}\n\nOPERATIONS PROFILE SUMMARY\nDisciplined international operations specialist with 7+ years across GCC hospitality (WACASCO Catering Services, Oman), high-volume industrial production (PRAN-RFL Group), and territory FMCG retail sales (Unilever Bangladesh), backed by conversational English, Hindi, and Urdu communication skills plus strong IT & web literacy.\n\n${languagesAndAvailability}\n\n${workBlock}\n\n${eduBlock}\n\nDIGITAL & IT LITERACY\n- Built live web apps (NexusCalculator.net & abuhanifmia.com), TypeScript, spreadsheets, order/CRM management, and multi-language customer support.`;
 
     if (navigator.clipboard) {
       navigator.clipboard.writeText(plainText).then(() => {
@@ -122,13 +131,49 @@ ${profile.educationHistory
                         boxShadow: "0 4px 12px rgba(11, 19, 43, 0.25)",
                       }}
                     >
-                      <div>
-                        <strong style={{ display: "block", fontSize: "15px", color: "#ffffff" }}>
-                          UK &amp; Europe ATS-Friendly CV
-                        </strong>
-                        <span style={{ fontSize: "12.5px", color: "#94a3b8" }}>
-                          Verified work history, HSC Commerce education, languages &amp; live web projects.
-                        </span>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                        <div>
+                          <strong style={{ display: "block", fontSize: "15px", color: "#ffffff" }}>
+                            UK &amp; Europe Two-Track ATS-Friendly CV
+                          </strong>
+                          <span style={{ fontSize: "12.5px", color: "#94a3b8" }}>
+                            Switch CV emphasis between Web Development / Tech Support and International Operations / Hospitality before printing or copying.
+                          </span>
+                        </div>
+                        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                          <button
+                            type="button"
+                            onClick={() => setCvTrack("tech")}
+                            style={{
+                              backgroundColor: isTechTrack ? "#2563eb" : "#111e38",
+                              color: "#ffffff",
+                              border: isTechTrack ? "1px solid #60a5fa" : "1px solid #334155",
+                              borderRadius: "6px",
+                              padding: "6px 12px",
+                              fontWeight: "700",
+                              fontSize: "12px",
+                              cursor: "pointer",
+                            }}
+                          >
+                            💻 Track 1: Web Dev &amp; Tech Support
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setCvTrack("operations")}
+                            style={{
+                              backgroundColor: !isTechTrack ? "#059669" : "#111e38",
+                              color: "#ffffff",
+                              border: !isTechTrack ? "1px solid #34d399" : "1px solid #334155",
+                              borderRadius: "6px",
+                              padding: "6px 12px",
+                              fontWeight: "700",
+                              fontSize: "12px",
+                              cursor: "pointer",
+                            }}
+                          >
+                            🌍 Track 2: Hospitality, Ops &amp; Production
+                          </button>
+                        </div>
                       </div>
                       <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                         <button
@@ -188,7 +233,7 @@ ${profile.educationHistory
                           {profile.fullName}
                         </h1>
                         <div style={{ fontSize: "17px", fontWeight: "bold", color: "#2563eb", marginBottom: "10px" }}>
-                          {profile.kicker}
+                          {trackSubtitle}
                         </div>
                         <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", fontSize: "13px", color: "#475569" }}>
                           <span>📍 <strong>Location:</strong> {profile.location}</span>
@@ -227,16 +272,21 @@ ${profile.educationHistory
                         </div>
                       </div>
 
-                      {/* Profile Summary & Availability */}
+                      {/* Profile Summary & Right-to-Work / Visa Clarity */}
                       <div style={{ marginBottom: "26px" }}>
                         <h2 style={{ fontSize: "16px", textTransform: "uppercase", letterSpacing: "1px", color: "#0f172a", borderBottom: "2px solid #f1f5f9", paddingBottom: "6px", margin: "0 0 10px 0" }}>
-                          Profile Summary &amp; Availability
+                          Profile Summary &amp; Right-to-Work Clarification
                         </h2>
                         <p style={{ margin: "0 0 10px 0", fontSize: "14px", color: "#334155" }}>
-                          {profile.bio}
+                          {isTechTrack
+                            ? profile.bio
+                            : "Disciplined international operations specialist with 7+ years of front-line hospitality service in Oman (WACASCO Catering Services), continuous industrial production operations (PRAN-RFL Group), and territory FMCG retail sales (Unilever Bangladesh). Fluent in Bengali with conversational English, Hindi, and Urdu communication skills plus practical IT & web software literacy."}
                         </p>
-                        <div style={{ background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: "6px", padding: "10px 14px", fontSize: "13px", color: "#1e3a8a" }}>
-                          <strong>Work Availability:</strong> {profile.workPreferences.modes.join(" • ")} across <strong>{profile.workPreferences.regions.join(" / ")}</strong> &bull; {profile.workPreferences.timezoneOverlap}
+                        <div style={{ background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: "6px", padding: "10px 14px", fontSize: "13px", color: "#1e3a8a", lineHeight: 1.55 }}>
+                          <div><strong>Work Availability:</strong> {profile.workPreferences.modes.join(" • ")} across <strong>{profile.workPreferences.regions.join(" / ")}</strong> &bull; {profile.workPreferences.timezoneOverlap}</div>
+                          <div style={{ marginTop: "4px" }}>
+                            <strong>Visa &amp; Work Authorization:</strong> Based in Bangladesh (prior 3 yrs expat employment in Oman, 2022–2025). <strong>Remote / B2B Contracts:</strong> Ready immediately (no work permit needed; GBP / EUR / USD invoicing via Wise/SWIFT). <strong>On-Site / Relocation:</strong> Seeking roles eligible for Employer Visa Sponsorship / Work Permit.
+                          </div>
                         </div>
                       </div>
 
@@ -254,18 +304,37 @@ ${profile.educationHistory
                               </div>
                             ))}
                           </div>
-                          <div style={{ background: "#f8fafc", padding: "12px 14px", border: "1px solid #e2e8f0", borderRadius: "6px" }}>
-                            <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>Web &amp; Full-Stack Tools</strong>
-                            Next.js 16 (App Router), React 19, TypeScript, JavaScript, Node.js, Tailwind CSS, HTML5, CSS3
-                          </div>
-                          <div style={{ background: "#f8fafc", padding: "12px 14px", border: "1px solid #e2e8f0", borderRadius: "6px" }}>
-                            <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>Self-Learned via freeCodeCamp</strong>
-                            TypeScript, Python, Rust, C++ — practical problem solving and software foundations
-                          </div>
-                          <div style={{ background: "#f8fafc", padding: "12px 14px", border: "1px solid #e2e8f0", borderRadius: "6px" }}>
-                            <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>Databases &amp; Cloud Workflow</strong>
-                            PostgreSQL, Supabase (RLS &amp; Auth), Cloudflare Pages, Vercel, Git / GitHub Actions
-                          </div>
+                          {isTechTrack ? (
+                            <>
+                              <div style={{ background: "#f8fafc", padding: "12px 14px", border: "1px solid #e2e8f0", borderRadius: "6px" }}>
+                                <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>Web &amp; Full-Stack Tools</strong>
+                                Next.js 16 (App Router), React 19, TypeScript, JavaScript, Node.js, Tailwind CSS, HTML5, CSS3
+                              </div>
+                              <div style={{ background: "#f8fafc", padding: "12px 14px", border: "1px solid #e2e8f0", borderRadius: "6px" }}>
+                                <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>Self-Learned via freeCodeCamp</strong>
+                                TypeScript, Python, Rust, C++ — practical problem solving and software foundations
+                              </div>
+                              <div style={{ background: "#f8fafc", padding: "12px 14px", border: "1px solid #e2e8f0", borderRadius: "6px" }}>
+                                <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>Databases &amp; Cloud Workflow</strong>
+                                PostgreSQL, Supabase (RLS &amp; Auth), Cloudflare Pages, Vercel, Git / GitHub Actions
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div style={{ background: "#f8fafc", padding: "12px 14px", border: "1px solid #e2e8f0", borderRadius: "6px" }}>
+                                <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>Hospitality &amp; Customer Service (Oman)</strong>
+                                Front-of-house dining service, guest hygiene standards, multicultural teamwork (2022–2025)
+                              </div>
+                              <div style={{ background: "#f8fafc", padding: "12px 14px", border: "1px solid #e2e8f0", borderRadius: "6px" }}>
+                                <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>Production &amp; Retail Operations (BD)</strong>
+                                4 yrs industrial machine operation &amp; QC (PRAN-RFL); FMCG retail visits &amp; orders (Unilever)
+                              </div>
+                              <div style={{ background: "#f8fafc", padding: "12px 14px", border: "1px solid #e2e8f0", borderRadius: "6px" }}>
+                                <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>IT, Web Systems &amp; Digital Fluency</strong>
+                                Full-stack developer (Next.js, TypeScript), CRM/order tools, spreadsheets &amp; online support
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
 
@@ -398,7 +467,7 @@ ${profile.educationHistory
           </div>
         </div>
 
-        <SiteFooter />
+        <SiteFooter profile={profile} />
       </div>
 
       {/* Print CSS styling for clean printout / PDF save */}

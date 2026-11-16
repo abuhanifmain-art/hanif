@@ -56,26 +56,26 @@ export const availableAddons: AddonOption[] = [
   {
     id: "load_testing",
     category: "edge",
-    name: "Automated k6 Load Testing & SLA Certification",
+    name: "Automated Load Testing & Performance Benchmark",
     price: 2400,
     timelineDays: 3,
-    description: "Synthetic load generation simulating 10,000 concurrent VUs with automated P99 regression gates.",
+    description: "Synthetic load generation testing concurrency tolerance and response latency thresholds before launch.",
   },
   {
     id: "ai_rag",
     category: "warranty",
-    name: "Enterprise pgvector AI & Hybrid Semantic Search",
+    name: "Custom pgvector Search & AI Workflow Integration",
     price: 4200,
     timelineDays: 6,
-    description: "Embeddings pipeline, HNSW vector indexing, hybrid keyword search, and streaming completions.",
+    description: "Embeddings pipeline, pgvector indexing, hybrid keyword search, and streaming completions.",
   },
   {
     id: "extended_warranty",
     category: "warranty",
-    name: "Extended 60-Day Emergency SLA Warranty",
+    name: "Extended 60-Day Post-Launch Bug Fix Support",
     price: 1800,
     timelineDays: 0,
-    description: "Doubles standard 30-day warranty with guaranteed 2-hour emergency escalation response.",
+    description: "Doubles the standard 30-day post-launch bug-fix period for agreed scope items.",
   },
 ];
 
@@ -463,10 +463,10 @@ export function generateSowPrintHtml(data: SowPrintData): string {
     </table>
 
     <div class="avoid-break">
-      <h2>3. Intellectual Property, Warranty &amp; SLA Terms</h2>
+      <h2>3. Intellectual Property &amp; Support Terms</h2>
       <div class="legal-box">
         <p style="margin: 0 0 6px 0;"><strong>1. 100% Client IP Ownership:</strong> Upon settlement of final milestone invoice, all git histories, pull requests, architectures, schemas, and deployed codebases become the sole and exclusive intellectual property of the Client.</p>
-        <p style="margin: 0 0 6px 0;"><strong>2. 30-Day Production Bug Warranty:</strong> Abu Hanif warrants the codebase for 30 consecutive calendar days against regressions with zero additional billing.</p>
+        <p style="margin: 0 0 6px 0;"><strong>2. 30-Day Bug Fix Support:</strong> MD Abu Hanif Mia provides complimentary regression bug fixes against the agreed scope for 30 consecutive calendar days post-launch.</p>
         <p style="margin: 0 0 6px 0;"><strong>3. Mutual NDA &amp; Confidentiality:</strong> All technical schemas, database tokens, proprietary logic, and business requirements remain strictly confidential under mutual non-disclosure obligations.</p>
         <p style="margin: 0;"><strong>4. Direct Execution:</strong> 100% of coding and delivery tasks are executed directly by MD Abu Hanif Mia.</p>
       </div>
@@ -599,8 +599,8 @@ ${breakdown.milestones
 ## 3. INTELLECTUAL PROPERTY & OPERATIONAL TERMS
 1. **100% Client Intellectual Property**: All commit histories, architecture blueprints, database schemas, codebases, and credentials belong exclusively to the Client upon milestone settlement.
 2. **Mutual Non-Disclosure & Confidentiality**: All shared proprietary data, schemas, trade secrets, and access tokens are strictly guarded under standard mutual NDA provisions.
-3. **30-Day Production Bug Warranty**: Full bug remediation and performance SLA guarantees are provided for 30 consecutive calendar days post-deployment at zero additional billing.
-4. **Direct Execution**: 100% of the engineering work is performed directly by Staff Engineer Abu Hanif. Zero junior developer hand-offs.
+3. **30-Day Bug Fix Support**: Complimentary regression bug fixes for agreed scope deliverables are included for 30 calendar days after deployment.
+4. **Direct Execution**: 100% of engineering work is handled directly by MD Abu Hanif Mia — no outsourcing or third-party hand-offs.
 
 ---
 *Authorized Proposal &bull; Generated via Abu Hanif Systems Architecture SOW Engine (https://abuhanifmia.com/pricing)*

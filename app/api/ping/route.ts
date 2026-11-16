@@ -26,7 +26,7 @@ export async function GET(req?: Request) {
       region: "DAC (South Asia Edge Gateway)",
       runtime: "Next.js 16 Turbopack • Cloudflare Pages Edge",
       timestamp: start,
-      edgeSla: "99.99% Production Uptime",
+      edgeSla: "Live HTTP Probe",
     },
     {
       headers: {

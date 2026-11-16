@@ -269,6 +269,24 @@ values
   true
 ),
 (
+  'Abu Hanif Portfolio, Admin CMS & Client OMS Platform',
+  'portfolio-crm-oms-platform',
+  'Full-stack Next.js 16 + TypeScript + Supabase PostgreSQL application powering this website: zero-trust HMAC admin portal, multi-currency B2B invoices, milestone tracking, and GDPR disclosures.',
+  '### Live Production Application (abuhanifmia.com)\n\nEngineered as a dual-purpose international career portfolio and B2B Client & Order Management System (OMS) running on Next.js 16 App Router, React 19, Supabase PostgreSQL, and Cloudflare edge hosting.\n\n### Key Implemented Modules\n\n- **Zero-Trust Auth & Security**: Stateless HMAC-SHA256 cookie sessions, Edge `proxy.ts` route gating, optional TOTP 2FA, and sliding-window rate limiting on login, telemetry, and contact APIs.\n- **PostgreSQL + Supabase Storage**: Row-Level Security policies, `SUPABASE_SECRET_KEY` server writes, admin image uploader with binary magic-byte validation, and live `/status` DB health checks.\n- **Multi-Currency B2B Workflows**: Statement of Work builder, printable UK/EU GDPR-compliant invoices (`USD`, `GBP`, `EUR`), SHA-256 milestone client sign-off tracker, and automated Vitest test suite.',
+  'Own Live Platform (abuhanifmia.com)',
+  '/images/og-card.png',
+  '/images/og-card.png',
+  ARRAY['/images/og-card.png'],
+  '/status',
+  'https://github.com/abuhanifmain-art/hanif',
+  'Live Production',
+  'Next.js 16 • Supabase RLS • Multi-Currency OMS',
+  ARRAY['Next.js 16', 'TypeScript', 'React 19', 'Supabase', 'PostgreSQL', 'Vitest'],
+  1,
+  true,
+  true
+),
+(
   'Real-Time Financial Telemetry Pipeline (Reference Study)',
   'financial-telemetry-pipeline',
   'Interactive systems architecture blueprint & lab benchmark modeling WebSocket tick ingestion, Redis pub/sub fanout, and TimescaleDB rollups.',

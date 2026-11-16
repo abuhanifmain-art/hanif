@@ -58,9 +58,9 @@ describe("Automated SOW PDF & Print Engine", () => {
     expect(html).toContain("TOTAL FIXED SOW INVESTMENT");
     expect(html).toContain(`$${breakdown.totalInvestment.toLocaleString()} USD`);
 
-    // Verify legal and warranty terms
+    // Verify legal and support terms
     expect(html).toContain("100% Client IP Ownership");
-    expect(html).toContain("30-Day Production Bug Warranty");
+    expect(html).toContain("30-Day Bug Fix Support");
     expect(html).toContain("Mutual NDA &amp; Confidentiality");
     expect(html).toContain("Direct Execution");
 

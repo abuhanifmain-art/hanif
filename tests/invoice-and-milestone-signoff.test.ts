@@ -5,7 +5,7 @@ import {
   approveOrderMilestone,
   _resetOmsStoresForTesting,
 } from "../app/lib/oms-service";
-import type { CustomerRecord, OrderRecord } from "../app/lib/oms-types";
+import { formatCurrencyAmount, type CustomerRecord, type OrderRecord } from "../app/lib/oms-types";
 
 const FIXTURE_CUSTOMERS: CustomerRecord[] = [
   {
@@ -265,6 +265,14 @@ describe("Institutional Invoicing & Milestone Digital Sign-Off Engine", () => {
         "Test Client A"
       );
       expect(result.milestone.status).toBe("client_approved");
+    });
+  });
+
+  describe("Multi-Currency Formatting (USD / GBP / EUR)", () => {
+    it("should format amounts with accurate international symbols", () => {
+      expect(formatCurrencyAmount(2500, "GBP", 2)).toContain("£");
+      expect(formatCurrencyAmount(2500, "EUR", 2)).toContain("€");
+      expect(formatCurrencyAmount(2500, "USD", 2)).toContain("$");
     });
   });
 });

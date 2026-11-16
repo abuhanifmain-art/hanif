@@ -382,7 +382,7 @@ ON transactions (tenant_id, created_at DESC)
 INCLUDE (amount, currency)
 WHERE status = 'completed';`,
           rollbackSql: `DROP INDEX CONCURRENTLY IF EXISTS idx_trans_covering;`,
-          tuningRationale: "Reduces execution time to 1.15ms. Massive speedup from 38,400ms baseline. Guarantees 99.99% production SLA.",
+          tuningRationale: "Simulated execution in 1.15ms via partial covering index, avoiding table heap scans across filtered rows.",
           treeNodes: [
             { name: "Limit", cost: "0.42..11.20", timeMs: 1.12, buffers: "12 hit", isHotspot: false, description: "Zero disk access" },
             { name: "Index Only Scan", cost: "0.42..11.20", timeMs: 1.08, buffers: "12 hit", isHotspot: false, description: "Index-Only Scan using idx_trans_covering" },

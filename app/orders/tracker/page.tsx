@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { OrderRecord, OrderMilestoneRecord } from "../../lib/oms-types";
+import { OrderRecord, OrderMilestoneRecord, formatCurrencyAmount } from "../../lib/oms-types";
 
 function OrderTrackerContent() {
   const searchParams = useSearchParams();
@@ -216,10 +216,10 @@ function OrderTrackerContent() {
           <div style={{ textAlign: "right" }}>
             <div style={{ fontSize: "11px", color: "#94a3b8", textTransform: "uppercase", fontWeight: "700" }}>Total Contract Value</div>
             <div style={{ fontSize: "28px", fontWeight: "800", color: "#4ade80", marginTop: "2px" }}>
-              ${order.totalAmount.toLocaleString()} <span style={{ fontSize: "14px", color: "#94a3b8" }}>{order.currency}</span>
+              {formatCurrencyAmount(order.totalAmount, order.currency, 0)} <span style={{ fontSize: "14px", color: "#94a3b8" }}>{order.currency}</span>
             </div>
             <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "2px" }}>
-              Paid: <strong style={{ color: "#ffffff" }}>${order.amountPaid.toLocaleString()}</strong> ({order.paymentStatus})
+              Paid: <strong style={{ color: "#ffffff" }}>{formatCurrencyAmount(order.amountPaid, order.currency, 0)}</strong> ({order.paymentStatus})
             </div>
           </div>
         </div>
@@ -325,7 +325,7 @@ function OrderTrackerContent() {
                     </div>
                     <div style={{ textAlign: "right" }}>
                       <div style={{ fontSize: "16px", fontWeight: "700", color: "#4ade80" }}>
-                        ${m.amount.toLocaleString()} USD
+                        {formatCurrencyAmount(m.amount, order.currency, 0)} {order.currency}
                       </div>
                       <span
                         style={{

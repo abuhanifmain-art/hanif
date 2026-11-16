@@ -28,19 +28,19 @@ export default function CloudRoiCalculator() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px", marginBottom: "16px" }}>
         <div>
           <span style={{ fontSize: "11px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "1px", color: "#38bdf8" }}>
-            Interactive Architecture ROI Benchmark
+            Illustrative Hosting Cost Estimator
           </span>
           <h3 style={{ margin: "4px 0 0 0", fontSize: "20px", color: "#ffffff", fontWeight: "800" }}>
-            Cloudflare Edge Migration &amp; Cost Reduction Calculator
+            Static / Edge Delivery vs. Traditional VM Estimator
           </h3>
         </div>
         <span style={{ fontSize: "12px", color: "#cbd5e1", backgroundColor: "#070f1e", padding: "4px 10px", borderRadius: "4px", border: "1px solid #1e293b" }}>
-          Based on 64% verified case study savings
+          Illustrative model only
         </span>
       </div>
 
       <p style={{ fontSize: "13.5px", color: "#cbd5e1", lineHeight: 1.6, margin: "0 0 20px 0" }}>
-        Enter your current monthly cloud hosting bill (AWS EC2/ECS/RDS, GCP, or Vercel) to project your estimated cost reductions and edge speedup on Cloudflare Pages and Supabase PostgreSQL:
+        Enter a sample monthly server/egress bill to estimate potential savings from shifting static pages and read-heavy routes to Cloudflare Pages &amp; Supabase (actual savings depend on your workload profile):
       </p>
 
       {/* Slider Input */}

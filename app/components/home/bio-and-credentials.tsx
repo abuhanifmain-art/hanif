@@ -422,15 +422,18 @@ export default function BioAndCredentials({ profile }: { profile?: ProfileData }
                 <strong>110495</strong>, Dhaka Education Board), paired with multilingual international workplace communication:
               </p>
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                <span style={{ fontSize: "11px", background: "#f1f5f9", border: "1px solid #cbd5e1", padding: "2px 8px", borderRadius: "4px", fontWeight: "bold", color: "#0f172a" }}>
-                  Bengali (Native)
-                </span>
-                <span style={{ fontSize: "11px", background: "#f1f5f9", border: "1px solid #cbd5e1", padding: "2px 8px", borderRadius: "4px", fontWeight: "bold", color: "#0f172a" }}>
-                  English (Conversational)
-                </span>
-                <span style={{ fontSize: "11px", background: "#f1f5f9", border: "1px solid #cbd5e1", padding: "2px 8px", borderRadius: "4px", fontWeight: "bold", color: "#0f172a" }}>
-                  Hindi &amp; Urdu (Conversational)
-                </span>
+                {(profile?.spokenLanguages && profile.spokenLanguages.length > 0
+                  ? profile.spokenLanguages
+                  : [
+                      { language: "Bengali", level: "Native (C2)" },
+                      { language: "English", level: "Conversational (Working Proficiency)" },
+                      { language: "Hindi & Urdu", level: "Conversational" },
+                    ]
+                ).map((lang) => (
+                  <span key={lang.language} style={{ fontSize: "11px", background: "#f1f5f9", border: "1px solid #cbd5e1", padding: "2px 8px", borderRadius: "4px", fontWeight: "bold", color: "#0f172a" }}>
+                    {lang.language} ({lang.level})
+                  </span>
+                ))}
               </div>
             </div>
             <div

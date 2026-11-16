@@ -30,6 +30,28 @@ export type PaymentStatus =
 
 export type CurrencyCode = "USD" | "EUR" | "GBP";
 
+const CURRENCY_SYMBOLS: Record<CurrencyCode, string> = {
+  USD: "$",
+  EUR: "€",
+  GBP: "£",
+};
+
+export function getCurrencySymbol(currency: CurrencyCode | string = "USD"): string {
+  return CURRENCY_SYMBOLS[currency as CurrencyCode] || "$";
+}
+
+export function formatCurrencyAmount(
+  amount: number,
+  currency: CurrencyCode | string = "USD",
+  minimumFractionDigits: number = 2
+): string {
+  const symbol = getCurrencySymbol(currency);
+  return `${symbol}${Number(amount || 0).toLocaleString(undefined, {
+    minimumFractionDigits,
+    maximumFractionDigits: Math.max(minimumFractionDigits, 2),
+  })}`;
+}
+
 export type MilestoneStatus =
   | "pending"
   | "in_progress"

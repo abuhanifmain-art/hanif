@@ -94,7 +94,7 @@ export default function EnterpriseTestimonialsSection({
             lineHeight: "1.5",
           }}
         >
-          Direct feedback and verified SLA metrics from CTOs, VPs of Engineering, and technical founders who contracted Staff Engineer Abu Hanif.
+          Direct feedback and project outcomes shared by collaborators, supervisors, and web clients.
         </p>
       </div>
 

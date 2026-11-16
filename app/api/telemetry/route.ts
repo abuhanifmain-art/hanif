@@ -163,7 +163,7 @@ export async function GET(req?: NextRequest) {
       p95,
       p99,
       avgLatencyMs: avgLatency,
-      globalSla: "99.99%",
+      globalSla: "Measured Runtime Sample",
       meshNodesActive: Object.keys(REGIONS_DIRECTORY).length,
       regions: regionalBreakdown,
       recentPings: points.slice(0, 16),

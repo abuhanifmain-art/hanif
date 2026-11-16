@@ -520,10 +520,19 @@ export async function getProjects(): Promise<ProjectItem[]> {
           if (!existingSlugs.has(initProj.slug) && !merged.some((m) => m.slug === initProj.slug)) {
             if (initProj.slug === "nexus-calculator-platform") {
               merged.unshift(initProj);
-            } else if (initProj.slug === "portfolio-crm-oms-platform") {
+            } else if (initProj.slug === "spielcade-browser-gaming-platform") {
               const nexusIdx = merged.findIndex((m) => m.slug === "nexus-calculator-platform");
               if (nexusIdx !== -1) {
                 merged.splice(nexusIdx + 1, 0, initProj);
+              } else {
+                merged.unshift(initProj);
+              }
+            } else if (initProj.slug === "portfolio-crm-oms-platform") {
+              const spielIdx = merged.findIndex((m) => m.slug === "spielcade-browser-gaming-platform");
+              const nexusIdx = merged.findIndex((m) => m.slug === "nexus-calculator-platform");
+              const anchorIdx = spielIdx !== -1 ? spielIdx : nexusIdx;
+              if (anchorIdx !== -1) {
+                merged.splice(anchorIdx + 1, 0, initProj);
               } else {
                 merged.unshift(initProj);
               }

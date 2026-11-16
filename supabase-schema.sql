@@ -269,6 +269,24 @@ values
   true
 ),
 (
+  'Spielcade — Instant HTML5 Browser Gaming Portal (PixelPlay)',
+  'spielcade-browser-gaming-platform',
+  'Live production Next.js & Supabase web gaming platform (spielcade.com) built inside a Turborepo monorepo, indexing 18,546+ instant HTML5 browser games across 25+ genres with offline PWA support, XP leaderboards, quests, and creator guides.',
+  '### Live Production Platform (spielcade.com)\n\nEngineered as a scalable HTML5 browser gaming portal inside a Turborepo + pnpm monorepo (`apps/web` & `@spielcade/games`), pairing Next.js 14 App Router, TypeScript, Tailwind CSS, and Supabase (`@supabase/ssr`) with offline-capable PWA support (`@ducanh2912/next-pwa`).\n\n### Key Implemented Features & Modules\n\n- **High-Scale Catalog & Discovery**: Indexed 18,546+ HTML5/WebGL browser games across 25+ genres with `Cmd/Ctrl+K` spotlight search, category filters, and an A–Z Games Directory.\n- **Interactive Game Player & Offline Mode**: Full-bleed player with Fullscreen, Theater, Controls, Audio toggle, How-to-Play guide, and `OFFLINE READY` PWA support.\n- **Engagement & Content Hub**: Level/XP progression, Global/Weekly/Monthly Leaderboards & Daily Arcade Cup, Quests/Party modes, Developer Studio, and MDX gaming guides.',
+  'Own Production Platform (spielcade.com)',
+  '/images/projects/spielcade-homepage.png',
+  '/images/projects/spielcade-homepage.png',
+  ARRAY['/images/projects/spielcade-homepage.png', '/images/projects/spielcade-all-games.png', '/images/projects/spielcade-gameplay.jpg', '/images/projects/spielcade-leaderboard.png', '/images/projects/spielcade-blog.png', '/images/projects/spielcade-footer-directory.jpg'],
+  'https://spielcade.com',
+  'https://github.com/abuhanif254/PixelPlay',
+  'Live Production',
+  '18,546+ Games • 25+ Genres • Turborepo + Supabase',
+  ARRAY['Next.js 14', 'TypeScript', 'React 18', 'Supabase', 'Turborepo', 'PWA', 'Three.js', 'Vitest'],
+  1,
+  true,
+  true
+),
+(
   'Abu Hanif Portfolio, Admin CMS & Client OMS Platform',
   'portfolio-crm-oms-platform',
   'Full-stack Next.js 16 + TypeScript + Supabase PostgreSQL application powering this website: zero-trust HMAC admin portal, multi-currency B2B invoices, milestone tracking, and GDPR disclosures.',

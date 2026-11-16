@@ -403,6 +403,36 @@ Built and launched from scratch as an independent full-stack web developer using
     ],
   },
   {
+    id: "proj-spielcade",
+    title: "Spielcade — Instant HTML5 Browser Gaming Portal (PixelPlay)",
+    slug: "spielcade-browser-gaming-platform",
+    summary: "Live production Next.js & Supabase web gaming platform (spielcade.com) built inside a Turborepo monorepo, indexing 18,546+ instant HTML5 browser games across 25+ genres with offline PWA support, XP leaderboards, quests, and creator guides.",
+    descriptionMarkdown: `### Live Production Platform (spielcade.com)
+Engineered as a scalable HTML5 browser gaming portal inside a **Turborepo + pnpm** monorepo (\`apps/web\` & \`@spielcade/games\`), pairing Next.js 14 App Router, TypeScript, Tailwind CSS, and Supabase (\`@supabase/ssr\`) with instant client-side search and offline-capable PWA support (\`@ducanh2912/next-pwa\`).
+
+### Key Implemented Features & Modules
+- **High-Scale Catalog & Instant Discovery**: Indexed **18,546+ HTML5/WebGL browser games** across **25+ genres** with \`Cmd/Ctrl+K\` spotlight search, multi-facet category/sort filters, popular tag clusters, **"Surprise Me"** launcher, and a full **A–Z Games Directory**.
+- **Interactive Game Player & Offline Mode**: Dedicated game play pages with \`Fullscreen\`, \`Theater\`, \`Controls\`, audio toggle, favorite/share triggers, structured *"How to Play"* walkthroughs, and \`OFFLINE READY\` PWA caching.
+- **Engagement, Tournaments & Content Hub**: Level & XP progression (\`Daily Streak\`, \`Lv.\` badges), **Global / Weekly / Monthly Leaderboards** & Daily Arcade Cup, Party & Quests routes, **Developer Studio** publishing gateway, and MDX-powered **Featured Articles, Guides & Walkthroughs**.`,
+    clientName: "Own Production Platform (spielcade.com)",
+    demoUrl: "https://spielcade.com",
+    githubUrl: "https://github.com/abuhanif254/PixelPlay",
+    priceTag: "Live Production",
+    impactMetric: "18,546+ Games • 25+ Genres • Turborepo + Supabase",
+    techStack: ["Next.js 14", "TypeScript", "React 18", "Supabase", "Turborepo", "PWA", "Three.js", "Vitest"],
+    isFeatured: true,
+    published: true,
+    imageUrl: "/images/projects/spielcade-homepage.png",
+    screenshots: [
+      "/images/projects/spielcade-homepage.png",
+      "/images/projects/spielcade-all-games.png",
+      "/images/projects/spielcade-gameplay.jpg",
+      "/images/projects/spielcade-leaderboard.png",
+      "/images/projects/spielcade-blog.png",
+      "/images/projects/spielcade-footer-directory.jpg",
+    ],
+  },
+  {
     id: "proj-portfolio-oms",
     title: "Abu Hanif Portfolio, Admin CMS & Client OMS Platform",
     slug: "portfolio-crm-oms-platform",

@@ -46,7 +46,8 @@ TECHNICAL SKILLS & SELF-DIRECTED LEARNING
 
 LIVE WEB PROJECTS
 1. NexusCalculator.net (Live Production) - 312 interactive calculators & developer tools, 190+ guides, 3,200+ static pages across English, Spanish, French, and German using Next.js, TypeScript, and next-intl.
-2. Abu Hanif Portfolio, CMS & Order Portal (abuhanifmia.com) - Full-stack Next.js 16 + Supabase PostgreSQL portfolio, Admin panel, multi-currency B2B invoice & milestone tracker.`.trim();
+2. Spielcade.com (PixelPlay • github.com/abuhanif254/PixelPlay) - Turborepo monorepo Next.js 14 & Supabase web gaming platform indexing 18,546+ instant HTML5 games across 25+ genres with offline PWA mode, XP leaderboards, quests, and developer guides.
+3. Abu Hanif Portfolio, CMS & Order Portal (abuhanifmia.com) - Full-stack Next.js 16 + Supabase PostgreSQL portfolio, Admin panel, multi-currency B2B invoice & milestone tracker.`.trim();
 
     const workBlock = `
 WORK EXPERIENCE (2017–2025)
@@ -369,11 +370,17 @@ ${profile.educationHistory
                         <h2 style={{ fontSize: "16px", textTransform: "uppercase", letterSpacing: "1px", color: "#0f172a", borderBottom: "2px solid #f1f5f9", paddingBottom: "6px", margin: "0 0 12px 0" }}>
                           Real-World Web Projects
                         </h2>
-                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", fontSize: "13px" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "12px", fontSize: "13px" }}>
                           <div style={{ borderLeft: "3px solid #2563eb", paddingLeft: "12px" }}>
                             <strong style={{ color: "#0f172a" }}>NexusCalculator.net (Live Production)</strong>
                             <p style={{ margin: "2px 0 0 0", color: "#475569" }}>
                               Next.js 15, TypeScript, next-intl • <strong>312 interactive tools • 4 languages (EN/ES/FR/DE) • 3,200+ static pages</strong>
+                            </p>
+                          </div>
+                          <div style={{ borderLeft: "3px solid #2563eb", paddingLeft: "12px" }}>
+                            <strong style={{ color: "#0f172a" }}>Spielcade.com (PixelPlay • Open Repo)</strong>
+                            <p style={{ margin: "2px 0 0 0", color: "#475569" }}>
+                              Turborepo, Next.js 14, Supabase, PWA • <strong>18,546+ HTML5 browser games, XP leaderboards, offline play &amp; creator hub</strong>
                             </p>
                           </div>
                           <div style={{ borderLeft: "3px solid #2563eb", paddingLeft: "12px" }}>

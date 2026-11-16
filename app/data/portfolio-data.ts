@@ -433,6 +433,36 @@ Engineered as a scalable HTML5 browser gaming portal inside a **Turborepo + pnpm
     ],
   },
   {
+    id: "proj-sadhyer-bazar",
+    title: "Sadhyer Bazar — Client Organic E-Commerce Platform",
+    slug: "sadhyer-bazar-ecommerce-platform",
+    summary: "Commercial client e-commerce platform (sadhyerbazar.com) built on Next.js, Cloudflare Pages, Supabase & PostgreSQL with SSLCommerz, bKash, Nagad & COD checkout, live family combo builder, batch pre-order quotas, and a custom Merchant Admin Panel.",
+    descriptionMarkdown: `### Live Commercial Client Delivery (sadhyerbazar.com)
+Designed and delivered end-to-end for **Sadhyer Bazar (সাধ্যের বাজার)**, a Bangladesh-wide farm-to-home fresh fish, ghee, yogurt, poultry, and staple rice store running on **Next.js** hosted on **Cloudflare Pages**, backed by **Supabase & PostgreSQL**.
+
+### Key Engineered Systems & Payment Integrations
+- **Multi-Gateway Local & Card Checkout**: Integrated **SSLCommerz** (Visa/Mastercard), **bKash**, **Nagad**, and nationwide **Cash on Delivery (COD)** with Inside Dhaka / Outside Dhaka shipping tier rules (\`৳100\` / \`৳130\`).
+- **Pre-Order Batch Quotas & Weekly Family Combo Builder**: Interactive bundle builder with live discount calculation (\`FAMILYBOX8\`, up to 8% savings), live harvest dispatch batch counters (e.g., \`48 / 60\` booked quotas), pack-size variants (\`500g\`, \`1kg\`, \`2kg\`, \`5kg\`), and bilingual Bengali/English UI.
+- **Customer Tracking & Custom Merchant Admin Panel**: Real-time **Track Order by ID** flow for customers alongside a custom-designed **Merchant Management Portal** for managing inventory batches, orders, promo codes, and deliveries in Supabase PostgreSQL.`,
+    clientName: "Sadhyer Bazar (Client Commercial Project)",
+    demoUrl: "https://sadhyerbazar.com",
+    githubUrl: "https://github.com/sadhyacommunication/Sadyer-Bazar",
+    priceTag: "Client Production",
+    impactMetric: "Cloudflare Pages • Supabase PostgreSQL • SSLCommerz/bKash/Nagad",
+    techStack: ["Next.js", "TypeScript", "Cloudflare Pages", "Supabase", "PostgreSQL", "SSLCommerz", "bKash", "Nagad"],
+    isFeatured: true,
+    published: true,
+    imageUrl: "/images/projects/sadhyer-bazar-hero.jpg",
+    screenshots: [
+      "/images/projects/sadhyer-bazar-hero.jpg",
+      "/images/projects/sadhyer-bazar-combo-builder.png",
+      "/images/projects/sadhyer-bazar-catalog.png",
+      "/images/projects/sadhyer-bazar-product-batch.jpg",
+      "/images/projects/sadhyer-bazar-preorder.png",
+      "/images/projects/sadhyer-bazar-footer-payments.jpg",
+    ],
+  },
+  {
     id: "proj-portfolio-oms",
     title: "Abu Hanif Portfolio, Admin CMS & Client OMS Platform",
     slug: "portfolio-crm-oms-platform",

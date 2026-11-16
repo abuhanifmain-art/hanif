@@ -527,10 +527,20 @@ export async function getProjects(): Promise<ProjectItem[]> {
               } else {
                 merged.unshift(initProj);
               }
-            } else if (initProj.slug === "portfolio-crm-oms-platform") {
+            } else if (initProj.slug === "sadhyer-bazar-ecommerce-platform") {
               const spielIdx = merged.findIndex((m) => m.slug === "spielcade-browser-gaming-platform");
               const nexusIdx = merged.findIndex((m) => m.slug === "nexus-calculator-platform");
               const anchorIdx = spielIdx !== -1 ? spielIdx : nexusIdx;
+              if (anchorIdx !== -1) {
+                merged.splice(anchorIdx + 1, 0, initProj);
+              } else {
+                merged.unshift(initProj);
+              }
+            } else if (initProj.slug === "portfolio-crm-oms-platform") {
+              const bazarIdx = merged.findIndex((m) => m.slug === "sadhyer-bazar-ecommerce-platform");
+              const spielIdx = merged.findIndex((m) => m.slug === "spielcade-browser-gaming-platform");
+              const nexusIdx = merged.findIndex((m) => m.slug === "nexus-calculator-platform");
+              const anchorIdx = bazarIdx !== -1 ? bazarIdx : spielIdx !== -1 ? spielIdx : nexusIdx;
               if (anchorIdx !== -1) {
                 merged.splice(anchorIdx + 1, 0, initProj);
               } else {

@@ -287,6 +287,24 @@ values
   true
 ),
 (
+  'Sadhyer Bazar — Client Organic E-Commerce Platform',
+  'sadhyer-bazar-ecommerce-platform',
+  'Commercial client e-commerce platform (sadhyerbazar.com) built on Next.js, Cloudflare Pages, Supabase & PostgreSQL with SSLCommerz, bKash, Nagad & COD checkout, live family combo builder, batch pre-order quotas, and a custom Merchant Admin Panel.',
+  '### Live Commercial Client Delivery (sadhyerbazar.com)\n\nDesigned and delivered end-to-end for Sadhyer Bazar (সাধ্যের বাজার), a farm-to-home fresh fish, ghee, yogurt, poultry, and rice store running on Next.js hosted on Cloudflare Pages, backed by Supabase & PostgreSQL.\n\n### Key Engineered Systems & Payment Integrations\n\n- **Multi-Gateway Local & Card Checkout**: Integrated SSLCommerz (Visa/Mastercard), bKash, Nagad, and nationwide Cash on Delivery (COD) with regional delivery pricing.\n- **Pre-Order Quotas & Combo Builder**: Interactive Weekly Family Box combo builder (`FAMILYBOX8` promo calculation), dispatch batch booking bars, pack variants, and bilingual Bengali/English UI.\n- **Order Tracking & Custom Admin Panel**: Customer Track Order by ID flow and custom Merchant Management Portal.',
+  'Sadhyer Bazar (Client Commercial Project)',
+  '/images/projects/sadhyer-bazar-hero.jpg',
+  '/images/projects/sadhyer-bazar-hero.jpg',
+  ARRAY['/images/projects/sadhyer-bazar-hero.jpg', '/images/projects/sadhyer-bazar-combo-builder.png', '/images/projects/sadhyer-bazar-catalog.png', '/images/projects/sadhyer-bazar-product-batch.jpg', '/images/projects/sadhyer-bazar-preorder.png', '/images/projects/sadhyer-bazar-footer-payments.jpg'],
+  'https://sadhyerbazar.com',
+  'https://github.com/sadhyacommunication/Sadyer-Bazar',
+  'Client Production',
+  'Cloudflare Pages • Supabase PostgreSQL • SSLCommerz/bKash/Nagad',
+  ARRAY['Next.js', 'TypeScript', 'Cloudflare Pages', 'Supabase', 'PostgreSQL', 'SSLCommerz', 'bKash', 'Nagad'],
+  2,
+  true,
+  true
+),
+(
   'Abu Hanif Portfolio, Admin CMS & Client OMS Platform',
   'portfolio-crm-oms-platform',
   'Full-stack Next.js 16 + TypeScript + Supabase PostgreSQL application powering this website: zero-trust HMAC admin portal, multi-currency B2B invoices, milestone tracking, and GDPR disclosures.',

@@ -5,7 +5,7 @@
   <text x="25" y="47" font-family="'JetBrains Mono', 'Trebuchet MS', monospace" font-size="20" font-weight="bold" fill="#38bdf8" text-anchor="middle">&lt;/&gt;</text>
   
   <!-- Engineer Name & Title -->
-  <text x="58" y="32" font-family="'Inter', -apple-system, sans-serif" font-size="9" font-weight="bold" letter-spacing="2" fill="#10b981">STAFF SOFTWARE ENGINEER</text>
-  <text x="58" y="52" font-family="'Inter', -apple-system, sans-serif" font-size="21" font-weight="800" fill="#ffffff" letter-spacing="-0.5">Abu Hanif</text>
-  <text x="58" y="66" font-family="'Inter', -apple-system, sans-serif" font-size="9.5" fill="#94a3b8" letter-spacing="0.3">MD Abu Hanif Mia • Systems Architecture</text>
+  <text x="58" y="32" font-family="'Inter', -apple-system, sans-serif" font-size="9" font-weight="bold" letter-spacing="1.6" fill="#10b981">FULL-STACK WEB DEVELOPER</text>
+  <text x="58" y="52" font-family="Inter, -apple-system, sans-serif" font-size="21" font-weight="800" fill="#ffffff" letter-spacing="-0.5">Abu Hanif</text>
+  <text x="58" y="66" font-family="'Inter', -apple-system, sans-serif" font-size="9.5" fill="#94a3b8" letter-spacing="0.3">MD Abu Hanif Mia • UK &amp; Europe Open</text>
 </svg>

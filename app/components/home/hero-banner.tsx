@@ -76,6 +76,7 @@ export default function HeroBanner({ profile }: { profile?: ProfileData }) {
     "Next.js & TypeScript Builder • Multi-Sector Operations • Open to UK & Europe";
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [spotlightSlide, setSpotlightSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [activeValueProp, setActiveValueProp] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
@@ -104,6 +105,15 @@ export default function HeroBanner({ profile }: { profile?: ProfileData }) {
     }, 4000);
     return () => clearInterval(timer);
   }, []);
+
+  // Right-hand hero 2-slide showcase auto-play (5 seconds, paused on hero hover)
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      setSpotlightSlide((prev) => (prev + 1) % 2);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [isPaused]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -598,119 +608,196 @@ export default function HeroBanner({ profile }: { profile?: ProfileData }) {
             </div>
           </div>
 
-          {/* Right Column: Executive Architect Identity Card (Translucent Glassmorphism) */}
+          {/* Right Column: 2-Slide Portrait & Live Product Showcase Box */}
           <div
             style={{
-              backgroundColor: "rgba(10, 18, 38, 0.82)",
-              border: "1px solid rgba(56, 189, 248, 0.35)",
+              backgroundColor: "rgba(10, 18, 38, 0.9)",
+              border: "1px solid rgba(56, 189, 248, 0.4)",
               borderRadius: "10px",
-              padding: "16px",
+              overflow: "hidden",
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
-              textAlign: "center",
-              boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
-              maxWidth: "260px",
+              boxShadow: "0 12px 32px rgba(0, 0, 0, 0.55)",
+              maxWidth: "276px",
               marginLeft: "auto",
               marginRight: "auto",
               width: "100%",
               backdropFilter: "blur(12px)",
             }}
           >
+            {/* 2-Slide Media Frame */}
             <div
               style={{
                 position: "relative",
-                width: "84px",
-                height: "84px",
-                borderRadius: "50%",
-                overflow: "hidden",
-                border: "2.5px solid #38bdf8",
-                background: "radial-gradient(circle at 50% 35%, #1e293b 0%, #0b132b 100%)",
-                boxShadow: "0 0 18px rgba(56, 189, 248, 0.35)",
-                marginBottom: "10px",
-                flexShrink: 0,
-              }}
-            >
-              <Image
-                src={profilePhoto}
-                alt={`${displayName} - Full-Stack Web Developer`}
-                width={84}
-                height={84}
-                unoptimized={!profilePhoto.startsWith("/")}
-                loading="lazy"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "center top",
-                }}
-              />
-            </div>
-
-            <div style={{ fontSize: "16px", fontWeight: 800, color: "#ffffff", lineHeight: 1.2 }}>
-              {displayName}
-            </div>
-            <div
-              style={{
-                fontSize: "10.5px",
-                fontWeight: 700,
-                color: "#38bdf8",
-                textTransform: "uppercase",
-                letterSpacing: "0.7px",
-                marginTop: "3px",
-                marginBottom: "10px",
-              }}
-            >
-              Full-Stack Dev &amp; Int&apos;l Ops
-            </div>
-
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "6px",
                 width: "100%",
-                marginBottom: "10px",
+                height: "204px",
+                backgroundColor: "#060b19",
+                overflow: "hidden",
               }}
             >
+              {[
+                {
+                  id: "portrait",
+                  src: profilePhoto,
+                  alt: `${displayName} — Full-Stack Web Developer`,
+                  badge: "Open: UK & EU",
+                  badgeColor: "#10b981",
+                  title: displayName,
+                  subtitle: "Full-Stack Dev & Int'l Ops",
+                  objectPosition: "center top",
+                  href: "/resume",
+                },
+                {
+                  id: "nexus-live",
+                  src: "/images/nexuscalculator-homepage.png",
+                  alt: "NexusCalculator.net — 312 Interactive Tools Across 4 Languages",
+                  badge: "Live Platform",
+                  badgeColor: "#38bdf8",
+                  title: "NexusCalculator.net",
+                  subtitle: "312 Tools • 4 Languages • Next.js",
+                  objectPosition: "center top",
+                  href: "/projects/nexus-calculator-platform",
+                },
+              ].map((item, idx) => {
+                const isActive = idx === spotlightSlide;
+                return (
+                  <Link
+                    key={item.id}
+                    href={item.href}
+                    aria-hidden={!isActive}
+                    tabIndex={isActive ? 0 : -1}
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      opacity: isActive ? 1 : 0,
+                      pointerEvents: isActive ? "auto" : "none",
+                      transition: "opacity 500ms ease",
+                      display: "block",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      fill
+                      unoptimized={!item.src.startsWith("/")}
+                      sizes="276px"
+                      style={{
+                        objectFit: "cover",
+                        objectPosition: item.objectPosition,
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        background:
+                          "linear-gradient(180deg, rgba(6,11,25,0.28) 0%, rgba(6,11,25,0.05) 45%, rgba(6,11,25,0.92) 100%)",
+                      }}
+                    />
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        left: "10px",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "5px",
+                        padding: "3px 8px",
+                        borderRadius: "999px",
+                        backgroundColor: "rgba(6, 11, 25, 0.85)",
+                        border: "1px solid rgba(56, 189, 248, 0.35)",
+                        fontSize: "10px",
+                        fontWeight: 700,
+                        color: item.badgeColor,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.4px",
+                      }}
+                    >
+                      <span
+                        style={{
+                          width: "5px",
+                          height: "5px",
+                          borderRadius: "50%",
+                          backgroundColor: item.badgeColor,
+                        }}
+                      />
+                      {item.badge}
+                    </span>
+                    <div
+                      style={{
+                        position: "absolute",
+                        left: "12px",
+                        right: "12px",
+                        bottom: "10px",
+                        textAlign: "left",
+                      }}
+                    >
+                      <div style={{ fontSize: "14px", fontWeight: 800, color: "#ffffff", lineHeight: 1.2 }}>
+                        {item.title}
+                      </div>
+                      <div style={{ fontSize: "11px", fontWeight: 600, color: "#cbd5e1", marginTop: "2px" }}>
+                        {item.subtitle}
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+
+              {/* 2-Slide Switcher Dots */}
               <div
                 style={{
-                  background: "rgba(6, 11, 25, 0.8)",
-                  border: "1px solid rgba(30, 41, 59, 0.8)",
-                  borderRadius: "5px",
-                  padding: "6px",
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                  zIndex: 5,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  padding: "3px 6px",
+                  borderRadius: "999px",
+                  backgroundColor: "rgba(6, 11, 25, 0.82)",
+                  border: "1px solid rgba(148, 163, 184, 0.3)",
                 }}
               >
-                <div style={{ fontSize: "13.5px", fontWeight: 800, color: "#10b981" }}>312 Tools</div>
-                <div style={{ fontSize: "10px", color: "#94a3b8" }}>NexusCalculator</div>
-              </div>
-              <div
-                style={{
-                  background: "rgba(6, 11, 25, 0.8)",
-                  border: "1px solid rgba(30, 41, 59, 0.8)",
-                  borderRadius: "5px",
-                  padding: "6px",
-                }}
-              >
-                <div style={{ fontSize: "13.5px", fontWeight: 800, color: "#38bdf8" }}>UK &amp; EU</div>
-                <div style={{ fontSize: "10px", color: "#94a3b8" }}>Remote/B2B/Site</div>
+                {[0, 1].map((idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    aria-label={`Show hero card slide ${idx + 1}`}
+                    onClick={() => setSpotlightSlide(idx)}
+                    style={{
+                      width: spotlightSlide === idx ? "14px" : "6px",
+                      height: "6px",
+                      borderRadius: "3px",
+                      border: "none",
+                      padding: 0,
+                      cursor: "pointer",
+                      backgroundColor:
+                        spotlightSlide === idx ? "#38bdf8" : "rgba(148, 163, 184, 0.45)",
+                      transition: "all 200ms ease",
+                    }}
+                  />
+                ))}
               </div>
             </div>
 
+            {/* Slim Quick Links Bar */}
             <div
               style={{
                 display: "flex",
-                justifyContent: "center",
-                gap: "10px",
+                justifyContent: "space-around",
+                alignItems: "center",
                 width: "100%",
-                paddingTop: "8px",
-                borderTop: "1px solid rgba(30, 41, 59, 0.8)",
+                padding: "9px 10px",
+                borderTop: "1px solid rgba(30, 41, 59, 0.9)",
+                backgroundColor: "rgba(7, 15, 30, 0.95)",
                 fontSize: "11px",
                 fontWeight: 700,
               }}
             >
               <a
-                href="https://github.com/abuhanif254"
+                href={profile?.socialLinks?.github || "https://github.com/abuhanif254"}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ color: "#cbd5e1", textDecoration: "none" }}
@@ -719,7 +806,7 @@ export default function HeroBanner({ profile }: { profile?: ProfileData }) {
               </a>
               <span style={{ color: "#334155" }}>•</span>
               <a
-                href="https://www.linkedin.com/in/md-abu-hanif-mia"
+                href={profile?.socialLinks?.linkedin || "https://www.linkedin.com/in/md-abu-hanif-mia"}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ color: "#cbd5e1", textDecoration: "none" }}

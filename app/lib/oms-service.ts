@@ -21,6 +21,13 @@ function getOmsSigningSecret(): string {
   return secret;
 }
 
+function isUuid(value: string | undefined): value is string {
+  return Boolean(
+    value &&
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value)
+  );
+}
+
 // -----------------------------------------------------------------------------
 // CLEAN IN-MEMORY STORES (Populated via live Supabase records or Admin actions)
 // -----------------------------------------------------------------------------
@@ -411,7 +418,7 @@ export async function approveOrderMilestone(
 
   // If Supabase is configured, persist via privileged server client when available
   const dbClient = getServiceSupabase() || supabase;
-  if (isSupabaseConfigured && dbClient) {
+  if (isSupabaseConfigured && dbClient && isUuid(order.id) && isUuid(milestone.id)) {
     try {
       await dbClient
         .from("order_milestones")
@@ -608,7 +615,7 @@ export async function createOrder(
       customerRecord = existing;
     } else {
       const newCust: CustomerRecord = {
-        id: `cust-${Date.now()}`,
+        id: crypto.randomUUID(),
         companyName: payload.newCustomer.companyName,
         primaryContactName: payload.newCustomer.primaryContactName,
         email: payload.newCustomer.email.toLowerCase(),
@@ -654,12 +661,12 @@ export async function createOrder(
 
   // 3. Create Order Record
   const now = new Date().toISOString();
-  const orderId = `ord-${Date.now()}`;
+  const orderId = crypto.randomUUID();
   const orderNumber = `ORD-2026-${Math.floor(1000 + Math.random() * 9000)}`;
   const token = generateClientAccessToken(orderId, customerId, now);
 
   const orderMilestones: OrderMilestoneRecord[] = payload.milestones.map((m, idx) => ({
-    id: `ms-${orderId}-${idx + 1}`,
+    id: crypto.randomUUID(),
     orderId,
     milestoneIndex: idx + 1,
     title: m.title,
@@ -698,7 +705,7 @@ export async function createOrder(
 
   // Sync with Supabase if online
   const dbClient = getServiceSupabase() || supabase;
-  if (isSupabaseConfigured && dbClient) {
+  if (isSupabaseConfigured && dbClient && isUuid(newOrder.id) && isUuid(newOrder.customerId)) {
     try {
       await dbClient.from("orders").insert([
         {
@@ -788,7 +795,7 @@ export async function updateOrder(
   order.updatedAt = new Date().toISOString();
 
   const dbClient = getServiceSupabase() || supabase;
-  if (isSupabaseConfigured && dbClient) {
+  if (isSupabaseConfigured && dbClient && isUuid(order.id)) {
     try {
       await dbClient
         .from("orders")
@@ -827,7 +834,7 @@ export async function deleteOrder(id: string, actor: string = "Admin"): Promise<
   ordersStore.splice(index, 1);
 
   const dbClient = getServiceSupabase() || supabase;
-  if (isSupabaseConfigured && dbClient) {
+  if (isSupabaseConfigured && dbClient && isUuid(id)) {
     try {
       await dbClient.from("orders").delete().eq("id", id);
     } catch {}

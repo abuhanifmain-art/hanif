@@ -16,6 +16,16 @@ import { supabase, isSupabaseConfigured } from "./supabase";
 import { getServiceSupabase } from "./supabase-admin";
 import { InquiryRecord } from "./admin-leads-exporter";
 
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function isUuid(value: string | undefined): value is string {
+  return Boolean(value && UUID_PATTERN.test(value));
+}
+
+function generateUuid(): string {
+  return globalThis.crypto.randomUUID();
+}
+
 let dynamicProfileStore: ProfileData = normalizeProfile(initialProfile);
 
 function normalizeProfile(partial?: Partial<ProfileData> & { social_links?: Record<string, unknown> }): ProfileData {
@@ -78,8 +88,9 @@ export async function getProfile(): Promise<ProfileData> {
       const { data, error } = await supabase
         .from("profiles")
         .select("*")
+        .order("updated_at", { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
       if (!error && data) {
         const rawSocial = (data.social_links || {}) as Record<string, unknown>;
         const ext = (typeof rawSocial._extended === "object" && rawSocial._extended !== null
@@ -165,6 +176,7 @@ export async function updateProfileSettings(
       const { data: existing } = await dbClient
         .from("profiles")
         .select("id")
+        .order("updated_at", { ascending: false })
         .limit(1)
         .maybeSingle();
 
@@ -235,7 +247,7 @@ export async function getAllProjectsAdmin(): Promise<ProjectItem[]> {
 export async function createProject(
   projectData: Partial<ProjectItem>
 ): Promise<ProjectItem> {
-  const id = projectData.id || `proj-${Date.now()}`;
+  const id = projectData.id || generateUuid();
   const slug =
     projectData.slug ||
     (projectData.title || "project")
@@ -333,7 +345,8 @@ export async function updateProject(
       if (updates.imageUrl !== undefined) dbUpdates.image_url = updates.imageUrl || null;
       if (updates.screenshots !== undefined) dbUpdates.screenshots = updates.screenshots;
 
-      await dbClient.from("projects").update(dbUpdates).eq("id", current.id);
+      const [matchCol, matchVal] = isUuid(current.id) ? ["id", current.id] : ["slug", current.slug];
+      await dbClient.from("projects").update(dbUpdates).eq(matchCol, matchVal);
     } catch {
       // Graceful fallback
     }
@@ -343,14 +356,16 @@ export async function updateProject(
 }
 
 export async function deleteProject(id: string): Promise<boolean> {
+  const target = dynamicProjectsStore.find((p) => p.id === id || p.slug === id);
   const prevLen = dynamicProjectsStore.length;
   dynamicProjectsStore = dynamicProjectsStore.filter((p) => p.id !== id && p.slug !== id);
   const deleted = dynamicProjectsStore.length < prevLen;
 
   const dbClient = getServiceSupabase() || supabase;
-  if (deleted && dbClient) {
+  if (deleted && dbClient && target) {
     try {
-      await dbClient.from("projects").delete().eq("id", id);
+      const [matchCol, matchVal] = isUuid(target.id) ? ["id", target.id] : ["slug", target.slug];
+      await dbClient.from("projects").delete().eq(matchCol, matchVal);
     } catch {
       // Graceful fallback
     }
@@ -400,6 +415,7 @@ export async function getProjects(): Promise<ProjectItem[]> {
           if (isLegacySeedRow && initMatch) {
             return {
               ...initMatch,
+              id: item.id || initMatch.id,
               imageUrl: item.image_url || item.thumbnail_url || initMatch.imageUrl,
               screenshots:
                 item.screenshots && item.screenshots.length > 0
@@ -484,7 +500,7 @@ export async function getAllServicesAdmin(): Promise<ServicePricing[]> {
 }
 
 export async function createService(serviceData: Omit<ServicePricing, "id"> & { id?: string }): Promise<ServicePricing> {
-  const id = serviceData.id || `srv-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+  const id = serviceData.id || generateUuid();
   const slug =
     serviceData.slug ||
     serviceData.title
@@ -509,23 +525,20 @@ export async function createService(serviceData: Omit<ServicePricing, "id"> & { 
   const dbClient = getServiceSupabase() || supabase;
   if (isSupabaseConfigured && dbClient) {
     try {
-      dbClient
-        .from("services")
-        .insert([
-          {
-            id: newRecord.id,
-            title: newRecord.title,
-            slug: newRecord.slug,
-            description: newRecord.description,
-            pricing_type: newRecord.pricingType,
-            price_display: newRecord.priceDisplay,
-            timeline: newRecord.timeline,
-            deliverables: newRecord.deliverables,
-            is_popular: newRecord.isPopular,
-            is_active: newRecord.isActive,
-          },
-        ])
-        .then(() => {}, () => {});
+      await dbClient.from("services").insert([
+        {
+          id: newRecord.id,
+          title: newRecord.title,
+          slug: newRecord.slug,
+          description: newRecord.description,
+          pricing_type: newRecord.pricingType,
+          price_display: newRecord.priceDisplay,
+          timeline: newRecord.timeline,
+          deliverables: newRecord.deliverables,
+          is_popular: newRecord.isPopular,
+          is_active: newRecord.isActive,
+        },
+      ]);
     } catch {
       // Graceful fallback
     }
@@ -553,7 +566,8 @@ export async function updateService(
   const dbClient = getServiceSupabase() || supabase;
   if (isSupabaseConfigured && dbClient) {
     try {
-      dbClient
+      const [matchCol, matchVal] = isUuid(current.id) ? ["id", current.id] : ["slug", current.slug];
+      await dbClient
         .from("services")
         .update({
           title: updated.title,
@@ -566,8 +580,7 @@ export async function updateService(
           is_popular: updated.isPopular,
           is_active: updated.isActive,
         })
-        .eq("id", current.id)
-        .then(() => {}, () => {});
+        .eq(matchCol, matchVal);
     } catch {
       // Graceful fallback
     }
@@ -577,14 +590,16 @@ export async function updateService(
 }
 
 export async function deleteService(id: string): Promise<boolean> {
+  const target = dynamicServicesStore.find((s) => s.id === id || s.slug === id);
   const prevLen = dynamicServicesStore.length;
   dynamicServicesStore = dynamicServicesStore.filter((s) => s.id !== id && s.slug !== id);
   const deleted = dynamicServicesStore.length < prevLen;
 
   const dbClient = getServiceSupabase() || supabase;
-  if (deleted && isSupabaseConfigured && dbClient) {
+  if (deleted && isSupabaseConfigured && dbClient && target) {
     try {
-      dbClient.from("services").delete().eq("id", id).then(() => {}, () => {});
+      const [matchCol, matchVal] = isUuid(target.id) ? ["id", target.id] : ["slug", target.slug];
+      await dbClient.from("services").delete().eq(matchCol, matchVal);
     } catch {
       // Graceful fallback
     }
@@ -647,6 +662,7 @@ export async function getServices(): Promise<ServicePricing[]> {
           if (item && !isLegacySeedService) {
             return {
               ...service,
+              id: item.id || service.id,
               title: item.title || service.title,
               description: item.description || service.description,
               pricingType: item.pricing_type || service.pricingType,
@@ -711,7 +727,7 @@ export async function getAllBlogPostsAdmin(): Promise<BlogPost[]> {
 export async function createBlogPost(
   postData: Partial<BlogPost>
 ): Promise<BlogPost> {
-  const id = postData.id || `blog-${Date.now()}`;
+  const id = postData.id || generateUuid();
   const slug =
     postData.slug ||
     (postData.title || "article")
@@ -797,7 +813,8 @@ export async function updateBlogPost(
       if (updates.publishedAt !== undefined)
         dbUpdates.published_at = updates.publishedAt;
 
-      await dbClient.from("blog_posts").update(dbUpdates).eq("id", current.id);
+      const [matchCol, matchVal] = isUuid(current.id) ? ["id", current.id] : ["slug", current.slug];
+      await dbClient.from("blog_posts").update(dbUpdates).eq(matchCol, matchVal);
     } catch {
       // Graceful fallback
     }
@@ -807,14 +824,16 @@ export async function updateBlogPost(
 }
 
 export async function deleteBlogPost(id: string): Promise<boolean> {
+  const target = dynamicBlogStore.find((b) => b.id === id || b.slug === id);
   const prevLen = dynamicBlogStore.length;
   dynamicBlogStore = dynamicBlogStore.filter((b) => b.id !== id && b.slug !== id);
   const deleted = dynamicBlogStore.length < prevLen;
 
   const dbClient = getServiceSupabase() || supabase;
-  if (deleted && dbClient) {
+  if (deleted && dbClient && target) {
     try {
-      await dbClient.from("blog_posts").delete().eq("id", id);
+      const [matchCol, matchVal] = isUuid(target.id) ? ["id", target.id] : ["slug", target.slug];
+      await dbClient.from("blog_posts").delete().eq(matchCol, matchVal);
     } catch {
       // Graceful fallback
     }
@@ -961,7 +980,7 @@ export async function updateInquiryStatus(
   dynamicInquiriesStore[index] = updated;
 
   const dbClient = getServiceSupabase() || supabase;
-  if (dbClient) {
+  if (dbClient && isUuid(id)) {
     try {
       await dbClient.from("inquiries").update({ status }).eq("id", id);
     } catch {}
@@ -976,7 +995,7 @@ export async function deleteInquiry(id: string): Promise<boolean> {
   const deleted = dynamicInquiriesStore.length < prevLen;
 
   const dbClient = getServiceSupabase() || supabase;
-  if (dbClient) {
+  if (dbClient && isUuid(id)) {
     try {
       await dbClient.from("inquiries").delete().eq("id", id);
     } catch {}

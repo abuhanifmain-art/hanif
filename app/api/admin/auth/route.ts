@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
+  getAdminSecret,
   validatePasscode,
   createSessionToken,
   COOKIE_NAME,
@@ -110,7 +111,19 @@ export async function POST(request: NextRequest) {
 
     const { passcode, totpCode } = body;
 
-    // 3. Factor 1: Master Passcode Constant-Time Verification
+    // 3. Verify ADMIN_SECRET_KEY is present in server runtime (distinguish missing runtime env from wrong passcode)
+    if (!getAdminSecret()) {
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            "Server runtime error: ADMIN_SECRET_KEY is not set in runtime environment variables. If using Cloudflare, add it under Runtime Settings -> Variables and secrets (not only Build settings) and redeploy.",
+        },
+        { status: 503, headers: rateCheck.headers }
+      );
+    }
+
+    // 4. Factor 1: Master Passcode Constant-Time Verification
     if (!validatePasscode(passcode)) {
       const current = ipStrikeRegistry.get(ip);
       const strikes = (current && Date.now() - current.lastStrike < 15 * 60 * 1000)

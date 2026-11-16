@@ -64,4 +64,26 @@ describe("Admin Authentication API Route (/api/admin/auth)", () => {
     const json = await res.json();
     expect(json.authenticated).toBe(true);
   });
+
+  it("should return 503 with clear runtime config guidance when ADMIN_SECRET_KEY is missing", async () => {
+    const prevSecret = process.env.ADMIN_SECRET_KEY;
+    delete process.env.ADMIN_SECRET_KEY;
+
+    try {
+      const req = new NextRequest("http://localhost:3000/api/admin/auth", {
+        method: "POST",
+        headers: { "x-real-ip": "203.0.113.55" },
+        body: JSON.stringify({ passcode: "any-passcode-123" }),
+      });
+
+      const res = await POST(req);
+      expect(res.status).toBe(503);
+
+      const json = await res.json();
+      expect(json.success).toBe(false);
+      expect(json.error).toContain("ADMIN_SECRET_KEY");
+    } finally {
+      process.env.ADMIN_SECRET_KEY = prevSecret;
+    }
+  });
 });

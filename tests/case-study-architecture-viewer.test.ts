@@ -155,25 +155,27 @@ describe("Case Study Interactive Architecture Engine", () => {
   });
 
   describe("Case Study SVG Architectural Visual Parity", () => {
-    it("verifies every project in initialProjects has a valid imageUrl pointing to an existing SVG file on disk", () => {
-      expect(initialProjects.length).toBe(7);
+    it("verifies every project in initialProjects has a valid imageUrl pointing to an existing visual asset on disk", () => {
+      expect(initialProjects.length).toBeGreaterThanOrEqual(7);
 
       initialProjects.forEach((proj) => {
         expect(proj.imageUrl).toBeDefined();
-        expect(proj.imageUrl).toMatch(/^\/images\/projects\/[a-z0-9\-]+\.svg$/);
+        expect(proj.imageUrl).toMatch(/^\/images\/[a-z0-9\-/]+\.(svg|png|jpg|jpeg|webp)$/);
 
         const relativePath = proj.imageUrl!.replace(/^\//, "");
         const absolutePath = path.join(process.cwd(), "public", relativePath);
         expect(fs.existsSync(absolutePath)).toBe(true);
 
-        const fileContent = fs.readFileSync(absolutePath, "utf-8");
-        expect(fileContent).toContain("<svg");
-        expect(fileContent).toContain('viewBox="0 0 1200 630"');
-        expect(fileContent).toContain("Abu Hanif");
+        if (proj.imageUrl!.endsWith(".svg")) {
+          const fileContent = fs.readFileSync(absolutePath, "utf-8");
+          expect(fileContent).toContain("<svg");
+          expect(fileContent).toContain('viewBox="0 0 1200 630"');
+          expect(fileContent).toContain("Abu Hanif");
+        }
       });
     });
 
-    it("verifies every project has a screenshots array containing its primary SVG diagram", () => {
+    it("verifies every project has a screenshots array containing its primary visual asset", () => {
       initialProjects.forEach((proj) => {
         expect(proj.screenshots).toBeDefined();
         expect(proj.screenshots!.length).toBeGreaterThanOrEqual(1);
@@ -181,8 +183,9 @@ describe("Case Study Interactive Architecture Engine", () => {
       });
     });
 
-    it("verifies complete ecosystem mapping for all 7 project slugs with valid targets", () => {
+    it("verifies complete ecosystem mapping for all core project slugs with valid targets", () => {
       const expectedSlugs = [
+        "nexus-calculator-platform",
         "financial-telemetry-pipeline",
         "cloudflare-edge-ecommerce",
         "enterprise-ai-document-search",

@@ -2,17 +2,22 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { isSupabaseConfigured, supabase } from "../../lib/supabase";
+import { ProfileData } from "../../data/portfolio-data";
 
-export default function HomeSidebar() {
+export default function HomeSidebar({ profile }: { profile?: ProfileData }) {
+  const email = profile?.email || "abuhanifmain@gmail.com";
+  const phone = profile?.phone || "+880 1724-010261";
+  const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
+  const location = profile?.location || "Sadar Upazila, Kishoreganj, Dhaka, Bangladesh";
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    projectType: "Full-Stack Web App",
-    budget: "$5,000 - $15,000",
+    projectType: "Full-Time Job / Interview Inquiry",
+    budget: "Flexible / Discuss",
     message: "",
-    disclaimer: true,
+    disclaimer: false,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,6 +26,10 @@ export default function HomeSidebar() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!formData.disclaimer) {
+      setErrorMessage("Please confirm GDPR privacy consent before submitting.");
+      return;
+    }
     setIsSubmitting(true);
     setErrorMessage(null);
 
@@ -34,7 +43,6 @@ export default function HomeSidebar() {
     };
 
     try {
-      // 1. Submit through validated server API
       const res = await fetch("/api/inquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -43,10 +51,9 @@ export default function HomeSidebar() {
 
       const result = await res.json();
       if (!res.ok || !result.success) {
-        throw new Error(result.error || "Failed to submit consultation inquiry.");
+        throw new Error(result.error || "Failed to submit inquiry.");
       }
 
-      // 2. Also cache locally for instant offline admin review
       if (typeof window !== "undefined") {
         const stored = window.localStorage.getItem("abuhanif-inquiries");
         const list = stored ? JSON.parse(stored) : [];
@@ -60,24 +67,11 @@ export default function HomeSidebar() {
       }
 
       setSubmitted(true);
-    } catch (err: any) {
-      // Fallback: save to localStorage if network / server fails
-      if (typeof window !== "undefined") {
-        const stored = window.localStorage.getItem("abuhanif-inquiries");
-        const list = stored ? JSON.parse(stored) : [];
-        list.unshift({
-          ...record,
-          id: `offline-${Date.now()}`,
-          status: "new",
-          createdAt: new Date().toISOString(),
-        });
-        window.localStorage.setItem("abuhanif-inquiries", JSON.stringify(list));
-        setSubmitted(true);
-      } else {
-        setErrorMessage(
-          err.message || "Something went wrong. Please email directly at abuhanifmain@gmail.com."
-        );
-      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Network error submitting form.";
+      setErrorMessage(
+        `${msg} Please email directly at ${email} or call ${phone}.`
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -85,7 +79,7 @@ export default function HomeSidebar() {
 
   return (
     <div className="sidebar secondary-sidebar">
-      {/* Production Track Record */}
+      {/* Work Modes & Availability Card */}
       <div className="widget" id="articles-thumbs">
         <div className="description" style={{ textAlign: "center", padding: "6px 0" }}>
           <div style={{ background: "#0b132b", border: "1px solid #1e293b", color: "#ffffff", padding: "18px 16px", borderRadius: "8px", boxShadow: "0 2px 8px rgba(11,25,44,0.3)" }}>
@@ -98,10 +92,10 @@ export default function HomeSidebar() {
                 letterSpacing: "1px",
               }}
             >
-              Production Track Record
+              UK &amp; Europe Work Availability
             </div>
-            <div style={{ fontSize: "24px", fontWeight: "800", margin: "6px 0", color: "#10b981", letterSpacing: "0.5px" }}>99.99% UPTIME</div>
-            <div style={{ fontSize: "12px", color: "#cbd5e1" }}>50+ Shipped Deployments</div>
+            <div style={{ fontSize: "20px", fontWeight: "800", margin: "6px 0", color: "#10b981", letterSpacing: "0.3px" }}>REMOTE • B2B • ON-SITE</div>
+            <div style={{ fontSize: "12px", color: "#cbd5e1" }}>EN • BN • HI • UR | Direct: {phone}</div>
           </div>
         </div>
       </div>
@@ -109,7 +103,7 @@ export default function HomeSidebar() {
       {/* Contact Form Widget */}
       <div className="widget contactform" id="contactform">
         <strong className="heading4 widget-title">
-          <a href="#contactform">Quick Project Inquiry</a>
+          <a href="#contactform">Direct Contact &amp; Job / Project Inquiry</a>
         </strong>
 
         {submitted ? (
@@ -125,24 +119,24 @@ export default function HomeSidebar() {
             }}
           >
             <strong style={{ display: "block", marginBottom: "6px", fontSize: "14px" }}>
-              ✓ Consultation Request Received
+              ✓ Inquiry Received
             </strong>
-            Thank you! Abu Hanif will review your project requirements and respond within 24 hours.
+            Thank you! Abu Hanif will review your message and respond promptly via {email}.
           </div>
         ) : (
           <form onSubmit={handleSubmit} id="genericcontactform" name="genericcontactform">
             <div className="formdesc">
-              <span className="free-consultation">Quick Project Inquiry</span>
+              <span className="free-consultation">Direct Inquiry</span>
               <span className="phone-numbers">
-                <a href="mailto:abuhanifmain@gmail.com" style={{ color: "#38bdf8", textDecoration: "none" }}>
-                  abuhanifmain@gmail.com
+                <a href={`mailto:${email}`} style={{ color: "#38bdf8", textDecoration: "none" }}>
+                  {email}
                 </a>
                 <br />
-                <a href="tel:+8801724010261" style={{ color: "#38bdf8", textDecoration: "none" }}>
-                  +880 1724-010261
+                <a href={phoneHref} style={{ color: "#38bdf8", textDecoration: "none" }}>
+                  {phone}
                 </a>
                 <br />
-                Sadar Upazila, Kishoreganj, Dhaka, Bangladesh
+                {location}
               </span>
             </div>
             <div className="col-1">
@@ -180,7 +174,7 @@ export default function HomeSidebar() {
                   autoComplete="tel"
                   id="Phone"
                   name="30_Phone"
-                  placeholder="+1 (555) 000-0000 or +880 1XXX-XXXXXX"
+                  placeholder="+44 7700 900077 or +880 1XXX-XXXXXX"
                   size={40}
                   type="tel"
                   value={formData.phone}
@@ -189,25 +183,24 @@ export default function HomeSidebar() {
               </span>
             </div>
             <span className="option">
-              <label htmlFor="CaseType">Scope / Project Type:</label>
+              <label htmlFor="CaseType">Inquiry Type / Scope:</label>
               <select
                 id="CaseType"
                 name="project_scope"
-                aria-label="Project Scope"
+                aria-label="Inquiry Type"
                 value={formData.projectType}
                 onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
               >
-                <option value="Full-Stack Web App">Full-Stack Web App (Next.js/React)</option>
-                <option value="Cloud & Edge Architecture">Cloud &amp; Edge Architecture</option>
-                <option value="Database Optimization">Database Optimization &amp; Indexing</option>
-                <option value="Architecture & Code Audit">Architecture &amp; Code Audit</option>
-                <option value="Fractional Tech Lead">Fractional Tech Lead Retainer</option>
-                <option value="AI / LLM Integration">AI / LLM Agent Integration</option>
-                <option value="Other Project">Other Technical Scope</option>
+                <option value="Full-Time Job / Interview Inquiry">Full-Time Job / Interview (Remote or On-Site)</option>
+                <option value="Full-Stack Web App">Full-Stack Web App (Next.js/React/TypeScript)</option>
+                <option value="Cloud & Edge Architecture">Cloudflare Pages &amp; Hosting Setup</option>
+                <option value="Database Optimization">PostgreSQL / Supabase Database Work</option>
+                <option value="Dedicated Engineering Retainer">B2B Contract / Retainer</option>
+                <option value="Other Project">Operations / International Service Inquiry</option>
               </select>
             </span>
             <span className="fld">
-              <label htmlFor="budgetRangeInput">Budget Range</label>
+              <label htmlFor="budgetRangeInput">Compensation / Budget Scope</label>
               <select
                 id="budgetRangeInput"
                 name="50_Budget"
@@ -221,19 +214,19 @@ export default function HomeSidebar() {
                   borderRadius: "3px",
                 }}
               >
-                <option value="$2,500 - $5,000">$2,500 – $5,000 (Small Scope / Audit)</option>
-                <option value="$5,000 - $15,000">$5,000 – $15,000 (MVP / Feature Sprint)</option>
-                <option value="$15,000 - $30,000">$15,000 – $30,000 (Full-Stack Platform)</option>
-                <option value="$30,000+">$30,000+ (Enterprise / Retainer)</option>
+                <option value="Flexible / Discuss">Salary / Rate — Flexible (Remote, B2B, On-Site)</option>
+                <option value="$2,500 - $5,000">$2,500 – $5,000 (Small Project / Audit)</option>
+                <option value="$5,000 - $15,000">$5,000 – $15,000 (MVP / Full-Stack Sprint)</option>
+                <option value="$15,000+">$15,000+ (Extended Platform / Retainer)</option>
               </select>
             </span>
             <span className="textarea">
-              <label htmlFor="Message">Project Details</label>
+              <label htmlFor="Message">Message / Role / Project Details</label>
               <textarea
                 cols={20}
                 id="Message"
                 name="60_Message"
-                placeholder="Brief overview of challenges, existing stack, timeline..."
+                placeholder="Share role details, location/remote availability, or web project requirements..."
                 rows={5}
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
@@ -250,9 +243,15 @@ export default function HomeSidebar() {
                 onChange={(e) => setFormData({ ...formData, disclaimer: e.target.checked })}
               />
               <label htmlFor="scf_Disclaimer">
-                <span>I consent to be contacted regarding this project. (Required)</span>
+                <span>
+                  I agree to the{" "}
+                  <Link href="/privacy" style={{ color: "#38bdf8", textDecoration: "underline" }}>
+                    Privacy &amp; GDPR Policy
+                  </Link>{" "}
+                  and consent to be contacted. (Required)
+                </span>
               </label>
-              <p>Direct confidentiality: All shared requirements and architecture specifications remain strictly confidential.</p>
+              <p>Direct confidentiality: Submitted details are used solely to reply to your job or project inquiry.</p>
             </span>
             {errorMessage && (
               <p style={{ color: "#ef4444", fontSize: "12px", marginTop: "6px" }}>{errorMessage}</p>
@@ -282,17 +281,17 @@ export default function HomeSidebar() {
             }}
           >
             <div style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "6px" }}>
-              ⚡ Fast-Track Onboarding
+              ⚡ Quick Hiring &amp; B2B Links
             </div>
             <strong style={{ display: "block", color: "#ffffff", fontSize: "14px", marginBottom: "6px" }}>
-              Need an Immediate Architecture Review?
+              Open to Full-Time Roles &amp; B2B Projects
             </strong>
             <p style={{ margin: "0 0 12px 0", fontSize: "12px", color: "#cbd5e1", lineHeight: 1.5 }}>
-              Book a free 15-minute technical discovery call or build a custom Statement of Work instantly.
+              Download CV / ATS text or configure a fixed-scope Statement of Work for web builds.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               <Link
-                href="/pricing#inquiry"
+                href="/resume"
                 style={{
                   display: "block",
                   padding: "10px",
@@ -305,7 +304,7 @@ export default function HomeSidebar() {
                   boxShadow: "0 2px 6px rgba(37,99,235,0.4)",
                 }}
               >
-                📅 Book 15-Min Discovery Call
+                📄 Open Full CV &amp; Work History
               </Link>
               <Link
                 href="/pricing#sow-builder"
@@ -325,7 +324,7 @@ export default function HomeSidebar() {
               </Link>
             </div>
             <div style={{ marginTop: "10px", fontSize: "11px", color: "#4ade80", fontWeight: 600 }}>
-              ● 24-Hour Guaranteed Response SLA
+              ● Replies directly via {email}
             </div>
           </div>
         </div>
@@ -340,38 +339,36 @@ export default function HomeSidebar() {
           <ul className="toplevel">
             <li className="li2 practiceareasub_11">
               <strong>
-                <Link href="#work">Systems &amp; Architecture</Link>
+                <Link href="#work">Web &amp; Backend Stack</Link>
               </strong>
               <ul>
-                <li className="li1"><Link href="/projects/financial-telemetry-pipeline">Distributed Systems</Link></li>
-                <li className="li2"><Link href="/services/distributed-telemetry-engine">High-Throughput APIs</Link></li>
-                <li className="li3"><Link href="/lab">PostgreSQL Optimization</Link></li>
-                <li className="li4"><Link href="/lab">Cloudflare Edge Architecture</Link></li>
-                <li className="li5"><Link href="/pricing">Zero-Trust Authentication</Link></li>
-                <li className="li6"><Link href="/blog/swapping-microservices-for-modular-monolith">Microservices Decomposition</Link></li>
+                <li className="li1"><Link href="/projects/nexus-calculator-platform">Next.js 15/16 &amp; i18n Apps</Link></li>
+                <li className="li2"><Link href="/blog/nextjs-300-tools-platform-architecture-seo">TypeScript &amp; React 19 UI</Link></li>
+                <li className="li3"><Link href="/lab#postgres-planner">PostgreSQL &amp; Supabase</Link></li>
+                <li className="li4"><Link href="/lab#edge-radar">Cloudflare Pages &amp; SEO</Link></li>
+                <li className="li5"><Link href="/resume">Python, Rust &amp; C++ Study</Link></li>
               </ul>
             </li>
             <li className="li3 practiceareasub_21">
               <strong>
-                <Link href="#work">Frontend &amp; Platform</Link>
+                <Link href="/resume">Operations &amp; Work Experience</Link>
               </strong>
               <ul>
-                <li className="li1"><Link href="/blog/nextjs-16-cloudflare-pages-architecture">Next.js 16 App Router</Link></li>
-                <li className="li2"><Link href="/services/high-converting-landing-pages">React 19 &amp; Server Components</Link></li>
-                <li className="li3"><Link href="/resume">TypeScript Architecture</Link></li>
-                <li className="li4"><Link href="/projects/enterprise-ai-document-search">AI &amp; LLM RAG Pipelines</Link></li>
-                <li className="li5"><Link href="/pricing">CI/CD &amp; Infrastructure as Code</Link></li>
-                <li className="li6"><Link href="/pricing">System Performance Audits</Link></li>
+                <li className="li1"><Link href="/resume">WACASCO Catering, Oman (2022–2025)</Link></li>
+                <li className="li2"><Link href="/resume">PRAN-RFL Group, BD (2018–2022)</Link></li>
+                <li className="li3"><Link href="/resume">Unilever Bangladesh (2017–2018)</Link></li>
+                <li className="li4"><Link href="/resume">HSC Commerce • EIIN 110495</Link></li>
+                <li className="li5"><Link href="/resume">EN • BN • HI • UR Languages</Link></li>
               </ul>
             </li>
           </ul>
         </div>
       </div>
 
-      {/* Client Feedback & Verified Impact Widget */}
+      {/* Verifiable Highlights Widget */}
       <div className="widget amp-include" id="wdgt-feedback">
         <strong className="heading4 widget-title">
-          <a href="#testimonials">Verified Client Impact</a>
+          <Link href="/projects/nexus-calculator-platform">Verifiable Proof &amp; Projects</Link>
         </strong>
         <div className="description" style={{ padding: "4px 0" }}>
           <div
@@ -385,21 +382,21 @@ export default function HomeSidebar() {
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
               <span style={{ fontSize: "11px", fontWeight: "700", color: "#38bdf8", textTransform: "uppercase" }}>
-                Client Satisfaction
+                Public Track Record
               </span>
-              <span style={{ fontSize: "13px", fontWeight: "800", color: "#facc15" }}>
-                ★ 4.9 / 5.0
+              <span style={{ fontSize: "12px", fontWeight: "800", color: "#10b981" }}>
+                100% Verifiable
               </span>
             </div>
             <ul style={{ margin: 0, paddingLeft: "16px", fontSize: "12px", color: "#cbd5e1", lineHeight: "1.6" }}>
-              <li><strong>100% On-Time Delivery:</strong> All milestones delivered to spec</li>
-              <li><strong>-75% P99 Latency:</strong> Apex Telemetry API optimization</li>
-              <li><strong>-64% Cloud Costs:</strong> Synthetix Cloud edge migration</li>
-              <li><strong>10x DB Throughput:</strong> PostgreSQL index &amp; pool tuning</li>
+              <li><strong>NexusCalculator.net:</strong> 312 live tools in 4 languages</li>
+              <li><strong>Programming Hero 2025:</strong> Batch-12 (WEB12-3991)</li>
+              <li><strong>Oman &amp; BD Work History:</strong> 7+ yrs verified roles</li>
+              <li><strong>Open Work Mode:</strong> Remote, B2B &amp; On-Site</li>
             </ul>
           </div>
           <Link
-            href="#testimonials"
+            href="/resume"
             style={{
               display: "block",
               textAlign: "center",
@@ -413,7 +410,7 @@ export default function HomeSidebar() {
               textDecoration: "none",
             }}
           >
-            Read All Verified Endorsements &rsaquo;
+            Inspect Full CV &amp; Background &rsaquo;
           </Link>
         </div>
       </div>

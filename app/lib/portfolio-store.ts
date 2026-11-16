@@ -16,6 +16,62 @@ import { supabase, isSupabaseConfigured } from "./supabase";
 import { getServiceSupabase } from "./supabase-admin";
 import { InquiryRecord } from "./admin-leads-exporter";
 
+let dynamicProfileStore: ProfileData = normalizeProfile(initialProfile);
+
+function normalizeProfile(partial?: Partial<ProfileData> & { social_links?: Record<string, unknown> }): ProfileData {
+  const source = partial || {};
+  const rawSocial = (source.socialLinks || source.social_links || {}) as Record<string, unknown>;
+  const extendedFromSocial = (typeof rawSocial._extended === "object" && rawSocial._extended !== null
+    ? rawSocial._extended
+    : {}) as Partial<ProfileData>;
+
+  const { _extended: _dropExtended, ...cleanSocialLinks } = rawSocial;
+  void _dropExtended;
+
+  const mergedVisual = source.visualAssets || extendedFromSocial.visualAssets;
+  const mergedLegal = source.legalGdpr || extendedFromSocial.legalGdpr;
+
+  return {
+    fullName: source.fullName || initialProfile.fullName,
+    kicker: source.kicker || initialProfile.kicker,
+    headline: source.headline || initialProfile.headline,
+    bio: source.bio || initialProfile.bio,
+    email: source.email || initialProfile.email,
+    phone: source.phone || initialProfile.phone,
+    location: source.location || initialProfile.location,
+    availabilityStatus: source.availabilityStatus || initialProfile.availabilityStatus,
+    isAvailable: typeof source.isAvailable === "boolean" ? source.isAvailable : initialProfile.isAvailable,
+    socialLinks: {
+      github: typeof cleanSocialLinks.github === "string" ? cleanSocialLinks.github : initialProfile.socialLinks.github,
+      linkedin: typeof cleanSocialLinks.linkedin === "string" ? cleanSocialLinks.linkedin : initialProfile.socialLinks.linkedin,
+      twitter: typeof cleanSocialLinks.twitter === "string" ? cleanSocialLinks.twitter : initialProfile.socialLinks.twitter,
+      facebook: typeof cleanSocialLinks.facebook === "string" ? cleanSocialLinks.facebook : initialProfile.socialLinks.facebook,
+      instagram: typeof cleanSocialLinks.instagram === "string" ? cleanSocialLinks.instagram : initialProfile.socialLinks.instagram,
+      discord: typeof cleanSocialLinks.discord === "string" ? cleanSocialLinks.discord : initialProfile.socialLinks.discord,
+    },
+    spokenLanguages:
+      source.spokenLanguages || extendedFromSocial.spokenLanguages || initialProfile.spokenLanguages,
+    workPreferences:
+      source.workPreferences || extendedFromSocial.workPreferences || initialProfile.workPreferences,
+    educationHistory:
+      source.educationHistory || extendedFromSocial.educationHistory || initialProfile.educationHistory,
+    workHistory:
+      source.workHistory || extendedFromSocial.workHistory || initialProfile.workHistory,
+    visualAssets: {
+      ...initialProfile.visualAssets,
+      ...(mergedVisual || {}),
+      heroSlides:
+        mergedVisual?.heroSlides && mergedVisual.heroSlides.length > 0
+          ? mergedVisual.heroSlides
+          : initialProfile.visualAssets.heroSlides,
+    },
+    legalGdpr: {
+      ...initialProfile.legalGdpr,
+      ...(mergedLegal || {}),
+    },
+  };
+}
+
 export async function getProfile(): Promise<ProfileData> {
   if (isSupabaseConfigured && supabase) {
     try {
@@ -25,7 +81,23 @@ export async function getProfile(): Promise<ProfileData> {
         .limit(1)
         .single();
       if (!error && data) {
-        return {
+        const rawSocial = (data.social_links || {}) as Record<string, unknown>;
+        const ext = (typeof rawSocial._extended === "object" && rawSocial._extended !== null
+          ? rawSocial._extended
+          : {}) as Record<string, unknown>;
+        const hasAdminEdit = Boolean(ext.adminEditedAt);
+        const looksLikeStaleLegacySeed =
+          !hasAdminEdit &&
+          (String(data.kicker || "").includes("Staff Software") ||
+            String(data.bio || "").includes("9+ years") ||
+            data.email === "contact@abuhanif.dev" ||
+            data.email === "contact@abuhanifmia.com");
+
+        if (looksLikeStaleLegacySeed) {
+          return dynamicProfileStore;
+        }
+
+        const normalized = normalizeProfile({
           fullName: data.full_name,
           kicker: data.kicker,
           headline: data.headline,
@@ -35,14 +107,106 @@ export async function getProfile(): Promise<ProfileData> {
           location: data.location,
           availabilityStatus: data.availability_status,
           isAvailable: data.is_available,
-          socialLinks: data.social_links || initialProfile.socialLinks,
-        };
+          social_links: data.social_links,
+        });
+        dynamicProfileStore = normalized;
+        return normalized;
       }
     } catch {
-      // Fallback to static
+      // Fallback to in-memory/static
     }
   }
-  return initialProfile;
+  return dynamicProfileStore;
+}
+
+export async function updateProfileSettings(
+  updates: Partial<ProfileData>
+): Promise<ProfileData> {
+  const current = await getProfile();
+  const merged = normalizeProfile({
+    ...current,
+    ...updates,
+    socialLinks: {
+      ...current.socialLinks,
+      ...(updates.socialLinks || {}),
+    },
+    visualAssets: {
+      ...current.visualAssets,
+      ...(updates.visualAssets || {}),
+      heroSlides:
+        updates.visualAssets?.heroSlides && updates.visualAssets.heroSlides.length > 0
+          ? updates.visualAssets.heroSlides
+          : current.visualAssets.heroSlides,
+    },
+    legalGdpr: {
+      ...current.legalGdpr,
+      ...(updates.legalGdpr || {}),
+    },
+  });
+
+  dynamicProfileStore = merged;
+
+  const dbClient = getServiceSupabase() || supabase;
+  if (dbClient) {
+    try {
+      const socialLinksPayload = {
+        ...merged.socialLinks,
+        _extended: {
+          adminEditedAt: new Date().toISOString(),
+          spokenLanguages: merged.spokenLanguages,
+          workPreferences: merged.workPreferences,
+          educationHistory: merged.educationHistory,
+          workHistory: merged.workHistory,
+          visualAssets: merged.visualAssets,
+          legalGdpr: merged.legalGdpr,
+        },
+      };
+
+      const { data: existing } = await dbClient
+        .from("profiles")
+        .select("id")
+        .limit(1)
+        .maybeSingle();
+
+      if (existing?.id) {
+        await dbClient
+          .from("profiles")
+          .update({
+            full_name: merged.fullName,
+            kicker: merged.kicker,
+            headline: merged.headline,
+            bio: merged.bio,
+            email: merged.email,
+            phone: merged.phone,
+            location: merged.location,
+            availability_status: merged.availabilityStatus,
+            is_available: merged.isAvailable,
+            social_links: socialLinksPayload,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", existing.id);
+      } else {
+        await dbClient.from("profiles").insert([
+          {
+            full_name: merged.fullName,
+            kicker: merged.kicker,
+            headline: merged.headline,
+            bio: merged.bio,
+            email: merged.email,
+            phone: merged.phone,
+            location: merged.location,
+            availability_status: merged.availabilityStatus,
+            is_available: merged.isAvailable,
+            social_links: socialLinksPayload,
+          },
+        ]);
+      }
+    } catch {
+      // Keep updated in-memory profile store if RLS blocks DB write without service key
+    }
+  }
+
+  return merged;
 }
 
 export async function getCompetencies(): Promise<Competency[]> {
@@ -201,6 +365,19 @@ export async function toggleProjectPublished(id: string): Promise<ProjectItem | 
   return updateProject(match.id, { published: !match.published });
 }
 
+const LEGACY_SEED_CLIENT_NAMES = new Set([
+  "Apex Telemetry Labs",
+  "Synthetix Retail",
+  "OmniCore Systems",
+  "Nexus Cloud Platform",
+  "Fintech Venture",
+  "Retail Holdings",
+  "Enterprise Software Corp",
+  "B2B SaaS Group",
+  "Developer Tooling Startup",
+  "Logistics Platform",
+]);
+
 export async function getProjects(): Promise<ProjectItem[]> {
   const dbClient = getServiceSupabase() || supabase;
   if (dbClient) {
@@ -214,6 +391,23 @@ export async function getProjects(): Promise<ProjectItem[]> {
         const initialMap = new Map(initialProjects.map((p) => [p.slug, p]));
         const supabaseProjects: ProjectItem[] = data.map((item) => {
           const initMatch = initialMap.get(item.slug);
+          const isLegacySeedRow =
+            Boolean(initMatch) &&
+            (LEGACY_SEED_CLIENT_NAMES.has(String(item.client_name || "")) ||
+              String(item.summary || "").includes("12M events") ||
+              String(item.description_markdown || "").includes("12,000,000 events"));
+
+          if (isLegacySeedRow && initMatch) {
+            return {
+              ...initMatch,
+              imageUrl: item.image_url || item.thumbnail_url || initMatch.imageUrl,
+              screenshots:
+                item.screenshots && item.screenshots.length > 0
+                  ? item.screenshots
+                  : initMatch.screenshots,
+            };
+          }
+
           return {
             id: item.id,
             title: item.title,
@@ -254,7 +448,11 @@ export async function getProjects(): Promise<ProjectItem[]> {
         }
         for (const initProj of initialProjects) {
           if (!existingSlugs.has(initProj.slug) && !merged.some((m) => m.slug === initProj.slug)) {
-            merged.push(initProj);
+            if (initProj.slug === "nexus-calculator-platform") {
+              merged.unshift(initProj);
+            } else {
+              merged.push(initProj);
+            }
           }
         }
         return merged;
@@ -439,7 +637,11 @@ export async function getServices(): Promise<ServicePricing[]> {
 
         dynamicServicesStore = dynamicServicesStore.map((service) => {
           const item = supabaseMap.get(service.slug);
-          if (item) {
+          const isLegacySeedService =
+            item &&
+            (String(item.title || "").includes("Fractional Staff") ||
+              (item.slug === "architecture-audit" && item.price_display === "$3,500"));
+          if (item && !isLegacySeedService) {
             return {
               ...service,
               title: item.title || service.title,

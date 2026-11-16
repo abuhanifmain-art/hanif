@@ -377,7 +377,7 @@ export default function CommandPalette() {
                   color: "#1e293b",
                 }}
               >
-                <span>🟢 <strong>Live Systems Status &amp; Edge PoP Health</strong> (99.99% SLA)</span>
+                <span>🟢 <strong>Live Systems Status &amp; Edge Diagnostics</strong> (Diagnostics)</span>
                 <span style={{ fontSize: "11px", color: "#10b981", fontWeight: "bold" }}>Status Dashboard</span>
               </Command.Item>
             </Command.Group>
@@ -407,7 +407,7 @@ export default function CommandPalette() {
                   color: "#1e293b",
                 }}
               >
-                <span>🎓 <strong>Programming Hero Certificate of Excellence</strong> (Batch-12 • WEB12-3991)</span>
+                <span>🎓 <strong>Programming Hero Web Development Course (2025)</strong> (Batch-12 • WEB12-3991)</span>
                 <span style={{ fontSize: "11px", color: "#2563eb", fontWeight: "bold" }}>Inspect ↗</span>
               </Command.Item>
 
@@ -424,8 +424,8 @@ export default function CommandPalette() {
                   color: "#1e293b",
                 }}
               >
-                <span>🏛️ <strong>Bachelor of Science in Computer Science &amp; Engineering</strong> (4-Year Formal Degree)</span>
-                <span style={{ fontSize: "11px", color: "#64748b" }}>B.Sc. CSE</span>
+                <span>🏛️ <strong>HSC in Commerce — Wali Neowaj Khan College</strong> (EIIN: 110495, 2016–2017)</span>
+                <span style={{ fontSize: "11px", color: "#64748b" }}>HSC Commerce</span>
               </Command.Item>
 
               <Command.Item
@@ -441,8 +441,8 @@ export default function CommandPalette() {
                   color: "#1e293b",
                 }}
               >
-                <span>📜 <strong>freeCodeCamp Certified</strong> (JS Algorithms, TypeScript, Python)</span>
-                <span style={{ fontSize: "11px", color: "#64748b" }}>Verified</span>
+                <span>📜 <strong>freeCodeCamp Self-Study</strong> (TypeScript, Python, Rust, C++)</span>
+                <span style={{ fontSize: "11px", color: "#64748b" }}>Self-Learned</span>
               </Command.Item>
             </Command.Group>
 
@@ -584,6 +584,51 @@ export default function CommandPalette() {
                 </Command.Item>
               ))}
             </Command.Group>
+            {/* Legal & GDPR */}
+            <Command.Group
+              heading="Legal & Privacy Compliance"
+              style={{
+                color: "#2563eb",
+                fontSize: "11px",
+                fontWeight: "800",
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                padding: "10px 8px 4px 8px",
+              }}
+            >
+              <Command.Item
+                onSelect={() => runCommand(() => router.push("/privacy"))}
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontSize: "13.5px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  color: "#1e293b",
+                }}
+              >
+                <span>🔒 <strong>Privacy Policy &amp; UK/EU GDPR Notice</strong></span>
+                <span style={{ fontSize: "11px", color: "#64748b" }}>/privacy</span>
+              </Command.Item>
+              <Command.Item
+                onSelect={() => runCommand(() => router.push("/terms"))}
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontSize: "13.5px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  color: "#1e293b",
+                }}
+              >
+                <span>📄 <strong>Terms of Service &amp; B2B Engagement Terms</strong></span>
+                <span style={{ fontSize: "11px", color: "#64748b" }}>/terms</span>
+              </Command.Item>
+            </Command.Group>
           </Command.List>
 
           {/* Footer Bar */}
@@ -629,7 +674,7 @@ export default function CommandPalette() {
                 Pricing
               </button>
             </div>
-            <span style={{ fontSize: "11px" }}>Abu Hanif • Staff Engineer</span>
+            <span style={{ fontSize: "11px" }}>Abu Hanif • Full-Stack Developer</span>
           </div>
         </Command>
       </div>

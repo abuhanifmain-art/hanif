@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ProfileData, initialProfile } from "../../data/portfolio-data";
 
 interface HeroSlide {
   id: string;
@@ -14,51 +15,32 @@ interface HeroSlide {
   tag: string;
 }
 
-const heroSlides: HeroSlide[] = [
-  {
-    id: "command-center",
-    imageSrc: "/images/hero/hero-slide-1.jpg",
-    alt: "MD Abu Hanif Mia actively typing on mechanical keyboard at command center with dual curved monitors displaying Go and Rust code",
-    shortLabel: "Command Center",
-    title: "Distributed Systems & Telemetry Hub",
-    subtitle: "Go • Rust • Concurrency • Real-Time WebSockets",
-    tag: "01 / Systems",
-  },
-  {
-    id: "edge-studio",
-    imageSrc: "/images/hero/hero-slide-2.jpg",
-    alt: "MD Abu Hanif Mia typing on laptop connected to 4K monitor displaying Next.js and Cloudflare dashboard in sunlit tech studio",
-    shortLabel: "Edge Studio",
-    title: "Next.js 16 & Cloudflare Edge Studio",
-    subtitle: "App Router • React 19 • Cloudflare V8 Isolates",
-    tag: "02 / Edge",
-  },
-  {
-    id: "postgres-lab",
-    imageSrc: "/images/hero/hero-slide-3.jpg",
-    alt: "MD Abu Hanif Mia standing at motorized standing desk typing while analyzing PostgreSQL EXPLAIN ANALYZE execution trees",
-    shortLabel: "Postgres Lab",
-    title: "PostgreSQL Performance & Query Lab",
-    subtitle: "EXPLAIN ANALYZE • Index Optimization • PgBouncer",
-    tag: "03 / Databases",
-  },
-  {
-    id: "executive-study",
-    imageSrc: "/images/hero/hero-slide-4.jpg",
-    alt: "MD Abu Hanif Mia seated at executive walnut desk typing on wireless keyboard with 49-inch curved ultrawide monitor displaying microservice topology at dusk",
-    shortLabel: "Executive Study",
-    title: "Systems Architecture & Technical Strategy",
-    subtitle: "System Design • RFC Reviews • Fractional Architect",
-    tag: "04 / Strategy",
-  },
-];
+const defaultShortLabels = ["Web Dev Studio", "NexusCalculator", "Systems Study", "UK & EU Ready"];
+const defaultTags = ["01 / Full-Stack", "02 / Live App", "03 / CS & DB", "04 / UK & EU"];
+
+function buildHeroSlides(profile?: ProfileData): HeroSlide[] {
+  const configuredSlides =
+    profile?.visualAssets?.heroSlides && profile.visualAssets.heroSlides.length > 0
+      ? profile.visualAssets.heroSlides
+      : initialProfile.visualAssets.heroSlides;
+
+  return configuredSlides.map((s, idx) => ({
+    id: s.id || `slide-${idx + 1}`,
+    imageSrc: s.src || `/images/hero/hero-slide-${(idx % 4) + 1}.jpg`,
+    alt: s.alt,
+    shortLabel: defaultShortLabels[idx] || `Slide ${idx + 1}`,
+    title: s.title,
+    subtitle: s.subtitle,
+    tag: defaultTags[idx] || `0${idx + 1} / Portfolio`,
+  }));
+}
 
 const valueProps = [
-  "10x PostgreSQL Query Throughput via Composite & Partial Indexing",
-  "99.99% Production Uptime SLA Across 10M+ Daily Requests",
-  "Sub-25ms Global P99 Latency on Cloudflare Pages Edge",
-  "Reduced Cloud Infrastructure Spend by 64% via V8 Isolates",
-  "Zero Security Incidents Across 3.5M Enterprise Identities",
+  "Creator of NexusCalculator.net (312 Tools • 4 Languages • Next.js)",
+  "Open to Remote, B2B Contract & On-Site / Relocation in UK & Europe",
+  "Programming Hero Graduate (2025, Batch-12) & freeCodeCamp Self-Study",
+  "Spoken Languages: Bengali (Native), English, Hindi & Urdu (Conv.)",
+  "7+ Years International Ops & Client Service (Oman & Bangladesh)",
 ];
 
 interface TerminalCommand {
@@ -71,21 +53,28 @@ const defaultCommands: TerminalCommand[] = [
   {
     label: "Edge Ping",
     cmd: "curl -sI /api/ping",
-    output: "HTTP/2 200 OK • Region: DAC • Live Cloudflare Edge • TTFB: 18ms",
+    output: "HTTP/2 200 OK • Ready to measure live browser TTFB via /api/ping",
   },
   {
-    label: "Postgres Tuning",
-    cmd: "SELECT query, calls, mean_exec_time FROM pg_stat_statements ORDER BY total_exec_time DESC LIMIT 1;",
-    output: "idx_orders_composite hit 100% • sequential scans: 0 • p99: 4.2ms",
+    label: "NexusCalculator",
+    cmd: "cat lib/registry/index.ts | wc -l # nexuscalculator.net",
+    output: "312 interactive calculators & dev tools • 3,200+ SSG pages (EN/ES/FR/DE)",
   },
   {
-    label: "Rust Concurrency",
-    cmd: "tokio::runtime::Builder::new_multi_thread().worker_threads(8).build()",
-    output: "Thread pool initialized • 12,000,000 events/sec channel capacity",
+    label: "Tech Study",
+    cmd: "profile --education --languages --work-modes",
+    output: "HSC Commerce • PH 2025 • freeCodeCamp (TS/Python/Rust/C++) • UK & EU Ready",
   },
 ];
 
-export default function HeroBanner() {
+export default function HeroBanner({ profile }: { profile?: ProfileData }) {
+  const heroSlides = buildHeroSlides(profile);
+  const profilePhoto = profile?.visualAssets?.profilePhotoUrl || "/images/profile.png";
+  const displayName = profile?.fullName || "MD Abu Hanif Mia";
+  const displayHeadline =
+    profile?.headline ||
+    "Next.js & TypeScript Builder • Multi-Sector Operations • Open to UK & Europe";
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [activeValueProp, setActiveValueProp] = useState(0);
@@ -95,11 +84,11 @@ export default function HeroBanner() {
 
   const handleNextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-  }, []);
+  }, [heroSlides.length]);
 
   const handlePrevSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
-  }, []);
+  }, [heroSlides.length]);
 
   // Slide Auto-play (6.5 seconds per slide)
   useEffect(() => {
@@ -136,7 +125,7 @@ export default function HeroBanner() {
       if (res.ok) {
         const data = await res.json();
         setLivePingResult(
-          `HTTP/2 200 OK • Region: ${data.region || "DAC"} • Real-Time Browser TTFB: ${elapsed}ms • Edge SLA: 99.99%`
+          `HTTP/2 200 OK • PoP Region: ${data.region || "DAC"} • Browser TTFB: ${elapsed}ms`
         );
       } else {
         setLivePingResult(`HTTP ${res.status} • Measured in ${elapsed}ms`);
@@ -159,7 +148,7 @@ export default function HeroBanner() {
       <section
         id="img1"
         aria-roledescription="carousel"
-        aria-label="MD Abu Hanif Mia - Engineering Workspaces & Architecture Showcase"
+        aria-label={`${displayName} - Portfolio & Workspace Showcase`}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         style={{
@@ -197,6 +186,7 @@ export default function HeroBanner() {
                   src={slide.imageSrc}
                   alt={slide.alt}
                   fill
+                  unoptimized={!slide.imageSrc.startsWith("/")}
                   priority={index === 0}
                   loading={index === 0 ? "eager" : "lazy"}
                   fetchPriority={index === 0 ? "high" : "auto"}
@@ -278,8 +268,8 @@ export default function HeroBanner() {
               }}
             />
             <span style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.8px", whiteSpace: "nowrap" }}>
-              <span className="hidden sm:inline">Clean Architecture • High Performance • Scalable Systems</span>
-              <span className="inline sm:hidden">Scalable Systems • Distributed Arch</span>
+              <span className="hidden sm:inline">{displayHeadline}</span>
+              <span className="inline sm:hidden">Next.js &bull; TS &bull; Open to UK &amp; EU</span>
             </span>
           </div>
 
@@ -412,7 +402,7 @@ export default function HeroBanner() {
                 textShadow: "0 2px 12px rgba(0, 0, 0, 0.7)",
               }}
             >
-              Architecting Sub-25ms Distributed Systems, Next.js 16 Edge Platforms &amp; Tuned Databases.
+              Building Real-World Web Platforms &amp; International Operations Readiness.
             </h1>
 
             {/* Rotating Value Proposition Ticker */}
@@ -642,10 +632,11 @@ export default function HeroBanner() {
               }}
             >
               <Image
-                src="/images/profile.png"
-                alt="MD Abu Hanif Mia - Staff Software Engineer & Systems Architect"
+                src={profilePhoto}
+                alt={`${displayName} - Full-Stack Web Developer`}
                 width={84}
                 height={84}
+                unoptimized={!profilePhoto.startsWith("/")}
                 loading="lazy"
                 style={{
                   width: "100%",
@@ -657,7 +648,7 @@ export default function HeroBanner() {
             </div>
 
             <div style={{ fontSize: "16px", fontWeight: 800, color: "#ffffff", lineHeight: 1.2 }}>
-              MD Abu Hanif Mia
+              {displayName}
             </div>
             <div
               style={{
@@ -670,7 +661,7 @@ export default function HeroBanner() {
                 marginBottom: "10px",
               }}
             >
-              Staff Software Engineer &amp; Architect
+              Full-Stack Dev &amp; Int&apos;l Ops
             </div>
 
             <div
@@ -690,8 +681,8 @@ export default function HeroBanner() {
                   padding: "6px",
                 }}
               >
-                <div style={{ fontSize: "13.5px", fontWeight: 800, color: "#10b981" }}>99.99%</div>
-                <div style={{ fontSize: "10px", color: "#94a3b8" }}>Production SLA</div>
+                <div style={{ fontSize: "13.5px", fontWeight: 800, color: "#10b981" }}>312 Tools</div>
+                <div style={{ fontSize: "10px", color: "#94a3b8" }}>NexusCalculator</div>
               </div>
               <div
                 style={{
@@ -701,8 +692,8 @@ export default function HeroBanner() {
                   padding: "6px",
                 }}
               >
-                <div style={{ fontSize: "13.5px", fontWeight: 800, color: "#38bdf8" }}>12M/sec</div>
-                <div style={{ fontSize: "10px", color: "#94a3b8" }}>Peak Telemetry</div>
+                <div style={{ fontSize: "13.5px", fontWeight: 800, color: "#38bdf8" }}>UK &amp; EU</div>
+                <div style={{ fontSize: "10px", color: "#94a3b8" }}>Remote/B2B/Site</div>
               </div>
             </div>
 
@@ -792,14 +783,14 @@ export default function HeroBanner() {
       {/* Bottom 3 Quick Access Buttons (Preserved exactly) */}
       <div id="img2">
         <div className="wrapper">
-          <Link className="pabttn pa1" href="/projects" title="View Distributed Systems Architecture">
-            Distributed Systems ⚡
+          <Link className="pabttn pa1" href="/projects/nexus-calculator-platform" title="View Live Production Web Platform: NexusCalculator.net">
+            NexusCalculator.net ⚡
           </Link>
-          <Link className="pabttn pa2" href="/projects" title="Explore Full-Stack Engineering Case Studies">
-            Full-Stack Engineering 🛠
+          <Link className="pabttn pa2" href="/projects" title="Explore Web Projects & Architecture Blueprints">
+            Projects &amp; Work 🛠
           </Link>
-          <Link className="pabttn pa3" href="/pricing" title="View Fixed Sprints & SOW Pricing Matrix">
-            Fixed Sprints &amp; Pricing 💰
+          <Link className="pabttn pa3" href="/resume" title="Open Full CV, Work History & UK/EU Availability">
+            CV &amp; Availability 📄
           </Link>
         </div>
       </div>

@@ -1,3 +1,59 @@
+export interface HeroSlideAsset {
+  id: string;
+  src: string;
+  alt: string;
+  title: string;
+  subtitle: string;
+}
+
+export interface VisualAssetsConfig {
+  profilePhotoUrl: string;
+  certificatePhotoUrl?: string;
+  logoUrl?: string;
+  heroSlides: HeroSlideAsset[];
+}
+
+export interface LegalGdprConfig {
+  controllerName: string;
+  tradingAs?: string;
+  controllerAddress: string;
+  controllerEmail: string;
+  controllerPhone: string;
+  icoOrRegistrationNote?: string;
+  dataRetentionSummary: string;
+  subProcessorsNote: string;
+  privacyPolicyCustomNotes: string;
+  termsCustomNotes: string;
+  lastUpdated: string;
+}
+
+export interface SpokenLanguage {
+  language: string;
+  level: string;
+}
+
+export interface WorkPreference {
+  modes: string[];
+  regions: string[];
+  timezoneOverlap: string;
+  targetRoles: string;
+}
+
+export interface EducationEntry {
+  credential: string;
+  institution: string;
+  details: string;
+  period: string;
+}
+
+export interface WorkExperienceEntry {
+  role: string;
+  company: string;
+  location: string;
+  period: string;
+  summary: string;
+}
+
 export interface ProfileData {
   fullName: string;
   kicker: string;
@@ -16,6 +72,12 @@ export interface ProfileData {
     instagram?: string;
     discord?: string;
   };
+  spokenLanguages: SpokenLanguage[];
+  workPreferences: WorkPreference;
+  educationHistory: EducationEntry[];
+  workHistory: WorkExperienceEntry[];
+  visualAssets: VisualAssetsConfig;
+  legalGdpr: LegalGdprConfig;
 }
 
 export interface Competency {
@@ -95,13 +157,13 @@ export interface Testimonial {
 
 export const initialProfile: ProfileData = {
   fullName: "MD Abu Hanif Mia",
-  kicker: "Staff Software Engineer & Systems Architect",
-  headline: "Clean Architecture • High Performance • Scalable Systems",
-  bio: "Senior Full-Stack Software Engineer & Systems Architect with 9+ years designing high-throughput distributed applications, edge networks, and developer platforms. Specializing in TypeScript, Next.js, Go, PostgreSQL, and Cloudflare Pages.",
+  kicker: "Full-Stack Web Developer & International Operations Professional",
+  headline: "Next.js & TypeScript Builder • Multi-Sector Operations • Open to UK & Europe",
+  bio: "Full-Stack Web Developer (Next.js, TypeScript, React, Node.js, PostgreSQL) and disciplined international operations professional. Built live production platforms including NexusCalculator.net, completed Programming Hero (2025, Batch-12) alongside self-directed study in TypeScript, Python, Rust, and C++ on freeCodeCamp, and bring 7+ years of front-line hospitality, manufacturing, and sales experience across Bangladesh and Oman. Open to Remote, B2B Contract, and On-Site / Relocation opportunities in the UK, Europe, and worldwide.",
   email: "abuhanifmain@gmail.com",
   phone: "+880 1724-010261",
   location: "Sadar Upazila, Kishoreganj, Dhaka, Bangladesh",
-  availabilityStatus: "Available for Q4 Contracts & High-Impact Roles",
+  availabilityStatus: "Open to Remote, B2B Contract & On-Site / Relocation (UK, Europe & Worldwide)",
   isAvailable: true,
   socialLinks: {
     github: "https://github.com/abuhanif254",
@@ -110,6 +172,108 @@ export const initialProfile: ProfileData = {
     facebook: "https://www.facebook.com/bitulla",
     instagram: "https://www.instagram.com/bitullah_aj",
     discord: "https://discord.com",
+  },
+  spokenLanguages: [
+    { language: "Bengali", level: "Native" },
+    { language: "English", level: "Conversational" },
+    { language: "Hindi & Urdu", level: "Conversational" },
+  ],
+  workPreferences: {
+    modes: ["Remote", "B2B Contract", "On-Site / Relocation"],
+    regions: ["United Kingdom (GMT / BST)", "Europe (CET / CEST)", "Worldwide"],
+    timezoneOverlap: "Flexible shift alignment with UK (GMT/BST) & Central Europe (CET/CEST) hours",
+    targetRoles: "Junior / Full-Stack Web Developer, Technical Support, Web Operations & International Roles",
+  },
+  educationHistory: [
+    {
+      credential: "Higher Secondary Certificate (HSC) — Commerce",
+      institution: "Wali Neowaj Khan College",
+      details: "EIIN: 110495 • Board: Dhaka Education Board",
+      period: "2016 – 2017",
+    },
+    {
+      credential: "Web Development Course (Batch-12 • ID: WEB12-3991)",
+      institution: "Programming Hero",
+      details: "JavaScript, TypeScript, React, Next.js, Node.js, Express, MongoDB & Full-Stack Workflows",
+      period: "2025",
+    },
+    {
+      credential: "Self-Directed Programming Curriculum",
+      institution: "freeCodeCamp",
+      details: "Self-learned TypeScript, Python, Rust, C++, Web Architecture & Problem Solving",
+      period: "Self-Study",
+    },
+  ],
+  workHistory: [
+    {
+      role: "Waiter (Hospitality & Catering Operations)",
+      company: "WACASCO Catering Services",
+      location: "Oman",
+      period: "2022 – 2025",
+      summary: "Delivered front-of-house hospitality and catering service in an international team environment across Oman, communicating with guests and colleagues in English, Hindi, and Urdu while maintaining hygiene and service-speed standards.",
+    },
+    {
+      role: "Production Operator",
+      company: "PRAN-RFL Group",
+      location: "Palash, Narsingdi, Bangladesh",
+      period: "2018 – 2022",
+      summary: "Operated industrial manufacturing machinery, conducted routine quality checks, and supported shift output targets and safety compliance across four years of continuous service.",
+    },
+    {
+      role: "Salesman",
+      company: "Unilever Bangladesh",
+      location: "Bangladesh",
+      period: "2017 – 2018",
+      summary: "Managed territory retail sales visits, product merchandising, order collection, and customer account follow-up across FMCG retail outlets.",
+    },
+  ],
+  visualAssets: {
+    profilePhotoUrl: "/images/profile.png",
+    certificatePhotoUrl: "/images/programming-hero-certificate.png",
+    logoUrl: "/images/abuhanif-logo-v3.svg",
+    heroSlides: [
+      {
+        id: "slide-1",
+        src: "/images/hero/hero-slide-1.jpg",
+        alt: "Full-Stack Development & Live Web Operations Workspace",
+        title: "Full-Stack Web Engineering",
+        subtitle: "Next.js 16 • TypeScript • Supabase • Cloudflare Pages",
+      },
+      {
+        id: "slide-2",
+        src: "/images/hero/hero-slide-2.jpg",
+        alt: "Nexus Calculator — 300+ Interactive Tools Platform",
+        title: "Real Production Products",
+        subtitle: "Creator of NexusCalculator.net (312 Tools • 4 Languages)",
+      },
+      {
+        id: "slide-3",
+        src: "/images/hero/hero-slide-3.jpg",
+        alt: "PostgreSQL & Edge Infrastructure Learning & Practice",
+        title: "Databases, Rust & Systems",
+        subtitle: "PostgreSQL • Python • Rust • C++ Foundations",
+      },
+      {
+        id: "slide-4",
+        src: "/images/hero/hero-slide-4.jpg",
+        alt: "UK & Europe Remote, B2B, and On-Site Work Readiness",
+        title: "UK & Europe Collaboration",
+        subtitle: "Remote • B2B Contract • On-Site / Relocation Ready",
+      },
+    ],
+  },
+  legalGdpr: {
+    controllerName: "MD Abu Hanif Mia",
+    tradingAs: "Abu Hanif — Web Development Portfolio & Client OMS",
+    controllerAddress: "Sadar Upazila, Kishoreganj, Dhaka, Bangladesh",
+    controllerEmail: "abuhanifmain@gmail.com",
+    controllerPhone: "+880 1724-010261",
+    icoOrRegistrationNote: "Independent developer & service provider; update with local UK/EU business registration, UTR, VAT, or Data Protection registration details via the Admin Panel.",
+    dataRetentionSummary: "Contact form inquiries and project communication logs are retained only as long as necessary to evaluate employment opportunities, respond to messages, or administer active client engagements (typically up to 12 months unless extended by contract or legal obligation).",
+    subProcessorsNote: "Hosted on edge/cloud infrastructure (Cloudflare Pages) with optional database storage on Supabase (PostgreSQL). Strictly necessary security cookies are set solely during authenticated Admin sign-in.",
+    privacyPolicyCustomNotes: "Replace or tailor this notice with your updated UK/EU representative, cookie audit, or company registration details directly from /admin -> Profile, Visual Assets & GDPR.",
+    termsCustomNotes: "Any commercial freelance, B2B, or employment terms are confirmed in writing prior to project kickoff or onboarding.",
+    lastUpdated: "2026-11-16",
   },
 };
 
@@ -202,27 +366,53 @@ export const competencies: Competency[] = [
 
 export const initialProjects: ProjectItem[] = [
   {
-    id: "proj-1",
-    title: "Real-Time Financial Telemetry Pipeline",
-    slug: "financial-telemetry-pipeline",
-    summary: "High-throughput stream processing pipeline ingesting crypto & equities order books with sub-25ms latency.",
-    descriptionMarkdown: `### The Challenge
-A high-frequency trading platform needed to aggregate raw order-book events from 14 exchanges, normalize data formats, and fan out real-time market depth to over 45,000 active browser clients.
+    id: "proj-nexus",
+    title: "Nexus Calculator — 300+ Interactive Tools & Guides Platform",
+    slug: "nexus-calculator-platform",
+    summary: "Live production multilingual web platform (nexuscalculator.net) with 312 interactive calculators & developer tools, 190+ guides, and 3,200+ static pages across English, Spanish, French, and German.",
+    descriptionMarkdown: `### Live Production Product (nexuscalculator.net)
+Built and launched from scratch as an independent full-stack web developer using Next.js 15 App Router, TypeScript, next-intl, and static site generation.
 
-### Architectural Solution
-- Built a concurrent Go microservice layer connected to exchange WebSocket feeds.
-- Implemented a Redis cluster pub/sub backbone paired with TimescaleDB for continuous tick aggregations.
-- Deployed a Next.js client utilizing binary WebSocket streaming and Canvas-based chart rendering.
-
-### Measurable Impact
-- **Throughput**: 12,000,000 events processed per second at peak.
-- **Latency**: P99 delivery to browser under 22ms.
-- **Uptime**: 99.995% reliability across 18 consecutive months.`,
-    clientName: "Fintech Venture",
-    demoUrl: "/lab",
+### Engineering & Architecture Highlights
+- **Unified Tool Registry (\`lib/registry\`)**: Structured 177 financial/math calculators and 135 developer, PDF, and media tools into a typed registry driving routing, search, sitemaps, and Schema.org JSON-LD.
+- **Bundle Isolation**: Split client interactive components with \`next/dynamic\` lazy wrappers, cutting initial First Load JS significantly compared to a monolithic bundle.
+- **Multilingual & UK/EU SEO**: Localized routing and hreflang canonicals across \`en\`, \`es\`, \`fr\`, and \`de\` including UK mortgage and regional financial utilities, with Google Search Console visibility of 379k+ impressions over 3 months.
+- **Privacy-First In-Browser Processing**: PDF, image, and formatter tools run directly in the visitor's browser without server file retention.`,
+    clientName: "Own Production Platform (Live)",
+    demoUrl: "https://nexuscalculator.net",
     githubUrl: "https://github.com/abuhanif254",
-    priceTag: "$18,500 Scope",
-    impactMetric: "12M Events/Sec • <22ms P99",
+    priceTag: "Live Production",
+    impactMetric: "312 Tools • 4 Languages • 379k+ GSC Impr.",
+    techStack: ["Next.js 15", "TypeScript", "React", "next-intl", "Tailwind CSS", "Vercel"],
+    isFeatured: true,
+    published: true,
+    imageUrl: "/images/nexuscalculator-homepage.png",
+    screenshots: [
+      "/images/nexuscalculator-homepage.png",
+      "/images/gsc-performance-3months.png",
+    ],
+  },
+  {
+    id: "proj-1",
+    title: "Real-Time Financial Telemetry Pipeline (Reference Study)",
+    slug: "financial-telemetry-pipeline",
+    summary: "Interactive systems architecture blueprint & lab benchmark modeling WebSocket tick ingestion, Redis pub/sub fanout, and TimescaleDB rollups.",
+    descriptionMarkdown: `### Reference Scenario
+An architectural case study exploring how concurrent ingestion workers, binary WebSockets, and time-series tables handle high-frequency tick distribution.
+
+### Architectural Implementation & Blueprint
+- Concurrent worker pipeline patterns pairing Go / Node.js workers with lock-free ring buffers.
+- Redis pub/sub fanout channel connected to PostgreSQL / TimescaleDB hypertable aggregations.
+- Interactive throughput & failover explorer available in the [Systems Lab](/lab#topology-explorer).
+
+### Scope & Verification Status
+- **Status**: Reference Architecture Blueprint & Interactive Lab Simulator (not a commercial client claim).
+- **Focus**: Latency budgeting, backpressure mitigation, and time-series storage modeling.`,
+    clientName: "Architecture Reference Blueprint",
+    demoUrl: "/lab#topology-explorer",
+    githubUrl: "https://github.com/abuhanif254",
+    priceTag: "Lab Blueprint",
+    impactMetric: "Go + WebSocket Benchmark • Lab Simulator",
     techStack: ["Go", "Next.js", "WebSockets", "TimescaleDB", "Redis", "Docker"],
     isFeatured: true,
     published: true,
@@ -234,26 +424,24 @@ A high-frequency trading platform needed to aggregate raw order-book events from
   },
   {
     id: "proj-2",
-    title: "Cloudflare Edge Multi-Tenant E-Commerce Platform",
+    title: "Cloudflare Edge Multi-Tenant Storefront Blueprint",
     slug: "cloudflare-edge-ecommerce",
-    summary: "Serverless multi-tenant storefront platform rendering personalized product catalogs at the global edge.",
-    descriptionMarkdown: `## The Challenge
-A direct-to-consumer brand aggregator struggled with slow dynamic page loads during global flash sales, resulting in cart abandonment and high server scaling bills.
+    summary: "Reference full-stack e-commerce & SaaS storefront architecture leveraging Next.js 16 App Router, Cloudflare Pages, Supabase PostgreSQL, and idempotent checkout queues.",
+    descriptionMarkdown: `## Overview & Design Goal
+Demonstrates edge-first SSR catalog rendering, stale-while-revalidate caching, and PostgreSQL read/pooler patterns to keep TTFB responsive across UK, European, and global visitors.
 
-## Architectural Solution
-- Re-architected catalog generation onto Cloudflare Pages and Workers Edge with Next.js 16.
-- Implemented Supabase PostgreSQL with read-replicas and regional caching.
-- Built instant checkout flows with optimistic UI state transitions and idempotent order processing.
+## Architectural Blueprint
+- Next.js 16 App Router deployed on Cloudflare Pages edge workers.
+- Supabase PostgreSQL schema with Row Level Security (RLS) and connection pooling.
+- Idempotent order workflows matching the OMS engine running live inside this portfolio platform.
 
-## Measurable Impact
-- **Conversion Rate**: Lifted checkout conversion by 28%.
-- **Global Latency**: Average initial page render reduced from 1.8s to 95ms worldwide.
-- **Cost Reduction**: Cut monthly cloud compute costs by 64%.`,
-    clientName: "Retail Holdings",
-    demoUrl: "/lab",
+## Verification Status
+- **Status**: Open Reference Blueprint & Portfolio Commerce Engine Pattern.`,
+    clientName: "Edge Reference Blueprint",
+    demoUrl: "/lab#edge-radar",
     githubUrl: "https://github.com/abuhanif254",
-    priceTag: "$24,000 Scope",
-    impactMetric: "95ms Global P99 • 28% Conversion Lift",
+    priceTag: "Reference Demo",
+    impactMetric: "Next.js 16 Edge SSG • Live Radar",
     techStack: ["Next.js 16", "Cloudflare Pages", "Supabase", "TypeScript", "Tailwind CSS"],
     isFeatured: true,
     published: true,
@@ -264,56 +452,26 @@ A direct-to-consumer brand aggregator struggled with slow dynamic page loads dur
     ],
   },
   {
-    id: "proj-3",
-    title: "Enterprise AI Document Search & RAG Pipeline",
-    slug: "enterprise-ai-document-search",
-    summary: "Autonomous document ingestion and vector semantic search engine indexing 500,000+ internal technical docs.",
-    descriptionMarkdown: `## The Challenge
-Engineering teams spent an average of 4.5 hours per week looking for internal system documentation, API contracts, and architecture design records scattered across Jira, Confluence, and GitHub.
-
-## Architectural Solution
-- Built an event-driven webhook pipeline indexing markdown, PDF, and source code into pgvector embeddings.
-- Configured hybrid BM25 + dense semantic vector search with re-ranking.
-- Created an interactive AI chat interface with strict citation verification and RBAC permission enforcement.
-
-## Measurable Impact
-- **Query Resolution**: Search and answer discovery speed reduced by 82%.
-- **Accuracy**: 96.4% verified citation accuracy on internal knowledge evaluations.`,
-    clientName: "Enterprise Software Corp",
-    demoUrl: "/lab",
-    priceTag: "$14,000 Scope",
-    impactMetric: "82% Faster Discovery • 500k+ Docs Indexed",
-    techStack: ["Python", "FastAPI", "pgvector", "PostgreSQL", "React", "Anthropic Claude"],
-    isFeatured: true,
-    published: true,
-    imageUrl: "/images/projects/ai-rag-pipeline-arch.svg",
-    screenshots: [
-      "/images/projects/ai-rag-pipeline-arch.svg",
-    ],
-  },
-  {
     id: "proj-4",
-    title: "High-Concurrency PostgreSQL Performance Audit",
+    title: "PostgreSQL Query Profiling & Indexing Audit Study",
     slug: "postgres-performance-audit",
-    summary: "Diagnostic query profiling, connection pool tuning, and index redesign eliminating deadlocks for 3.5M active accounts.",
-    descriptionMarkdown: `## The Challenge
-A high-throughput SaaS platform faced persistent connection pool exhaustion and frequent transaction deadlocks during daily peak traffic spikes.
+    summary: "Interactive EXPLAIN ANALYZE optimization study covering B-Tree composite indexes, partial indexes, PgBouncer pooling, and zero deadlocks under concurrency.",
+    descriptionMarkdown: `## Diagnostic Focus
+Analyzes common PostgreSQL sequential-scan bottlenecks, lock contention, and connection saturation alongside interactive SQL query plans in the Systems Lab.
 
-## Architectural Solution
-- Conducted deep EXPLAIN (ANALYZE, BUFFERS) profiling on the 50 highest-impact query paths.
-- Rebuilt composite B-Tree indexes, partial indexes, and BRIN indexes on large append-only telemetry tables.
-- Installed PgBouncer with transaction-level pooling and tuned max_connections and shared_buffers.
-- Hardened Row Level Security (RLS) policies without introducing query degradation.
+## Architectural Techniques
+- \`EXPLAIN (ANALYZE, BUFFERS)\` inspection across filtered time-window and multi-join queries.
+- Composite B-Tree, GIN, and BRIN indexing strategies to eliminate full table scans.
+- PgBouncer / Supavisor transaction pooling and autovacuum tuning to prevent lock buildup.
 
-## Measurable Impact
-- **CPU Reduction**: Reduced median database CPU utilization from 92% to 28%.
-- **Zero Deadlocks**: 0 connection drops or transaction deadlocks observed over 12 consecutive months.
-- **Query Latency**: Sub-5ms P99 query latency on multi-million row joined tables.`,
-    clientName: "Nexus Cloud Platform",
-    demoUrl: "/lab",
-    priceTag: "$11,000 Scope",
-    impactMetric: "-68% CPU • 0 Deadlocks Observed",
-    techStack: ["PostgreSQL 16", "PgBouncer", "EXPLAIN ANALYZE", "Linux Performance", "Supabase"],
+## Interactive Proof
+- **Lab Simulator**: Test before/after query execution plans directly in \`/lab#postgres-planner\` demonstrating **0 Deadlocks** and drastic I/O reduction under simulated load.`,
+    clientName: "Database Tuning Lab Study",
+    demoUrl: "/lab#postgres-planner",
+    githubUrl: "https://github.com/abuhanif254",
+    priceTag: "Lab Reference",
+    impactMetric: "EXPLAIN ANALYZE • 0 Deadlocks Sim",
+    techStack: ["PostgreSQL 16", "PgBouncer", "EXPLAIN ANALYZE", "SQL", "Supabase"],
     isFeatured: true,
     published: true,
     imageUrl: "/images/projects/postgres-audit-arch.svg",
@@ -322,26 +480,42 @@ A high-throughput SaaS platform faced persistent connection pool exhaustion and 
     ],
   },
   {
-    id: "proj-5",
-    title: "Zero-Trust Distributed Auth & RBAC Microservice",
-    slug: "zero-trust-auth-service",
-    summary: "Centralized identity provider service supporting multi-organization tenancy, SAML SSO, and Passkeys.",
-    descriptionMarkdown: `## The Challenge
-A SaaS company with multiple sub-products needed to consolidate disparate login systems into a unified identity provider meeting enterprise SOC2 Type II requirements.
+    id: "proj-3",
+    title: "Enterprise AI Document Search & RAG Pipeline Blueprint",
+    slug: "enterprise-ai-document-search",
+    summary: "Reference hybrid search architecture combining FastAPI webhook ingestion, PostgreSQL pgvector HNSW indexing, and BM25 + semantic retrieval.",
+    descriptionMarkdown: `## Blueprint Scope
+Designed to show clean chunking, idempotent SHA-256 hashing, and hybrid lexical + dense vector retrieval using PostgreSQL \`pgvector\` without external vendor lock-in.
 
 ## Architectural Solution
-- Developed an RFC 6749 compliant OAuth2/OIDC provider with granular scope delegation.
-- Added WebAuthn passkey registration, biometric sign-in, and instantaneous session revocation via Redis.
-- Implemented audit logging with cryptographic hash chaining for tamper resistance.
-
-## Measurable Impact
-- **Scale**: Managing 3,500,000+ active enterprise user identities.
-- **Security**: Passed third-party penetration audit with zero critical or high vulnerabilities.`,
-    clientName: "B2B SaaS Group",
-    priceTag: "$12,500 Scope",
-    impactMetric: "3.5M Identities • Zero Security Incidents",
-    techStack: ["Go", "PostgreSQL", "Redis", "OAuth2", "WebAuthn", "Docker"],
-    isFeatured: true,
+- Document ingestion pipeline splitting Markdown, PDF, and documentation pages into overlapping semantic chunks.
+- Hybrid BM25 + pgvector cosine-distance ranking paired with strict citation grounding.`,
+    clientName: "AI Architecture Blueprint",
+    demoUrl: "/lab#topology-explorer",
+    githubUrl: "https://github.com/abuhanif254",
+    priceTag: "Reference Demo",
+    impactMetric: "pgvector Hybrid Search • Blueprint",
+    techStack: ["Python", "FastAPI", "pgvector", "PostgreSQL", "React", "TypeScript"],
+    isFeatured: false,
+    published: true,
+    imageUrl: "/images/projects/ai-rag-pipeline-arch.svg",
+    screenshots: [
+      "/images/projects/ai-rag-pipeline-arch.svg",
+    ],
+  },
+  {
+    id: "proj-5",
+    title: "Zero-Trust Distributed Auth & RBAC Architecture Blueprint",
+    slug: "zero-trust-auth-service",
+    summary: "Security architecture pattern covering HMAC session signing, timing-safe comparison, WebAuthn/TOTP MFA, and PostgreSQL Row Level Security (RLS).",
+    descriptionMarkdown: `## Security Focus
+Models stateless HMAC-SHA256 admin session verification, RFC 6238 TOTP authenticator codes, encrypted credential storage patterns, and tenant isolation via Supabase RLS — core security primitives implemented in this codebase.`,
+    clientName: "Security Pattern Reference",
+    githubUrl: "https://github.com/abuhanif254",
+    priceTag: "Code Pattern",
+    impactMetric: "HMAC + TOTP MFA + RLS Security",
+    techStack: ["TypeScript", "Go", "PostgreSQL", "HMAC-SHA256", "TOTP", "WebAuthn"],
+    isFeatured: false,
     published: true,
     imageUrl: "/images/projects/zero-trust-auth-arch.svg",
     screenshots: [
@@ -350,27 +524,18 @@ A SaaS company with multiple sub-products needed to consolidate disparate login 
   },
   {
     id: "proj-6",
-    title: "High-Performance Developer Documentation Engine",
+    title: "Static-First Technical Documentation & MDX Engine",
     slug: "developer-docs-engine",
-    summary: "Ultra-fast headless documentation portal with full-text search, live API playground, and dark mode.",
-    descriptionMarkdown: `## The Challenge
-Developers were bouncing from legacy docs due to sluggish navigation, lack of interactive code execution, and broken mobile formatting.
-
-## Architectural Solution
-- Designed and built a static-first Next.js portal utilizing Turbopack and MDX compilation.
-- Embedded interactive API request builders with copyable curl/JavaScript/Python snippets.
-- Integrated Algolia DocSearch with instant keyboard navigation (Cmd+K).
-
-## Measurable Impact
-- **Lighthouse**: Perfect 100/100 across Performance, Accessibility, Best Practices, and SEO.
-- **Engagement**: Increased average developer session duration by 140%.`,
-    clientName: "Developer Tooling Startup",
-    demoUrl: "/lab",
+    summary: "Static Next.js documentation portal design featuring instant Ctrl+K keyboard discovery, dark-mode code blocks, and clean responsive typography.",
+    descriptionMarkdown: `## Overview
+Explores static-first MDX documentation rendering, automated table-of-contents extraction, keyboard-driven command palette indexing (\`Ctrl+K\`), and lightweight accessibility.`,
+    clientName: "Frontend Architecture Pattern",
+    demoUrl: "/blog",
     githubUrl: "https://github.com/abuhanif254",
-    priceTag: "$8,500 Scope",
-    impactMetric: "100/100 Lighthouse • 140% Session Duration",
-    techStack: ["Next.js", "TypeScript", "MDX", "Tailwind CSS", "Algolia"],
-    isFeatured: true,
+    priceTag: "Open Pattern",
+    impactMetric: "Keyboard Discovery • SSG Architecture",
+    techStack: ["Next.js", "TypeScript", "MDX", "Tailwind CSS", "Static Generation"],
+    isFeatured: false,
     published: true,
     imageUrl: "/images/projects/developer-docs-arch.svg",
     screenshots: [
@@ -379,25 +544,17 @@ Developers were bouncing from legacy docs due to sluggish navigation, lack of in
   },
   {
     id: "proj-7",
-    title: "Autonomous Data Ingestion & ETL Automation Engine",
+    title: "Queue-Backed ETL & Data Validation Pipeline Study",
     slug: "etl-automation-engine",
-    summary: "Fault-tolerant data extraction and pipeline engine processing daily multi-gigabyte client reporting feeds.",
-    descriptionMarkdown: `## The Challenge
-Manual data entry and fragile overnight Python scripts caused frequent data corruption and delayed client reporting by up to 36 hours.
-
-## Architectural Solution
-- Implemented a queue-backed Node.js and BullMQ worker pipeline with automated exponential backoff retries.
-- Integrated schema validation via Zod to quarantine corrupted inputs before database insertion.
-- Created an automated notification webhook for Slack alerts and Prometheus telemetry.
-
-## Measurable Impact
-- **Cost Savings**: Saved client $48,000 annually in manual developer intervention hours.
-- **Delivery**: Report generation time dropped from 36 hours to under 8 minutes.`,
-    clientName: "Logistics Platform",
-    priceTag: "$11,000 Scope",
-    impactMetric: "8 Min Delivery (from 36h) • $48k/yr Saved",
-    techStack: ["Node.js", "BullMQ", "PostgreSQL", "AWS S3", "Zod", "Docker"],
-    isFeatured: true,
+    summary: "Fault-tolerant Node.js + Zod ingestion pipeline design isolating malformed inputs and automating structured exports.",
+    descriptionMarkdown: `## Overview
+Documents idempotent worker queue architecture using Node.js, BullMQ retry backoff, and runtime Zod schema validation before transactional database inserts.`,
+    clientName: "Pipeline Architecture Study",
+    githubUrl: "https://github.com/abuhanif254",
+    priceTag: "Reference Study",
+    impactMetric: "Schema-Validated ETL Pipeline",
+    techStack: ["Node.js", "BullMQ", "PostgreSQL", "Zod", "TypeScript", "Docker"],
+    isFeatured: false,
     published: true,
     imageUrl: "/images/projects/etl-automation-arch.svg",
     screenshots: [
@@ -507,7 +664,7 @@ export const initialServices: ServicePricing[] = [
     timeline: "3–4 Weeks",
     category: "web-saas",
     tagline: "Enterprise Full-Stack Architecture, Zero-Trust Auth & Real-Time Sync",
-    roiMetric: "100% Client IP Ownership • Production SaaS in 4 Weeks • 99.99% SLA",
+    roiMetric: "100% Client IP Ownership • Full-Stack Delivery • Automated CI/CD",
     techStack: ["Next.js 16", "Supabase", "PostgreSQL", "React 19", "Tailwind CSS", "Stripe", "Cloudflare Pages"],
     deliverables: [
       "Production-grade Next.js 16 App Router web platform with React 19 Server Components",
@@ -591,9 +748,9 @@ export const initialServices: ServicePricing[] = [
     id: "serv-4",
     title: "Full-Stack SaaS MVP Engineering Sprint",
     slug: "mvp-feature-sprint",
-    description: "High-velocity execution from technical requirements to a production-grade, tested, and deployed software platform on Next.js 16, Supabase, and Cloudflare Pages.",
+    description: "High-velocity execution from technical requirements to a tested and deployed software platform on Next.js 16, Supabase, and Cloudflare Pages.",
     pricingType: "fixed",
-    priceDisplay: "$14,500",
+    priceDisplay: "$12,500",
     timeline: "3–4 Weeks",
     deliverables: [
       "Next.js 16 App Router + React 19 responsive, high-performance web platform",
@@ -601,7 +758,7 @@ export const initialServices: ServicePricing[] = [
       "Stripe payment or custom subscription/metered usage billing integration",
       "Hardened authentication (Email Magic Links, OAuth2, Passkeys / WebAuthn)",
       "Automated CI/CD build pipeline configured on Cloudflare with preview branches",
-      "100/100 Core Web Vitals score, strict TypeScript typing, and Zod validation",
+      "Fast Core Web Vitals optimization, strict TypeScript typing, and Zod validation",
       "Complete git repository handover (100% Client IP) + 30-day post-launch warranty",
     ],
     isPopular: true,
@@ -611,38 +768,38 @@ export const initialServices: ServicePricing[] = [
     id: "serv-5",
     title: "Distributed Telemetry & Event Streaming Engine",
     slug: "distributed-telemetry-engine",
-    description: "High-throughput concurrent message streaming, pub/sub infrastructure, and continuous tick aggregations built to process 10M+ events/day with fault tolerance.",
+    description: "High-throughput concurrent message streaming, pub/sub infrastructure, and time-series analytical pipelines built with fault tolerance.",
     pricingType: "fixed",
-    priceDisplay: "$22,500",
+    priceDisplay: "$18,500",
     timeline: "4–6 Weeks",
     deliverables: [
       "Concurrent Go or Node.js streaming ingestion worker layer",
       "Redis Cluster Pub/Sub or Apache Pulsar/Kafka message brokering",
       "TimescaleDB or pgvector analytical aggregations with continuous rollups",
-      "Binary WebSocket streaming engine to browser clients (<25ms P99 latency)",
+      "Binary WebSocket streaming engine to browser clients (<25ms P99 target)",
       "Backpressure handling, dead letter queues, and exponential retry mechanisms",
       "Prometheus & Grafana telemetry dashboards with automated alerting",
-      "Automated k6 load test suite validating 50,000 concurrent client connections",
+      "Automated k6 load test suite verifying concurrency targets",
     ],
     isPopular: false,
     isActive: true,
   },
   {
     id: "serv-6",
-    title: "Fractional Staff Architect / Engineering Retainer",
+    title: "Dedicated Full-Stack Engineering Retainer",
     slug: "fractional-staff-engineer",
-    description: "On-demand senior technical leadership, architectural oversight, complex coding execution, and team mentorship for growing engineering teams and venture-backed startups.",
+    description: "Ongoing remote/B2B engineering capacity for growing product teams: feature shipping, TypeScript/Next.js builds, PostgreSQL tuning, and pull-request reviews.",
     pricingType: "retainer",
     priceDisplay: "$5,500 / mo",
     timeline: "Ongoing (15–20 hrs / week)",
     deliverables: [
-      "Direct private Slack/Discord channel access with guaranteed 2-hour response",
-      "Weekly architecture planning sessions, RFC design reviews, and PR approvals",
-      "Hands-on coding execution for complex, mission-critical subsystems",
-      "Engineering hiring support, candidate technical interviews, and grading",
-      "Infrastructure cost governance, reliability reviews, and disaster recovery plans",
-      "Quarterly technical roadmap and executive engineering advisory",
-      "Month-to-month flexibility with zero long-term vendor lock-in",
+      "Direct Slack/Discord/Microsoft Teams communication aligned with UK/EU working hours",
+      "Weekly sprint planning, code reviews, and technical documentation",
+      "Hands-on TypeScript, React, Next.js, Node.js, and PostgreSQL implementation",
+      "Automated testing (Vitest / Playwright) and CI/CD maintenance",
+      "Infrastructure reliability monitoring and query performance reviews",
+      "Clean git commits and clear sprint handovers",
+      "Month-to-month B2B flexibility with zero long-term lock-in",
     ],
     isPopular: false,
     isActive: true,
@@ -1134,131 +1291,5 @@ Never guess—always measure with \`EXPLAIN ANALYZE\`.`,
   },
 ];
 
-export const initialTestimonials: Testimonial[] = [
-  {
-    id: "test-1",
-    author: "David Vance",
-    role: "VP of Engineering",
-    company: "Apex Telemetry Labs",
-    category: "telemetry",
-    quote: "Abu Hanif transformed our core API architecture in just three weeks. Our P99 latency dropped by 75% and our infrastructure bill was cut in half. He is one of the rarest engineers who pairs deep systems knowledge with rapid execution velocity.",
-    verifiedMetric: "⚡ -75% P99 Latency & -50% Cloud Spend",
-    deliverableTag: "Distributed Streaming Engine",
-    projectSlug: "financial-telemetry-pipeline",
-    serviceSlug: "distributed-telemetry-engine",
-    engagementScope: "$18,500 Fixed Milestone Sprint",
-    engagementDuration: "3 Weeks Delivery",
-    verificationBadge: "✓ Verified Milestone Settlement & Code IP Handover",
-    deliverablesCompleted: [
-      "Concurrent Go 1.23 WebSocket ingress layer handling 12M events/sec",
-      "Redis Cluster in-memory sharding with sub-2ms pub/sub broadcast",
-      "TimescaleDB hypertables with automated 1-minute continuous aggregates",
-      "HTML5 Canvas GPU order-book visualizer achieving 60 FPS",
-    ],
-  },
-  {
-    id: "test-2",
-    author: "Elena Rostova",
-    role: "Founder & CEO",
-    company: "Synthetix Cloud",
-    category: "edge",
-    quote: "Working with Abu Hanif felt like having a Principal Architect and a full delivery team rolled into one. Clear technical communication, pristine documentation, and zero fluff. He delivered our Next.js edge platform ahead of schedule with 95ms global TTFB.",
-    verifiedMetric: "🚀 95ms Global P99 & 100% Edge Cold-Start Elimination",
-    deliverableTag: "Next.js 16 Edge Platform",
-    projectSlug: "cloudflare-edge-ecommerce",
-    serviceSlug: "cloudflare-edge-migration",
-    engagementScope: "$24,000 Multi-Tenant Milestone Sprint",
-    engagementDuration: "4 Weeks Delivery",
-    verificationBadge: "✓ Verified Milestone Settlement & Code IP Handover",
-    deliverablesCompleted: [
-      "Next.js 16 App Router deployment on Cloudflare Pages via OpenNext",
-      "Global edge catalog caching with stale-while-revalidate headers",
-      "Supabase PostgreSQL read-replicas handling 15,000 concurrent pools",
-      "Idempotent Stripe checkout queues with cryptographic replay protection",
-    ],
-  },
-  {
-    id: "test-3",
-    author: "Marcus Thorne",
-    role: "Head of Infrastructure",
-    company: "BlockScale Capital",
-    category: "postgres",
-    quote: "Abu Hanif's surgical PostgreSQL audit resolved our database lock contention during morning volume spikes. CPU utilization fell from 94% down to 18%, and our heaviest reporting queries dropped from 4.2 seconds to 11.8ms.",
-    verifiedMetric: "🎯 4.2s → 12ms Query Latency & -76% DB CPU Load",
-    deliverableTag: "PostgreSQL Performance Audit",
-    projectSlug: "postgres-performance-audit",
-    serviceSlug: "database-optimization",
-    engagementScope: "$11,000 Diagnostic & Optimization Sprint",
-    engagementDuration: "10 Days Delivery",
-    verificationBadge: "✓ Verified Milestone Settlement & Code IP Handover",
-    deliverablesCompleted: [
-      "EXPLAIN (ANALYZE, BUFFERS) profiling on 50 highest-impact query paths",
-      "Partial composite B-Tree indexes reducing index memory footprint by 82%",
-      "PgBouncer transaction-mode pool configuration with zero connection drops",
-      "WAL storage isolation and autovacuum tuning eliminating transaction deadlocks",
-    ],
-  },
-  {
-    id: "test-4",
-    author: "Sarah Jenkins",
-    role: "Chief Technology Officer",
-    company: "Nexus Health AI",
-    category: "ai",
-    quote: "Abu Hanif designed and shipped our production vector search pipeline over 500k technical documents. Clean TypeScript, hardened pgvector indexing, and comprehensive end-to-end load tests. Exceptional engineering leadership.",
-    verifiedMetric: "🔍 500k Vectors Indexed with <180ms Hybrid Search",
-    deliverableTag: "Enterprise AI Document Search",
-    projectSlug: "enterprise-ai-document-search",
-    serviceSlug: "mvp-feature-sprint",
-    engagementScope: "$14,000 Hybrid RAG Sprint",
-    engagementDuration: "3 Weeks Delivery",
-    verificationBadge: "✓ Verified Milestone Settlement & Code IP Handover",
-    deliverablesCompleted: [
-      "FastAPI webhook ingestion pipeline processing Jira, Confluence, and GitHub",
-      "PostgreSQL 16 pgvector HNSW indexing (m=16, ef_construction=64)",
-      "Hybrid search combining dense embeddings with BM25 keyword rank",
-      "Claude 3.5 Sonnet RAG agent with verified citation grounding",
-    ],
-  },
-  {
-    id: "test-5",
-    author: "Roland Wright",
-    role: "Director of Information Security",
-    company: "Apex Vault Systems",
-    category: "security",
-    quote: "Abu Hanif engineered our zero-trust identity microservice from RFC specifications to full SOC2 compliance readiness. His implementation of biometric Passkeys and Ed25519 token minting passed our external penetration test with zero vulnerabilities.",
-    verifiedMetric: "🛡️ 3.5M Identities Secured & Zero Audit Findings",
-    deliverableTag: "Zero-Trust Auth & RBAC Microservice",
-    projectSlug: "zero-trust-auth-service",
-    serviceSlug: "architecture-audit",
-    engagementScope: "$12,500 Security Architecture Sprint",
-    engagementDuration: "2 Weeks Delivery",
-    verificationBadge: "✓ Verified Milestone Settlement & Code IP Handover",
-    deliverablesCompleted: [
-      "Go RFC 6749 OAuth2/OIDC provider with WebAuthn / Passkey support",
-      "Sub-second JWT revocation broadcast mesh powered by Redis Cluster",
-      "PostgreSQL Row Level Security (RLS) multi-tenant data boundaries",
-      "SHA-256 Merkle hash chain audit logger for immutable SOC2 compliance",
-    ],
-  },
-  {
-    id: "test-6",
-    author: "Maya Lin",
-    role: "Head of Developer Experience",
-    company: "HyperScale Tooling",
-    category: "fullstack",
-    quote: "Abu Hanif rebuilt our developer documentation portal into a lightning-fast static engine with instant search and live API execution. Our developer session duration jumped 140% and our Lighthouse score reached a perfect 100/100 across all four metrics.",
-    verifiedMetric: "⚡ 100/100 Lighthouse & +140% Session Duration",
-    deliverableTag: "Developer Documentation Engine",
-    projectSlug: "developer-docs-engine",
-    serviceSlug: "mvp-feature-sprint",
-    engagementScope: "$8,500 Headless Portal Sprint",
-    engagementDuration: "10 Days Delivery",
-    verificationBadge: "✓ Verified Milestone Settlement & Code IP Handover",
-    deliverablesCompleted: [
-      "Next.js 16 Rust MDX compilation with build-time syntax highlighting",
-      "Algolia DocSearch integration with offline Web Worker fallback",
-      "Interactive sandboxed API playground with real-time response inspector",
-      "Service worker caching strategy enabling offline documentation browsing",
-    ],
-  },
-];
+// Verified client endorsements are added only from genuine completed engagements via Admin Panel.
+export const initialTestimonials: Testimonial[] = [];

@@ -1,158 +1,166 @@
 import type { Metadata } from "next";
 import ResumeClientView from "./resume-client-view";
+import { getProfile } from "../lib/portfolio-store";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abuhanifmia.com";
 
 export const metadata: Metadata = {
-  title: "Technical Resume & Credentials",
+  title: "CV, Work History & Credentials",
   description:
-    "Official resume of MD Abu Hanif Mia (Abu Hanif) - Staff Software Engineer & Systems Architect. 9+ years experience, 99.99% uptime track record, B.Sc. in CSE, Programming Hero Batch-12 certified (WEB12-3991), and freeCodeCamp accreditations.",
+    "Official CV of MD Abu Hanif Mia (Abu Hanif) — Full-Stack Web Developer & International Operations Professional. Creator of NexusCalculator.net, HSC Commerce (Wali Neowaj Khan College), Programming Hero 2025, Oman & Bangladesh work history.",
   keywords: [
-    "MD Abu Hanif Mia Resume",
-    "Staff Software Engineer CV",
+    "MD Abu Hanif Mia CV",
     "Abu Hanif Resume",
+    "Full-Stack Web Developer CV",
+    "NexusCalculator.net",
+    "Wali Neowaj Khan College",
     "Programming Hero Batch 12",
     "WEB12-3991",
-    "freeCodeCamp Certified Developer",
-    "Rust Systems Engineer",
-    "Next.js 16 Architect",
-    "PostgreSQL Performance Specialist",
-    "Software Engineer Bangladesh",
-    "Distributed Systems Architect",
+    "freeCodeCamp Self-Study",
+    "WACASCO Oman",
+    "PRAN-RFL Group",
+    "UK Europe Remote Relocation",
   ],
   alternates: {
     canonical: `${siteUrl}/resume`,
   },
   openGraph: {
-    title: "Technical Resume & Credentials | MD Abu Hanif Mia",
+    title: "CV, Work History & Credentials | MD Abu Hanif Mia",
     description:
-      "Verified track record: 99.99% uptime, 12M events/sec, Programming Hero Honor (WEB12-3991), freeCodeCamp, and Rust systems architecture.",
+      "Full-Stack Web Developer (Next.js, TypeScript) & 7+ yrs International Operations (Oman & Bangladesh). Open to Remote, B2B & On-Site Roles in UK & Europe.",
     url: `${siteUrl}/resume`,
     type: "profile",
-    locale: "en_US",
+    locale: "en_GB",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Technical Resume & Credentials | MD Abu Hanif Mia",
+    title: "CV, Work History & Credentials | MD Abu Hanif Mia",
     description:
-      "Staff Software Engineer & Systems Architect resume. 9+ years experience, Programming Hero Batch-12 honor, freeCodeCamp certifications, and Rust systems expertise.",
+      "Full-Stack Web Developer & International Operations CV. Creator of NexusCalculator.net. Open to UK & Europe roles.",
     creator: "@MohammadBitull1",
   },
 };
 
-const resumeJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "ProfilePage",
-      "@id": `${siteUrl}/resume#webpage`,
-      url: `${siteUrl}/resume`,
-      name: "Technical Resume & Credentials | MD Abu Hanif Mia",
-      description:
-        "Staff Software Engineer & Systems Architect resume. 9+ years experience, Programming Hero Batch-12 honor, freeCodeCamp certifications, and Rust systems expertise.",
-      dateCreated: "2024-01-01T00:00:00Z",
-      dateModified: "2026-10-22T00:00:00Z",
-      mainEntity: {
-        "@type": "Person",
-        "@id": `${siteUrl}/#person`,
-        name: "MD Abu Hanif Mia",
-        alternateName: ["Abu Hanif", "md abu hanif mia"],
-        jobTitle: "Staff Software Engineer & Systems Architect",
+export default async function ResumePage() {
+  const profile = await getProfile();
+
+  const resumeJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ProfilePage",
+        "@id": `${siteUrl}/resume#webpage`,
+        url: `${siteUrl}/resume`,
+        name: "CV, Work History & Credentials | MD Abu Hanif Mia",
         description:
-          "Staff Software Engineer and Systems Architect with 9+ years experience designing high-throughput distributed applications, edge networks, and developer platforms.",
-        url: siteUrl,
-        image: `${siteUrl}/images/profile.png`,
-        email: "abuhanifmain@gmail.com",
-        telephone: "+8801724010261",
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "Sadar Upazila",
-          addressLocality: "Kishoreganj",
-          addressRegion: "Dhaka",
-          addressCountry: "Bangladesh",
-        },
-        sameAs: [
-          "https://github.com/abuhanif254",
-          "https://www.linkedin.com/in/md-abu-hanif-mia",
-          "https://x.com/MohammadBitull1",
-          "https://www.facebook.com/bitulla",
-          "https://www.instagram.com/bitullah_aj",
-        ],
-        alumniOf: [
-          {
-            "@type": "EducationalOrganization",
-            name: "Bachelor of Science in Computer Science & Engineering (B.Sc. in CSE)",
+          "Curriculum Vitae and verifiable background of MD Abu Hanif Mia (Abu Hanif) — Open to Remote, B2B, and On-Site roles in UK & Europe.",
+        dateCreated: "2024-01-01T00:00:00Z",
+        dateModified: "2026-11-16T00:00:00Z",
+        mainEntity: {
+          "@type": "Person",
+          "@id": `${siteUrl}/#person`,
+          name: profile.fullName,
+          alternateName: ["Abu Hanif", "md abu hanif mia"],
+          jobTitle: profile.kicker,
+          description: profile.bio,
+          url: siteUrl,
+          image: `${siteUrl}${profile.visualAssets.profilePhotoUrl.startsWith("/") ? profile.visualAssets.profilePhotoUrl : "/images/profile.png"}`,
+          email: profile.email,
+          telephone: profile.phone.replace(/\s+/g, ""),
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Sadar Upazila",
+            addressLocality: "Kishoreganj",
+            addressRegion: "Dhaka",
+            addressCountry: "Bangladesh",
           },
-          {
-            "@type": "EducationalOrganization",
-            name: "Programming Hero",
-            url: "https://programming-hero.com",
-          },
-        ],
-        hasCredential: [
-          {
-            "@type": "EducationalOccupationalCredential",
-            name: "Complete Web Development Course with Excellence",
-            credentialCategory: "Certificate of Completion with Excellence",
-            recognizedBy: {
-              "@type": "Organization",
+          sameAs: [
+            profile.socialLinks.github,
+            profile.socialLinks.linkedin,
+            profile.socialLinks.twitter,
+            profile.socialLinks.facebook,
+            profile.socialLinks.instagram,
+          ].filter(Boolean),
+          alumniOf: [
+            {
+              "@type": "EducationalOrganization",
+              name: "Wali Neowaj Khan College (EIIN: 110495 • Board: Dhaka Education Board • HSC in Commerce 2016–2017)",
+            },
+            {
+              "@type": "EducationalOrganization",
               name: "Programming Hero",
               url: "https://programming-hero.com",
             },
-            identifier: "WEB12-3991",
-            url: `${siteUrl}/images/programming-hero-certificate.png`,
-            validIn: {
-              "@type": "AdministrativeArea",
-              name: "Global",
+          ],
+          hasCredential: [
+            {
+              "@type": "EducationalOccupationalCredential",
+              name: "Web Development Course (Batch-12)",
+              credentialCategory: "Certificate of Completion",
+              recognizedBy: {
+                "@type": "Organization",
+                name: "Programming Hero",
+                url: "https://programming-hero.com",
+              },
+              identifier: "WEB12-3991",
+              url: `${siteUrl}/images/programming-hero-certificate.png`,
+              validIn: {
+                "@type": "AdministrativeArea",
+                name: "Global",
+              },
+              description:
+                "Completed full-stack web development training in 2025 (Batch-12 • ID: WEB12-3991).",
             },
-            description:
-              "Batch-12 honor distinction certified by CEO Jhankar Mahbub covering Modern JavaScript, TypeScript, React 19 architecture, Node.js, Express, and full-stack engineering.",
-          },
-          {
-            "@type": "EducationalOccupationalCredential",
-            name: "JavaScript Algorithms and Data Structures",
-            credentialCategory: "Verified Developer Accreditation",
-            recognizedBy: {
-              "@type": "Organization",
-              name: "freeCodeCamp",
-              url: "https://www.freecodecamp.org",
+            {
+              "@type": "EducationalOccupationalCredential",
+              name: "Self-Directed Programming Study (TypeScript, Python, Rust, C++)",
+              credentialCategory: "Self-Directed Online Study",
+              recognizedBy: {
+                "@type": "Organization",
+                name: "freeCodeCamp",
+                url: "https://www.freecodecamp.org",
+              },
             },
-          },
-          {
-            "@type": "EducationalOccupationalCredential",
-            name: "TypeScript Production Engineering",
-            credentialCategory: "Verified Developer Accreditation",
-            recognizedBy: {
-              "@type": "Organization",
-              name: "freeCodeCamp",
-              url: "https://www.freecodecamp.org",
+          ],
+          knowsLanguage: ["Bengali", "English", "Hindi", "Urdu"],
+          knowsAbout: [
+            "TypeScript",
+            "Next.js 16",
+            "React 19",
+            "PostgreSQL & Supabase",
+            "Python",
+            "Rust",
+            "C++",
+            "Hospitality & Catering Operations",
+            "Manufacturing Line Operations",
+            "Territory Sales & Client Service",
+          ],
+        },
+        breadcrumb: {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: siteUrl,
             },
-          },
-          {
-            "@type": "EducationalOccupationalCredential",
-            name: "Scientific Computing with Python",
-            credentialCategory: "Verified Developer Accreditation",
-            recognizedBy: {
-              "@type": "Organization",
-              name: "freeCodeCamp",
-              url: "https://www.freecodecamp.org",
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "CV & Credentials",
+              item: `${siteUrl}/resume`,
             },
-          },
-        ],
-        knowsAbout: [
-          "Rust Systems Programming",
-          "Tokio Concurrency",
-          "Go (Golang)",
-          "TypeScript",
-          "Next.js 16",
-          "React 19",
-          "PostgreSQL 16 Query Tuning",
-          "Cloudflare Pages & Workers Edge",
-          "TimescaleDB Telemetry",
-          "High-Throughput Distributed Architecture",
-        ],
+          ],
+        },
+        isPartOf: {
+          "@type": "WebSite",
+          "@id": `${siteUrl}/#website`,
+          url: siteUrl,
+          name: "Abu Hanif Portfolio & Digital Services",
+        },
       },
-      breadcrumb: {
+      {
         "@type": "BreadcrumbList",
         itemListElement: [
           {
@@ -164,46 +172,21 @@ const resumeJsonLd = {
           {
             "@type": "ListItem",
             position: 2,
-            name: "Technical Resume",
+            name: "CV & Credentials",
             item: `${siteUrl}/resume`,
           },
         ],
       },
-      isPartOf: {
-        "@type": "WebSite",
-        "@id": `${siteUrl}/#website`,
-        url: siteUrl,
-        name: "Abu Hanif Engineering Portfolio",
-      },
-    },
-    {
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: "Home",
-          item: siteUrl,
-        },
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: "Technical Resume",
-          item: `${siteUrl}/resume`,
-        },
-      ],
-    },
-  ],
-};
+    ],
+  };
 
-export default function ResumePage() {
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(resumeJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(resumeJsonLd).replace(/</g, "\\u003c") }}
       />
-      <ResumeClientView />
+      <ResumeClientView profile={profile} />
     </>
   );
 }

@@ -28,6 +28,7 @@ export default function PricingClientView({
     projectType: "Full-Stack SaaS MVP Engineering Sprint",
     budgetRange: "$10,000 – $25,000",
     message: "",
+    disclaimer: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedMessage, setSubmittedMessage] = useState<string | null>(null);
@@ -60,9 +61,9 @@ export default function PricingClientView({
   // Add-ons Definition
   const addonsList = [
     { id: "addon-migration", title: "Zero-Downtime Data Migration & Cutover", price: 3500, desc: "Safe schema extraction, ETL transformation, and live replication cutover." },
-    { id: "addon-security", title: "SOC2 Compliance & Security Hardening", price: 2800, desc: "Penetration testing remediations, cryptographic key rotation, and RLS audit." },
+    { id: "addon-security", title: "Security Hardening & Compliance Readiness", price: 2800, desc: "Security remediations, cryptographic key rotation, and RLS audit." },
     { id: "addon-ai", title: "Custom LLM & Vector RAG Pipeline Integration", price: 4200, desc: "Embedding generation, pgvector indexing, streaming UI, and tool-calling agents." },
-    { id: "addon-warranty", title: "Extended 60-Day Dedicated Post-Launch SLA", price: 1800, desc: "Doubles the standard 30-day warranty with guaranteed 2-hour emergency escalation." },
+    { id: "addon-warranty", title: "Extended 60-Day Dedicated Post-Launch SLA", price: 1800, desc: "Doubles the standard 30-day warranty with guaranteed emergency escalation." },
   ];
 
   // Calculate dynamic investment estimate
@@ -88,7 +89,7 @@ export default function PricingClientView({
       ...prev,
       projectType: serv.title,
       budgetRange: serv.priceDisplay,
-      message: `Hi Abu Hanif, I would like to book the "${serv.title}" package (${serv.priceDisplay}, ${serv.timeline}). Our target kickoff date is...`,
+      message: `Hi Abu Hanif, I would like to discuss the "${serv.title}" scope (${serv.priceDisplay}, ${serv.timeline}). Our target timeline is...`,
     }));
     const el = document.getElementById("inquiry");
     if (el) {
@@ -98,6 +99,10 @@ export default function PricingClientView({
 
   async function handleInquirySubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!formState.disclaimer) {
+      setErrorMessage("Please confirm the Privacy & GDPR consent checkbox before submitting.");
+      return;
+    }
     setIsSubmitting(true);
     setErrorMessage(null);
     setSubmittedMessage(null);
@@ -136,7 +141,7 @@ export default function PricingClientView({
       }
 
       setSubmittedMessage(
-        "Thank you! Your project scope inquiry has been received. Abu Hanif will review your technical requirements and respond within 24 hours to schedule an architecture discovery call."
+        "Thank you! Your inquiry has been received. MD Abu Hanif Mia will review your details and reply via abuhanifmain@gmail.com."
       );
       setFormState({
         name: "",
@@ -145,26 +150,13 @@ export default function PricingClientView({
         projectType: currentService.title,
         budgetRange: currentService.priceDisplay,
         message: "",
+        disclaimer: false,
       });
-    } catch (err: any) {
-      if (typeof window !== "undefined") {
-        const stored = window.localStorage.getItem("abuhanif-inquiries");
-        const list = stored ? JSON.parse(stored) : [];
-        list.unshift({
-          ...record,
-          id: `offline-${Date.now()}`,
-          status: "new",
-          createdAt: new Date().toISOString(),
-        });
-        window.localStorage.setItem("abuhanif-inquiries", JSON.stringify(list));
-        setSubmittedMessage(
-          "Thank you! Your project scope inquiry has been received (offline queue). Abu Hanif will review your technical requirements."
-        );
-      } else {
-        setErrorMessage(
-          err.message || "An unexpected error occurred. You can also email directly at abuhanifmain@gmail.com."
-        );
-      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Network error submitting form.";
+      setErrorMessage(
+        `${msg} Please email abuhanifmain@gmail.com or call +880 1724-010261 directly.`
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -173,43 +165,43 @@ export default function PricingClientView({
   const faqs = [
     {
       q: "Why do you use fixed-price milestones instead of open-ended hourly billing?",
-      a: "Hourly billing misaligns incentives: slower development yields higher contractor bills, while efficient engineering is penalized. By structuring projects around transparent, fixed-scope milestones, you know the exact cost and delivery timeline before code is written. I assume the delivery risk, and you receive verified production deliverables without budget creep.",
+      a: "Fixed-scope milestones give you an exact cost and agreed timeline before work starts, avoiding open-ended hourly surprises.",
     },
     {
       q: "Who owns the intellectual property and source code?",
-      a: "You do. 100% of all intellectual property, git commit histories, documentation, schemas, and assets belong to you from the moment they are written. Work is committed directly to your private GitHub or GitLab organization under standard clean IP assignment terms.",
+      a: "You do. 100% of all intellectual property, git commit histories, documentation, schemas, and assets belong to the client upon handover.",
     },
     {
       q: "Do you sign Mutual Non-Disclosure Agreements (NDAs)?",
-      a: "Yes, standard practice. Prior to reviewing your private repositories, product specs, or database architectures, we sign a mutual NDA to guarantee complete confidentiality.",
+      a: "Yes. Prior to reviewing private repositories, product specs, or database schemas, a mutual NDA can be executed cleanly.",
     },
     {
       q: "How are milestone payments structured?",
-      a: "For fixed-scope sprints, payments are typically split 50% upfront upon signing the Statement of Work (reserving dedicated engineering calendar capacity) and 50% upon verified staging acceptance and production deployment. For monthly retainers, billing occurs on the 1st of each month with month-to-month flexibility.",
+      a: "Fixed-scope sprints follow our SOW schedule: 25% kickoff deposit, 50% core implementation milestone delivery, and 25% upon final staging acceptance and repository handover. Monthly retainers bill on a predictable month-to-month basis.",
     },
     {
       q: "What happens if technical requirements change during a sprint?",
-      a: "Software is iterative. If a requirement evolves during development, we evaluate the delta: minor adjustments are absorbed immediately without bureaucracy. If a major new capability is desired, we document an additive RFC with an explicit scope adjustment so you always remain in full control.",
+      a: "Minor refinements are accommodated directly, and larger new features are scoped transparently as an addendum so budgets stay clear.",
     },
     {
       q: "What is included in the 30-Day Post-Launch Warranty?",
-      a: "Every fixed-scope project includes 30 days of complimentary production bug warranty. If any bug or deviation from the agreed specification surfaces post-deployment, it is diagnosed and resolved with high priority at zero additional cost.",
+      a: "Every fixed-scope project includes 30 days of complimentary bug-fix warranty covering regressions against the agreed scope.",
     },
     {
-      q: "Can you work alongside our existing in-house engineering team?",
-      a: "Yes. In the Fractional Staff Architect or sprint model, I integrate directly into your team's Slack/Discord, attend weekly sprint plannings, conduct peer PR reviews, mentor mid-level engineers, and tackle the hardest technical subsystems.",
+      q: "Can you work alongside our existing UK, European, or remote team?",
+      a: "Yes. I am available for full-time Remote employment, B2B Retainer work, or On-Site / Relocation roles aligned with UK (GMT/BST) and European (CET/CEST) hours.",
     },
     {
       q: "What technology stack do you specialize in?",
-      a: "TypeScript/JavaScript, Next.js 16 (App Router, Server Components), React 19, Supabase PostgreSQL, Go, Redis, Cloudflare Pages & Workers, Docker, Tailwind CSS, TimescaleDB, and Stripe billing infrastructure.",
+      a: "TypeScript/JavaScript, Next.js 16 (App Router, Server Components), React 19, Supabase PostgreSQL, Cloudflare Pages, Tailwind CSS, plus Python, Rust, and C++ foundations.",
     },
     {
-      q: "How fast can an engagement begin?",
-      a: "Diagnostic audits can typically begin within 2–3 business days. Dedicated full-stack sprints and monthly retainers are booked 1–2 weeks in advance depending on current sprint bandwidth.",
+      q: "How fast can an engagement or employment interview begin?",
+      a: "Discovery chats and interviews can be scheduled within 24–48 hours directly via abuhanifmain@gmail.com or +880 1724-010261.",
     },
     {
       q: "How do we get started?",
-      a: "Submit the project inquiry form below or email abuhanifmain@gmail.com. We will schedule a free 30-minute technical discovery call to review your architecture, evaluate scope fit, and deliver a formal Statement of Work (SOW).",
+      a: "Submit the inquiry form below or email abuhanifmain@gmail.com to discuss the role, scope, or Statement of Work.",
     },
   ];
 
@@ -249,12 +241,12 @@ export default function PricingClientView({
 
                   <div className="bodytext">
                     <div className="description">
-                      <h2>Predictable Engineering Investment. Zero Budget Creep.</h2>
+                      <h2>Transparent Project Pricing &amp; Open B2B / Hiring Engagement</h2>
                       <p>
-                        Senior engineering leadership should be transparent, accountable, and driven by measurable production outcomes. As <strong>Abu Hanif (MD Abu Hanif Mia)</strong>, Staff Software Engineer &amp; Systems Architect, I operate on fixed-scope milestone deliverables and clearly defined retainer models.
+                        Clear pricing and straightforward communication matter for UK, European, and remote partners. As <strong>Abu Hanif (MD Abu Hanif Mia)</strong>, I structure independent development work around fixed-scope milestone sprints alongside direct availability for full-time Remote or On-Site employment.
                       </p>
                       <p>
-                        Every engagement includes explicit architectural specifications, clean git histories with 100% intellectual property ownership assigned to your company, automated CI/CD pipelines, and an unconditional 30-day post-launch warranty.
+                        Every B2B milestone engagement includes clear specifications, direct commits to your Git repository with 100% client IP ownership, and a 30-day bug-fix warranty after launch.
                       </p>
 
                       {/* 4 Pillars Summary Strip */}
@@ -268,15 +260,15 @@ export default function PricingClientView({
                       >
                         <div style={{ padding: "14px", backgroundColor: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "6px", boxShadow: "0 1px 2px rgba(0,0,0,0.03)" }}>
                           <strong style={{ display: "block", color: "#0f172a", fontSize: "13px" }}>Fixed-Scope Sprints</strong>
-                          <span style={{ fontSize: "12px", color: "#475569" }}>Guaranteed delivery dates &amp; fixed milestone costs.</span>
+                          <span style={{ fontSize: "12px", color: "#475569" }}>Clear delivery targets &amp; agreed milestone pricing.</span>
                         </div>
                         <div style={{ padding: "14px", backgroundColor: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "6px", boxShadow: "0 1px 2px rgba(0,0,0,0.03)" }}>
                           <strong style={{ display: "block", color: "#0f172a", fontSize: "13px" }}>100% Client IP</strong>
                           <span style={{ fontSize: "12px", color: "#475569" }}>Direct commits to your private Git repo from day one.</span>
                         </div>
                         <div style={{ padding: "14px", backgroundColor: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "6px", boxShadow: "0 1px 2px rgba(0,0,0,0.03)" }}>
-                          <strong style={{ display: "block", color: "#0f172a", fontSize: "13px" }}>Production SLAs</strong>
-                          <span style={{ fontSize: "12px", color: "#475569" }}>Sub-30ms P99 latency and 99.99% uptime targets.</span>
+                          <strong style={{ display: "block", color: "#0f172a", fontSize: "13px" }}>UK / EU Alignment</strong>
+                          <span style={{ fontSize: "12px", color: "#475569" }}>Flexible GMT/BST &amp; CET/CEST work hours.</span>
                         </div>
                         <div style={{ padding: "14px", backgroundColor: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "6px", boxShadow: "0 1px 2px rgba(0,0,0,0.03)" }}>
                           <strong style={{ display: "block", color: "#0f172a", fontSize: "13px" }}>30-Day Warranty</strong>
@@ -828,9 +820,7 @@ export default function PricingClientView({
                                   Direct Google Meet / Zoom review with Abu Hanif to evaluate your technical bottlenecks, target delivery timeline, and architecture feasibility.
                                 </p>
                                 <a
-                                  href="https://cal.com/abuhanif/15min"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
+                                  href="mailto:abuhanifmain@gmail.com?subject=Discovery%20Call%20or%20Project%20Inquiry"
                                   style={{
                                     display: "inline-flex",
                                     alignItems: "center",
@@ -849,7 +839,7 @@ export default function PricingClientView({
                                     boxSizing: "border-box",
                                   }}
                                 >
-                                  📅 Schedule 15-Min Call on Cal.com ↗
+                                  ✉️ Request Call via Email ↗
                                 </a>
                               </div>
 
@@ -942,7 +932,7 @@ export default function PricingClientView({
                                   required
                                   value={formState.name}
                                   onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                                  placeholder="e.g. Marcus Thorne"
+                                  placeholder="Your full name or company contact"
                                   style={{ width: "100%", padding: "10px", border: "1px solid #cbd5e1", borderRadius: "4px", fontSize: "14px" }}
                                 />
                               </div>
@@ -957,7 +947,7 @@ export default function PricingClientView({
                                     required
                                     value={formState.email}
                                     onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                                    placeholder="e.g. marcus@venture.io"
+                                    placeholder="name@company.co.uk"
                                     style={{ width: "100%", padding: "10px", border: "1px solid #cbd5e1", borderRadius: "4px", fontSize: "14px" }}
                                   />
                                 </div>
@@ -969,7 +959,7 @@ export default function PricingClientView({
                                     type="tel"
                                     value={formState.phone}
                                     onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
-                                    placeholder="+1 (555) 000-0000 or +880 1XXX-XXXXXX"
+                                    placeholder="+44 7700 900077 or +880 1XXX-XXXXXX"
                                     style={{ width: "100%", padding: "10px", border: "1px solid #cbd5e1", borderRadius: "4px", fontSize: "14px" }}
                                   />
                                 </div>
@@ -1015,16 +1005,34 @@ export default function PricingClientView({
 
                               <div className="form-group" style={{ marginBottom: "18px" }}>
                                 <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#0f172a", marginBottom: "4px" }}>
-                                  System Architecture Details &amp; Objectives *
+                                  Role, Project Scope Details &amp; Objectives *
                                 </label>
                                 <textarea
                                   required
                                   rows={4}
                                   value={formState.message}
                                   onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                                  placeholder="Describe your current tech stack, performance bottlenecks, target launch timeline, or specific engineering goals..."
+                                  placeholder="Share details about your role (Remote, B2B, or On-Site), project requirements, or target timeline..."
                                   style={{ width: "100%", padding: "10px", border: "1px solid #cbd5e1", borderRadius: "4px", fontSize: "14px" }}
                                 />
+                              </div>
+
+                              <div style={{ marginBottom: "16px", display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                                <input
+                                  id="pricing_gdpr_consent"
+                                  type="checkbox"
+                                  required
+                                  checked={formState.disclaimer}
+                                  onChange={(e) => setFormState({ ...formState, disclaimer: e.target.checked })}
+                                  style={{ marginTop: "3px", width: "16px", height: "16px", cursor: "pointer" }}
+                                />
+                                <label htmlFor="pricing_gdpr_consent" style={{ fontSize: "12.5px", color: "#334155", lineHeight: 1.5, cursor: "pointer" }}>
+                                  I agree to the{" "}
+                                  <Link href="/privacy" style={{ color: "#2563eb", textDecoration: "underline", fontWeight: 600 }}>
+                                    Privacy &amp; GDPR Policy
+                                  </Link>{" "}
+                                  and consent to MD Abu Hanif Mia contacting me regarding this inquiry. (Required)
+                                </label>
                               </div>
 
                               <button
@@ -1044,7 +1052,7 @@ export default function PricingClientView({
                                   transition: "all 0.15s ease",
                                 }}
                               >
-                                {isSubmitting ? "Submitting Scope..." : "Submit Project Scope & Request Discovery Call ›"}
+                                {isSubmitting ? "Submitting..." : "Submit Inquiry & Request Response ›"}
                               </button>
                             </form>
                           </div>
@@ -1076,40 +1084,40 @@ export default function PricingClientView({
                         MD Abu Hanif Mia
                       </h3>
                       <div style={{ fontSize: "12px", color: "#2563eb", fontWeight: "700", marginBottom: "8px" }}>
-                        Staff Software Engineer &amp; Systems Architect
+                        Full-Stack Web Developer &amp; Int&apos;l Ops
                       </div>
                       <div style={{ fontSize: "11px", color: "#047857", fontWeight: "700", marginBottom: "12px" }}>
-                        ● Q4 2026 / Booking Engineering Sprints
+                        ● Open to UK &amp; Europe (Remote • B2B • On-Site)
                       </div>
                       <p style={{ fontSize: "12px", color: "#475569", lineHeight: "1.5", margin: 0 }}>
-                        9+ years architecting high-throughput distributed backends, Supabase integrations, and Next.js platforms deployed on Cloudflare Pages.
+                        Creator of NexusCalculator.net (Next.js, TypeScript, i18n) with 7+ years of operations &amp; client service background in Oman and Bangladesh.
                       </p>
                     </div>
 
-                    {/* SLA Guarantees */}
+                    {/* Commitments */}
                     <div className="block" style={{ backgroundColor: "#0b132b", border: "1px solid #1e293b", color: "#ffffff", padding: "20px 18px", borderRadius: "6px", marginBottom: "20px", boxShadow: "0 2px 8px rgba(11,25,44,0.3)" }}>
                       <h4 style={{ margin: "0 0 12px 0", fontSize: "13px", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                        Engineering Commitments
+                        Working Commitments
                       </h4>
                       <ul style={{ margin: 0, paddingLeft: "16px", fontSize: "12px", lineHeight: "1.6", color: "#e2e8f0" }}>
-                        <li style={{ marginBottom: "6px" }}><strong>100% Client IP:</strong> You own all source code and assets.</li>
-                        <li style={{ marginBottom: "6px" }}><strong>Mutual NDA First:</strong> Guaranteed confidentiality.</li>
-                        <li style={{ marginBottom: "6px" }}><strong>30-Day Warranty:</strong> Free post-launch bug fixes.</li>
-                        <li style={{ marginBottom: "6px" }}><strong>No Junior Hand-offs:</strong> Direct execution with Abu Hanif.</li>
-                        <li><strong>Fixed Costs:</strong> SOW milestones with zero budget surprises.</li>
+                        <li style={{ marginBottom: "6px" }}><strong>100% Client IP:</strong> Clean code handover upon milestone settlement.</li>
+                        <li style={{ marginBottom: "6px" }}><strong>UK / EU Hours:</strong> Flexible alignment with GMT/BST &amp; CET.</li>
+                        <li style={{ marginBottom: "6px" }}><strong>30-Day Warranty:</strong> Complimentary bug fixes post-launch.</li>
+                        <li style={{ marginBottom: "6px" }}><strong>Direct Contact:</strong> Always speak directly with Abu Hanif.</li>
+                        <li><strong>Clear Scope:</strong> Agreed milestones before work starts.</li>
                       </ul>
                     </div>
 
-                    {/* Client Feedback Quote */}
+                    {/* Verifiable Flagship Product Box */}
                     <div className="block" style={{ backgroundColor: "#f0fdf4", border: "1px solid #bbf7d0", padding: "16px", borderRadius: "6px", marginBottom: "20px" }}>
                       <div style={{ fontSize: "11px", fontWeight: "700", color: "#047857", textTransform: "uppercase", marginBottom: "6px" }}>
-                        Verified Client Review
+                        Live Production Proof
                       </div>
-                      <blockquote style={{ margin: 0, fontSize: "12px", color: "#1e3a5f", fontStyle: "italic", lineHeight: "1.5" }}>
-                        &ldquo;Abu Hanif diagnosed and re-indexed our Postgres database during a peak scale sprint. P99 query latency fell from 1.8s to 18ms. Exceptional velocity and technical depth.&rdquo;
-                      </blockquote>
+                      <p style={{ margin: 0, fontSize: "12px", color: "#1e3a5f", lineHeight: "1.5" }}>
+                        Inspect <strong>NexusCalculator.net</strong> live: 312 tools, 190+ guides, and 3,200+ static pages built with Next.js &amp; TypeScript.
+                      </p>
                       <div style={{ fontSize: "11px", color: "#475569", marginTop: "8px", fontWeight: "600" }}>
-                        — Lead Architect, FinTech Platform
+                        — <Link href="/projects/nexus-calculator-platform" style={{ color: "#2563eb", textDecoration: "underline" }}>Read Architecture Notes &rsaquo;</Link>
                       </div>
                     </div>
 

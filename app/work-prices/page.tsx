@@ -4,9 +4,9 @@ import PricingPage from "../pricing/page";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abuhanifmia.com";
 
 export const metadata: Metadata = {
-  title: "Engineering Services & Work Prices",
+  title: "B2B Services & Work Prices",
   description:
-    "Transparent pricing for staff-level software engineering, PostgreSQL performance tuning sprints, Cloudflare edge migrations, and full-stack SaaS MVP architecture.",
+    "Transparent B2B milestone pricing for Next.js web development, PostgreSQL optimization, Cloudflare deployments, and full-stack software sprints by MD Abu Hanif Mia.",
   alternates: {
     canonical: `${siteUrl}/pricing`,
   },

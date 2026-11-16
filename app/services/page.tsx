@@ -8,66 +8,65 @@ import { getServices } from "../lib/portfolio-store";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abuhanifmia.com";
 
 export const metadata: Metadata = {
-  title: "Engineering & Architecture Services",
+  title: "Web Development & Digital Services",
   description:
-    "Enterprise-grade technical services by Staff Software Engineer Abu Hanif: Programmatic SEO, automated social media bots, high-converting landing pages, custom Next.js SaaS platforms, and PostgreSQL performance tuning.",
+    "B2B & remote technical services by Full-Stack Web Developer Abu Hanif: Programmatic SEO, automation workflows, Next.js web applications, and PostgreSQL optimization.",
   keywords: [
     "Programmatic SEO Engineer",
     "Technical SEO Specialist",
     "Social Media Automation Developer",
-    "Next.js 16 Landing Page Specialist",
-    "Custom Full-Stack SaaS Developer",
-    "PostgreSQL Query Optimization Consultant",
-    "Cloudflare Edge Migration Architect",
-    "High-Conversion Web Applications",
-    "Staff Software Engineer Services",
-    "Abu Hanif",
+    "Next.js 16 Web Developer",
+    "Custom Full-Stack Developer",
+    "PostgreSQL Query Optimization",
+    "Cloudflare Pages Deployment",
+    "UK Europe Remote B2B Developer",
+    "Abu Hanif Services",
     "MD Abu Hanif Mia",
   ],
   alternates: {
     canonical: `${siteUrl}/services`,
   },
   openGraph: {
-    title: "Engineering & Growth Services | Abu Hanif",
+    title: "Web Development & Digital Services | Abu Hanif",
     description:
-      "Programmatic SEO, autonomous social media bots, sub-50ms landing pages, custom SaaS platforms, and database optimization delivered on fixed-price milestones with 100% IP handover.",
+      "Programmatic SEO, automation workflows, Next.js 16 web platforms, and PostgreSQL optimization delivered on clear fixed-scope milestones.",
     url: `${siteUrl}/services`,
     type: "website",
-    locale: "en_US",
+    locale: "en_GB",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Engineering & Growth Services | Abu Hanif",
+    title: "Web Development & Digital Services | Abu Hanif",
     description:
-      "Programmatic SEO, autonomous social media bots, sub-50ms landing pages, custom SaaS platforms, and database optimization.",
+      "Programmatic SEO, automation workflows, Next.js 16 web platforms, and PostgreSQL optimization.",
     creator: "@MohammadBitull1",
   },
 };
 
 const servicesFaqs = [
   {
-    q: "Why fixed-price milestone sprints instead of hourly agency billing?",
-    a: "Hourly billing penalizes rapid execution and encourages budget creep. Fixed-price milestone sprints ensure clear scope, fixed costs, and guaranteed timelines before a single line of code is written. I assume delivery risk, you get production-verified deliverables.",
+    q: "Why fixed-price milestone sprints instead of open-ended hourly billing?",
+    a: "Fixed-price milestone sprints ensure clear scope, predictable costs, and agreed deliverables before work begins, whether collaborating with UK, European, or international teams.",
   },
   {
     q: "Who owns the intellectual property and code repository?",
-    a: "You do. 100% of all code, git history, documentation, database schemas, and assets belong exclusively to your company under standard clean IP assignment terms from day one.",
+    a: "You do. 100% of all code, git history, documentation, database schemas, and assets belong to the client upon handover.",
   },
   {
-    q: "How does the Programmatic SEO engineering service differ from traditional SEO?",
-    a: "Traditional SEO is manual and slow. Programmatic SEO creates automated data pipelines that generate thousands of fast, highly-targeted, indexable pages with full JSON-LD schema graphs and 100/100 Core Web Vitals to capture high-intent organic search volume.",
+    q: "How does Programmatic SEO engineering differ from manual SEO?",
+    a: "Programmatic SEO uses structured TypeScript registries and Schema.org JSON-LD pipelines to serve fast, statically generated pages — the same pattern running live on NexusCalculator.net across four languages.",
   },
   {
     q: "What is your typical turnaround time for kickoff?",
-    a: "Landing pages and diagnostic audits commence within 48 to 72 hours of an executed Statement of Work. Full-Stack SaaS MVP builds are scheduled in dedicated engineering blocks to ensure 100% focus.",
+    a: "Diagnostic audits and landing page builds typically start within 48 to 72 hours after scope confirmation. Larger full-stack applications are scheduled in dedicated milestone sprints.",
   },
   {
     q: "Do you offer post-launch support and bug warranties?",
-    a: "Yes. Every fixed sprint includes an unconditional 30-day post-launch warranty covering any bugs, edge regressions, or configuration defects at zero additional charge.",
+    a: "Yes. Every fixed sprint includes a 30-day post-launch warranty covering any bugs or configuration regressions at zero additional charge.",
   },
   {
-    q: "Can you collaborate with our existing engineering team?",
-    a: "Absolutely. I frequently operate as a fractional Staff Architect, reviewing PRs, designing system RFCs, and mentoring internal engineers in production-grade TypeScript, Go, and PostgreSQL patterns.",
+    q: "Are you available for full-time employment or B2B contracts in the UK and Europe?",
+    a: "Yes. Alongside independent B2B services, I am actively open to Remote, B2B Contract, and On-Site / Relocation employment across technical, web development, IT operations, and international roles.",
   },
 ];
 
@@ -77,8 +76,8 @@ export default async function ServicesHubPage() {
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "OfferCatalog",
-    name: "Engineering & Growth Services Catalog",
-    description: "Enterprise software engineering, programmatic SEO, automation bots, and database optimization services by Staff Software Engineer MD Abu Hanif Mia.",
+    name: "Web Development & Technical Services Catalog",
+    description: "Full-stack Next.js development, programmatic SEO, workflow automation, and PostgreSQL optimization by MD Abu Hanif Mia.",
     itemListElement: services.map((service, index) => ({
       "@type": "Offer",
       position: index + 1,
@@ -89,12 +88,12 @@ export default async function ServicesHubPage() {
         provider: {
           "@type": "Person",
           name: "MD Abu Hanif Mia",
-          jobTitle: "Staff Software Engineer & Systems Architect",
+          jobTitle: "Full-Stack Web Developer & Digital Systems Specialist",
           url: siteUrl,
         },
         areaServed: {
           "@type": "Place",
-          name: "Worldwide (Remote)",
+          name: "UK, Europe & Worldwide (Remote / B2B)",
         },
       },
       price: service.priceDisplay.replace(/[^0-9]/g, "") || "3500",

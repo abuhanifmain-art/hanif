@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     "Cloudflare Pages Workers",
     "Supabase CDC Realtime",
     "Distributed Systems Engineering",
-    "Staff Software Engineer Blog",
+    "Full-Stack Web Development Blog",
     "Abu Hanif",
     "MD Abu Hanif Mia",
   ],
@@ -25,16 +25,16 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Technical Architecture Blog | Abu Hanif",
     description:
-      "Deep dives into high-throughput systems, Next.js 16, PostgreSQL optimization, and cloud architecture.",
+      "Deep dives into full-stack web applications, Next.js 16, PostgreSQL indexing, and cloud architecture.",
     url: `${siteUrl}/blog`,
     type: "website",
-    locale: "en_US",
+    locale: "en_GB",
   },
   twitter: {
     card: "summary_large_image",
     title: "Technical Architecture Blog | Abu Hanif",
     description:
-      "Deep dives into high-throughput systems, Next.js 16, PostgreSQL optimization, and cloud architecture.",
+      "Deep dives into full-stack web applications, Next.js 16, PostgreSQL indexing, and cloud architecture.",
     creator: "@MohammadBitull1",
   },
 };
@@ -51,7 +51,7 @@ export default async function BlogIndexPage() {
         url: `${siteUrl}/blog`,
         name: "Abu Hanif Technical Engineering Blog",
         description:
-          "Technical write-ups and architectural deep dives by Staff Software Engineer MD Abu Hanif Mia.",
+          "Technical write-ups and full-stack case notes by developer MD Abu Hanif Mia.",
         publisher: {
           "@type": "Person",
           name: "MD Abu Hanif Mia",

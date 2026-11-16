@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "nodejs";
 export const alt =
-  "MD Abu Hanif Mia (Abu Hanif) - Staff Software Engineer & Systems Architect";
+  "MD Abu Hanif Mia (Abu Hanif) - Full-Stack Web Developer & International Operations";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -55,7 +55,7 @@ export default function Image() {
                 textTransform: "uppercase",
               }}
             >
-              STAFF SOFTWARE ENGINEER &amp; SYSTEMS ARCHITECT
+              FULL-STACK DEVELOPER &amp; INTERNATIONAL OPS
             </span>
             <span
               style={{
@@ -68,7 +68,7 @@ export default function Image() {
                 borderRadius: "6px",
               }}
             >
-              99.99% PRODUCTION SLA
+              OPEN TO UK &amp; EUROPE
             </span>
           </div>
 
@@ -106,10 +106,10 @@ export default function Image() {
               marginBottom: "28px",
             }}
           >
-            Distributed Systems &bull; Next.js 16 Edge &bull; PostgreSQL 16 Tuning &bull; Rust &amp; Go Concurrency
+            Next.js 16 &bull; TypeScript &bull; Supabase PostgreSQL &bull; Python, Rust &amp; C++ Study
           </div>
 
-          {/* 3 Empirical Metric Cards */}
+          {/* 3 Verifiable Highlight Cards */}
           <div style={{ display: "flex", gap: "20px" }}>
             <div
               style={{
@@ -124,10 +124,10 @@ export default function Image() {
               }}
             >
               <span style={{ color: "#f8fafc", fontSize: "28px", fontWeight: 900 }}>
-                12M Events/Sec
+                NexusCalculator.net
               </span>
               <span style={{ color: "#94a3b8", fontSize: "14px", marginTop: "4px" }}>
-                Sub-22ms P99 Streaming Telemetry
+                312 Live Tools • 4 Languages • Next.js
               </span>
             </div>
 
@@ -144,10 +144,10 @@ export default function Image() {
               }}
             >
               <span style={{ color: "#34d399", fontSize: "28px", fontWeight: 900 }}>
-                4.2s to 4.8ms
+                Remote • B2B • On-Site
               </span>
               <span style={{ color: "#94a3b8", fontSize: "14px", marginTop: "4px" }}>
-                PostgreSQL Query &amp; Index Optimization
+                UK (GMT/BST) &amp; Europe (CET/CEST)
               </span>
             </div>
 
@@ -164,10 +164,10 @@ export default function Image() {
               }}
             >
               <span style={{ color: "#38bdf8", fontSize: "28px", fontWeight: 900 }}>
-                50+ Systems
+                4 Spoken Languages
               </span>
               <span style={{ color: "#94a3b8", fontSize: "14px", marginTop: "4px" }}>
-                Zero-Downtime Edge Deployments
+                Bengali (Native) • EN • HI • UR
               </span>
             </div>
           </div>
@@ -184,10 +184,10 @@ export default function Image() {
           }}
         >
           <span style={{ color: "#cbd5e1", fontSize: "16px", fontWeight: 600 }}>
-            https://abuhanifmia.com &bull; abuhanifmain@gmail.com &bull; Kishoreganj, Dhaka, Bangladesh
+            https://abuhanifmia.com &bull; abuhanifmain@gmail.com &bull; +880 1724-010261
           </span>
           <span style={{ color: "#38bdf8", fontSize: "15px", fontWeight: 700 }}>
-            B.Sc. in CSE &bull; 9+ Years Systems Architecture
+            Programming Hero 2025 &bull; HSC Commerce &bull; Oman &amp; BD Work History
           </span>
         </div>
       </div>

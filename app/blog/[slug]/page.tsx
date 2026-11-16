@@ -47,8 +47,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     keywords: [
       post.title,
       ...post.tags,
-      "Software Architecture",
-      "Staff Software Engineer",
+      "Full-Stack Web Development",
+      "Next.js Architecture",
       "Abu Hanif",
       "MD Abu Hanif Mia",
     ],
@@ -337,7 +337,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       name: "MD Abu Hanif Mia",
       alternateName: ["Abu Hanif", "md abu hanif mia"],
       url: siteUrl,
-      jobTitle: "Staff Software Engineer & Systems Architect",
+      jobTitle: "Full-Stack Web Developer & Digital Systems Specialist",
       address: {
         "@type": "PostalAddress",
         streetAddress: "Sadar Upazila",
@@ -586,10 +586,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                             Written by MD Abu Hanif Mia (Abu Hanif)
                           </div>
                           <div style={{ fontSize: "12px", color: "#38bdf8", fontWeight: "600", marginBottom: "6px" }}>
-                            Staff Software Engineer &amp; Systems Architect
+                            Full-Stack Web Developer &amp; International Operations
                           </div>
                           <p style={{ margin: 0, fontSize: "12.5px", color: "#cbd5e1", lineHeight: "1.5" }}>
-                            9+ years shipping high-throughput distributed backends, Supabase real-time pipelines, and low-latency Next.js applications on Cloudflare Pages.
+                            Creator of NexusCalculator.net (312 tools, 4 languages), focused on Next.js 16, TypeScript, PostgreSQL, and Cloudflare Pages. Open to Remote, B2B, and On-Site opportunities in the UK &amp; Europe.
                           </p>
                         </div>
                       </div>
@@ -640,13 +640,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         }}
                       >
                         <div style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "6px" }}>
-                          Targeted Architecture Consultation
+                          Targeted Collaboration &amp; B2B Scope
                         </div>
                         <h3 style={{ margin: "0 0 8px 0", color: "#ffffff", fontSize: "19px" }}>
-                          Need Surgical Engineering on {matchingPillar.name}?
+                          Need Help With {matchingPillar.name}?
                         </h3>
                         <p style={{ margin: "0 0 16px 0", fontSize: "13.5px", color: "#cbd5e1", lineHeight: "1.6" }}>
-                          Book the <strong>{matchingPillar.consultingServiceTitle}</strong> ({matchingPillar.consultingPrice} fixed milestone). Direct 1:1 engagement with Staff Software Engineer Abu Hanif with verified production deliverables and zero budget creep.
+                          Review the <strong>{matchingPillar.consultingServiceTitle}</strong> ({matchingPillar.consultingPrice} milestone) or contact Abu Hanif directly at abuhanifmain@gmail.com for UK/EU roles or B2B project builds.
                         </p>
                         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
                           <Link
@@ -697,7 +697,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     <div className="block" style={{ backgroundColor: "#f8fafc", padding: "18px", border: "1px solid #e2e8f0", borderRadius: "8px", marginBottom: "20px" }}>
                       <img
                         src="/images/profile.png"
-                        alt="MD Abu Hanif Mia - Staff Software Engineer"
+                        alt="MD Abu Hanif Mia - Full-Stack Web Developer"
                         width={260}
                         height={260}
                         style={{
@@ -712,16 +712,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         MD Abu Hanif Mia
                       </h3>
                       <div style={{ fontSize: "12px", color: "#2563eb", fontWeight: "700", marginBottom: "8px" }}>
-                        Staff Software Engineer &amp; Systems Architect
+                        Full-Stack Web Developer &amp; Int&apos;l Ops
                       </div>
                       <div style={{ fontSize: "12px", color: "#475569", lineHeight: "1.6", marginBottom: "10px" }}>
-                        • <strong>B.Sc. in CSE</strong> (Formal 4-Year Degree)<br />
-                        • <strong>Programming Hero Honor</strong> (Batch-12 • WEB12-3991)<br />
-                        • <strong>freeCodeCamp Certified</strong> (JS, TS, Python)<br />
-                        • <strong>Rust &amp; Go Concurrency</strong>, Next.js 16, Postgres
+                        • <strong>HSC in Commerce (2016–2017)</strong> — Wali Neowaj Khan College (EIIN: 110495)<br />
+                        • <strong>Programming Hero (2025)</strong> (Batch-12 • WEB12-3991)<br />
+                        • <strong>freeCodeCamp Self-Study</strong> (TypeScript, Python, Rust, C++)<br />
+                        • <strong>Live Product:</strong> NexusCalculator.net
                       </div>
                       <Link href="/resume" style={{ fontSize: "12px", color: "#2563eb", fontWeight: "700", textDecoration: "underline" }}>
-                        View Verified Credentials &rsaquo;
+                        View CV &amp; Work History &rsaquo;
                       </Link>
                     </div>
 

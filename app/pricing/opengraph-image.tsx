@@ -153,10 +153,10 @@ export default function Image() {
               FULL-STACK MVP SPRINT
             </span>
             <span style={{ color: "#ffffff", fontSize: "28px", fontWeight: 900, marginTop: "4px" }}>
-              $14,000 – $24,000
+              $12,500 – $14,500
             </span>
             <span style={{ color: "#c084fc", fontSize: "12px", fontWeight: 700, marginTop: "2px" }}>
-              4–6 Weeks • 100% Client IP
+              3–4 Weeks • 100% Client IP
             </span>
           </div>
 
@@ -172,13 +172,13 @@ export default function Image() {
             }}
           >
             <span style={{ color: "#f59e0b", fontSize: "12px", fontWeight: 800, textTransform: "uppercase" }}>
-              FRACTIONAL ARCHITECT
+              DEDICATED RETAINER
             </span>
             <span style={{ color: "#ffffff", fontSize: "28px", fontWeight: 900, marginTop: "4px" }}>
-              $6,000 / mo
+              $5,500 / mo
             </span>
             <span style={{ color: "#10b981", fontSize: "12px", fontWeight: 700, marginTop: "2px" }}>
-              2 Dedicated Q4 Slots
+              UK &amp; Europe Timezone Aligned
             </span>
           </div>
         </div>
@@ -198,7 +198,7 @@ export default function Image() {
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <span style={{ color: "#f8fafc", fontWeight: 800 }}>MD Abu Hanif Mia</span>
             <span>•</span>
-            <span style={{ color: "#38bdf8", fontWeight: 700 }}>Staff Software Engineer &amp; Systems Architect</span>
+            <span style={{ color: "#38bdf8", fontWeight: 700 }}>Full-Stack Web Developer &amp; B2B Digital Services</span>
           </div>
 
           <div style={{ color: "#10b981", fontWeight: 700 }}>

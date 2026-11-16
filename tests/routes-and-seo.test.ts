@@ -67,6 +67,8 @@ describe("Routes, SEO & Topic Pillars Verification", () => {
     expect(urls).toContain("https://abuhanifmia.com/pricing");
     expect(urls).toContain("https://abuhanifmia.com/blog");
     expect(urls).toContain("https://abuhanifmia.com/resume");
+    expect(urls).toContain("https://abuhanifmia.com/privacy");
+    expect(urls).toContain("https://abuhanifmia.com/terms");
 
     for (const cat of blogCategoryPillars) {
       expect(urls).toContain(`https://abuhanifmia.com/blog/category/${cat.slug}`);
@@ -76,7 +78,7 @@ describe("Routes, SEO & Topic Pillars Verification", () => {
       expect(urls).toContain(`https://abuhanifmia.com/services/${s.slug}`);
     }
 
-    expect(entries.length).toBeGreaterThanOrEqual(30);
+    expect(entries.length).toBeGreaterThanOrEqual(32);
   }, 15000);
 
   it("should return valid operational telemetry from /api/health", async () => {
@@ -98,19 +100,12 @@ describe("Routes, SEO & Topic Pillars Verification", () => {
     expect(data.globalPoPs.length).toBeGreaterThanOrEqual(6);
   });
 
-  it("should verify verified client testimonials have valid structure and metrics", async () => {
+  it("should return an array from getTestimonials without unverified fake placeholders", async () => {
     const { getTestimonials } = await import("../app/lib/portfolio-store");
     const testimonials = await getTestimonials();
 
-    expect(testimonials.length).toBeGreaterThanOrEqual(4);
-    for (const t of testimonials) {
-      expect(t.author.length).toBeGreaterThan(3);
-      expect(t.role.length).toBeGreaterThan(3);
-      expect(t.company.length).toBeGreaterThan(3);
-      expect(t.quote.length).toBeGreaterThan(40);
-      expect(t.verifiedMetric).toBeDefined();
-      expect(t.deliverableTag).toBeDefined();
-    }
+    expect(Array.isArray(testimonials)).toBe(true);
+    expect(testimonials.length).toBe(0);
   });
 
   it("should verify interactive architecture topologies have valid nodes and cross-links", async () => {
@@ -143,7 +138,7 @@ describe("Routes, SEO & Topic Pillars Verification", () => {
     expect(resumeSource).toContain('"@type": "ProfilePage"');
     expect(resumeSource).toContain("mainEntity:");
     expect(resumeSource).toContain('"@type": "Person"');
-    expect(resumeSource).toContain('name: "MD Abu Hanif Mia"');
+    expect(resumeSource).toContain("name: profile.fullName");
     expect(resumeSource).toContain("dateCreated:");
     expect(resumeSource).toContain("dateModified:");
     expect(resumeSource).toContain("image:");

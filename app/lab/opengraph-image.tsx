@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "nodejs";
 export const alt =
-  "Interactive Systems Architecture Lab | Abu Hanif (MD Abu Hanif Mia) - Staff Software Engineer";
+  "Interactive Systems Architecture Lab | Abu Hanif (MD Abu Hanif Mia)";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -198,7 +198,7 @@ export default function Image() {
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <span style={{ color: "#f8fafc", fontWeight: 800 }}>MD Abu Hanif Mia</span>
             <span>•</span>
-            <span style={{ color: "#38bdf8", fontWeight: 700 }}>Staff Software Engineer &amp; Systems Architect</span>
+            <span style={{ color: "#38bdf8", fontWeight: 700 }}>Full-Stack Developer &amp; Interactive Architecture Lab</span>
           </div>
 
           <div style={{ color: "#10b981", fontWeight: 700 }}>

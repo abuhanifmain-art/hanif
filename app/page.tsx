@@ -9,36 +9,37 @@ import TechnicalBlogFeed from "./components/home/technical-blog-feed";
 import HomeSidebar from "./components/home/home-sidebar";
 import BottomContactStripe from "./components/home/bottom-contact-stripe";
 import EnterpriseTestimonialsSection from "./components/enterprise-testimonials-section";
-import { getProjects, getBlogPosts, getTestimonials } from "./lib/portfolio-store";
+import { getProfile, getProjects, getBlogPosts, getTestimonials } from "./lib/portfolio-store";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abuhanifmia.com";
 
 export const metadata: Metadata = {
-  title: "Abu Hanif (MD Abu Hanif Mia) | Staff Software Engineer & Systems Architect",
+  title: "Abu Hanif (MD Abu Hanif Mia) | Full-Stack Developer & International Ops",
   description:
-    "MD Abu Hanif Mia (Abu Hanif) - Staff Software Engineer & Systems Architect specializing in distributed systems, Next.js 16, PostgreSQL optimization, and Cloudflare edge architecture.",
+    "MD Abu Hanif Mia (Abu Hanif) — Full-Stack Web Developer (Next.js, TypeScript, PostgreSQL) & International Operations Professional. Creator of NexusCalculator.net. Open to Remote, B2B & On-Site roles in UK & Europe.",
   alternates: {
     canonical: siteUrl,
   },
   openGraph: {
-    title: "Abu Hanif (MD Abu Hanif Mia) | Staff Software Engineer & Systems Architect",
+    title: "Abu Hanif (MD Abu Hanif Mia) | Full-Stack Developer & International Ops",
     description:
-      "Scalable Systems • Distributed Architecture • High-Performance Web Applications. View portfolio work showcase, transparent pricing, systems lab, and technical blog.",
+      "Creator of NexusCalculator.net • Next.js, TypeScript, PostgreSQL • Open to Remote, B2B & On-Site Roles in UK & Europe.",
     url: siteUrl,
     type: "website",
-    locale: "en_US",
+    locale: "en_GB",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Abu Hanif (MD Abu Hanif Mia) | Staff Software Engineer & Systems Architect",
+    title: "Abu Hanif (MD Abu Hanif Mia) | Full-Stack Developer & International Ops",
     description:
-      "Scalable Systems • Distributed Architecture • High-Performance Web Applications. View portfolio work showcase, transparent pricing, systems lab, and technical blog.",
+      "Creator of NexusCalculator.net • Next.js, TypeScript, PostgreSQL • Open to Remote, B2B & On-Site Roles in UK & Europe.",
     creator: "@MohammadBitull1",
   },
 };
 
 export default async function HomePage() {
-  const [projects, blogPosts, testimonials] = await Promise.all([
+  const [profile, projects, blogPosts, testimonials] = await Promise.all([
+    getProfile(),
     getProjects(),
     getBlogPosts(),
     getTestimonials(),
@@ -54,7 +55,7 @@ export default async function HomePage() {
             <div className="cwrap">
               <div id="main">
                 <div className="mwrap">
-                  <HeroBanner />
+                  <HeroBanner profile={profile} />
                   <div className="tcfrags"></div>
 
                   <div id="content">
@@ -65,7 +66,7 @@ export default async function HomePage() {
                     <div className="bodytext">
                       <div className="description">
                         <BadgesBar />
-                        <BioAndCredentials />
+                        <BioAndCredentials profile={profile} />
                         <WorkShowcaseSection projects={projects} />
                         <EnterpriseTestimonialsSection testimonials={testimonials} />
                       </div>
@@ -75,7 +76,7 @@ export default async function HomePage() {
                     <TechnicalBlogFeed articles={blogPosts} />
                   </div>
 
-                  <HomeSidebar />
+                  <HomeSidebar profile={profile} />
                 </div>
                 <div className="stpr"></div>
               </div>

@@ -67,6 +67,7 @@ export default function AdminPage() {
 
   // State stores
   const [profile, setProfile] = useState<ProfileData>(initialProfile);
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [projects, setProjects] = useState<ProjectItem[]>(initialProjects);
   const [services, setServices] = useState<ServicePricing[]>(initialServices);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>(initialBlogPosts);
@@ -271,6 +272,15 @@ export default function AdminPage() {
       })
       .catch(() => {});
 
+    fetch("/api/admin/profile")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.profile) {
+          setProfile(data.profile);
+        }
+      })
+      .catch(() => {});
+
     // 2. Fetch Inquiries via protected admin API
     fetch("/api/admin/inquiries")
       .then((res) => res.json())
@@ -430,7 +440,7 @@ export default function AdminPage() {
         }
       });
 
-    // Profile
+    // Profile is synchronized via /api/admin/profile; keep functional state merge fallback if Supabase row loads directly
     if (isSupabaseConfigured && supabase) {
       supabase
         .from("profiles")
@@ -439,18 +449,29 @@ export default function AdminPage() {
         .single()
         .then(({ data, error }) => {
           if (!error && data) {
-            setProfile({
-              fullName: data.full_name,
-              kicker: data.kicker,
-              headline: data.headline,
-              bio: data.bio,
-              email: data.email,
-              phone: data.phone,
-              location: data.location,
-              availabilityStatus: data.availability_status,
-              isAvailable: data.is_available,
-              socialLinks: data.social_links || initialProfile.socialLinks,
-            });
+            const rawSocial = (data.social_links || {}) as Record<string, any>;
+            const ext = (rawSocial._extended && typeof rawSocial._extended === "object" ? rawSocial._extended : {}) as Record<string, any>;
+            const { _extended: _drop, ...cleanSocial } = rawSocial;
+            void _drop;
+            setProfile((prev) => ({
+              ...prev,
+              fullName: data.full_name || prev.fullName,
+              kicker: data.kicker || prev.kicker,
+              headline: data.headline || prev.headline,
+              bio: data.bio || prev.bio,
+              email: data.email || prev.email,
+              phone: data.phone || prev.phone,
+              location: data.location || prev.location,
+              availabilityStatus: data.availability_status || prev.availabilityStatus,
+              isAvailable: typeof data.is_available === "boolean" ? data.is_available : prev.isAvailable,
+              socialLinks: { ...prev.socialLinks, ...cleanSocial },
+              spokenLanguages: ext.spokenLanguages || prev.spokenLanguages,
+              workPreferences: ext.workPreferences || prev.workPreferences,
+              educationHistory: ext.educationHistory || prev.educationHistory,
+              workHistory: ext.workHistory || prev.workHistory,
+              visualAssets: ext.visualAssets || prev.visualAssets,
+              legalGdpr: ext.legalGdpr || prev.legalGdpr,
+            }));
           }
         });
     }
@@ -2773,7 +2794,7 @@ export default function AdminPage() {
                       <input
                         value={newProject.impactMetric}
                         onChange={(e) => setNewProject({ ...newProject, impactMetric: e.target.value })}
-                        placeholder="e.g. 12M Events/Sec • 99.99% Uptime"
+                        placeholder="e.g. Next.js 16 • 312 Tools • Live"
                         style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px", fontSize: "13px" }}
                       />
                     </div>
@@ -4710,85 +4731,440 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* TAB 6: PROFILE */}
+          {/* TAB 6: PROFILE, VISUAL ASSETS & GDPR / LEGAL */}
           {activeTab === "profile" && (
             <div>
-              <h2 style={{ fontSize: "24px", fontWeight: "800", margin: "0 0 16px 0" }}>
-                Engineer Profile &amp; Availability Settings
-              </h2>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px", marginBottom: "18px" }}>
+                <div>
+                  <h2 style={{ fontSize: "24px", fontWeight: "800", margin: "0 0 4px 0" }}>
+                    Profile, Visual Assets &amp; GDPR / Legal Details
+                  </h2>
+                  <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>
+                    Replace your profile photo, hero slides, course certificate image, and customize live{" "}
+                    <Link href="/privacy" target="_blank" style={{ color: "#38bdf8", textDecoration: "underline" }}>
+                      /privacy
+                    </Link>{" "}
+                    &amp;{" "}
+                    <Link href="/terms" target="_blank" style={{ color: "#38bdf8", textDecoration: "underline" }}>
+                      /terms
+                    </Link>{" "}
+                    disclosures.
+                  </p>
+                </div>
+              </div>
 
-              <div style={{ backgroundColor: "#0a192f", border: "1px solid #1e293b", borderRadius: "6px", padding: "24px", maxWidth: "700px" }}>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    showNotification("Profile settings updated!");
-                  }}
-                >
-                  <div style={{ marginBottom: "14px" }}>
-                    <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Full Name</label>
-                    <input
-                      value={profile.fullName}
-                      onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
-                      style={{ width: "100%", padding: "8px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                    />
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setIsSavingProfile(true);
+                  try {
+                    const res = await fetch("/api/admin/profile", {
+                      method: "PUT",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(profile),
+                    });
+                    const data = await res.json();
+                    if (!res.ok || !data.success) {
+                      throw new Error(data.error || "Failed to save profile settings.");
+                    }
+                    if (data.profile) {
+                      setProfile(data.profile);
+                    }
+                    showNotification("Profile, Visual Assets & GDPR Legal settings saved!");
+                  } catch (err: unknown) {
+                    const msg = err instanceof Error ? err.message : "Failed to save profile.";
+                    showNotification(`Error: ${msg}`);
+                  } finally {
+                    setIsSavingProfile(false);
+                  }
+                }}
+                style={{ display: "grid", gap: "20px", maxWidth: "980px" }}
+              >
+                {/* SECTION A: CORE IDENTITY & CONTACT */}
+                <div style={{ backgroundColor: "#0a192f", border: "1px solid #1e293b", borderRadius: "6px", padding: "24px" }}>
+                  <h3 style={{ margin: "0 0 16px 0", fontSize: "16px", fontWeight: "700", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                    1. Core Identity, Availability &amp; Contact
+                  </h3>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "14px", marginBottom: "14px" }}>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Full Name</label>
+                      <input
+                        value={profile.fullName}
+                        onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Role Title / Kicker</label>
+                      <input
+                        value={profile.kicker}
+                        onChange={(e) => setProfile({ ...profile, kicker: e.target.value })}
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Hero Top Tagline</label>
+                      <input
+                        value={profile.headline}
+                        onChange={(e) => setProfile({ ...profile, headline: e.target.value })}
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Availability Status</label>
+                      <input
+                        value={profile.availabilityStatus}
+                        onChange={(e) => setProfile({ ...profile, availabilityStatus: e.target.value })}
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Primary Email</label>
+                      <input
+                        type="email"
+                        value={profile.email}
+                        onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Public Phone Number</label>
+                      <input
+                        value={profile.phone}
+                        onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
                   </div>
                   <div style={{ marginBottom: "14px" }}>
-                    <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Role Title / Kicker</label>
+                    <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Location</label>
                     <input
-                      value={profile.kicker}
-                      onChange={(e) => setProfile({ ...profile, kicker: e.target.value })}
-                      style={{ width: "100%", padding: "8px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      value={profile.location}
+                      onChange={(e) => setProfile({ ...profile, location: e.target.value })}
+                      style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
                     />
                   </div>
-                  <div style={{ marginBottom: "14px" }}>
-                    <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Availability Status Banner Text</label>
-                    <input
-                      value={profile.availabilityStatus}
-                      onChange={(e) => setProfile({ ...profile, availabilityStatus: e.target.value })}
-                      style={{ width: "100%", padding: "8px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                    />
-                  </div>
-                  <div style={{ marginBottom: "14px" }}>
-                    <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Direct Email</label>
-                    <input
-                      value={profile.email}
-                      onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                      style={{ width: "100%", padding: "8px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                    />
-                  </div>
-                  <div style={{ marginBottom: "14px" }}>
-                    <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Phone Number</label>
-                    <input
-                      value={profile.phone}
-                      onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                      style={{ width: "100%", padding: "8px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
-                    />
-                  </div>
-                  <div style={{ marginBottom: "20px" }}>
-                    <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Bio Description</label>
+                  <div>
+                    <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Profile Summary / Bio</label>
                     <textarea
                       rows={3}
                       value={profile.bio}
                       onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
-                      style={{ width: "100%", padding: "8px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
                     />
                   </div>
+                </div>
+
+                {/* SECTION B: VISUAL ASSETS REPLACE CONTROLS */}
+                <div style={{ backgroundColor: "#0a192f", border: "1px solid #1e293b", borderRadius: "6px", padding: "24px" }}>
+                  <h3 style={{ margin: "0 0 6px 0", fontSize: "16px", fontWeight: "700", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                    2. Visual Assets Replacement (Headshot, Certificate &amp; Hero Slides)
+                  </h3>
+                  <p style={{ margin: "0 0 18px 0", fontSize: "12.5px", color: "#94a3b8" }}>
+                    Upload your real photographs or paste hosted image URLs to replace any default visual asset across the homepage, bio, and credentials viewer.
+                  </p>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "18px", marginBottom: "20px" }}>
+                    <div>
+                      <AdminImageUploader
+                        label="Profile Headshot Photo"
+                        helperText="Displayed on the Hero Card & About Section (/images/profile.png default)"
+                        mode="single"
+                        value={profile.visualAssets?.profilePhotoUrl || ""}
+                        onChangeSingle={(url) =>
+                          setProfile({
+                            ...profile,
+                            visualAssets: {
+                              ...profile.visualAssets,
+                              profilePhotoUrl: url,
+                            },
+                          })
+                        }
+                        onClearSingle={() =>
+                          setProfile({
+                            ...profile,
+                            visualAssets: {
+                              ...profile.visualAssets,
+                              profilePhotoUrl: "/images/profile.png",
+                            },
+                          })
+                        }
+                      />
+                    </div>
+                    <div>
+                      <AdminImageUploader
+                        label="Certificate / Credential Scan"
+                        helperText="Displayed in Credentials card (/images/programming-hero-certificate.png default)"
+                        mode="single"
+                        value={profile.visualAssets?.certificatePhotoUrl || ""}
+                        onChangeSingle={(url) =>
+                          setProfile({
+                            ...profile,
+                            visualAssets: {
+                              ...profile.visualAssets,
+                              certificatePhotoUrl: url,
+                            },
+                          })
+                        }
+                        onClearSingle={() =>
+                          setProfile({
+                            ...profile,
+                            visualAssets: {
+                              ...profile.visualAssets,
+                              certificatePhotoUrl: "/images/programming-hero-certificate.png",
+                            },
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ borderTop: "1px solid #1e293b", paddingTop: "16px" }}>
+                    <h4 style={{ margin: "0 0 12px 0", fontSize: "14px", color: "#e2e8f0" }}>
+                      Hero Banner Slides (4 Workspace Background Visuals)
+                    </h4>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "16px" }}>
+                      {(profile.visualAssets?.heroSlides || []).map((slide, idx) => (
+                        <div key={slide.id || idx} style={{ backgroundColor: "#071324", border: "1px solid #1e293b", borderRadius: "6px", padding: "14px" }}>
+                          <div style={{ fontSize: "12px", fontWeight: "700", color: "#38bdf8", marginBottom: "8px" }}>
+                            Hero Slide #{idx + 1}
+                          </div>
+                          <AdminImageUploader
+                            label={`Replace Slide #${idx + 1} Image`}
+                            mode="single"
+                            value={slide.src}
+                            onChangeSingle={(url) => {
+                              const nextSlides = [...(profile.visualAssets?.heroSlides || [])];
+                              nextSlides[idx] = { ...slide, src: url };
+                              setProfile({
+                                ...profile,
+                                visualAssets: { ...profile.visualAssets, heroSlides: nextSlides },
+                              });
+                            }}
+                          />
+                          <div style={{ marginTop: "8px", display: "grid", gap: "8px" }}>
+                            <input
+                              value={slide.title}
+                              placeholder="Slide Title"
+                              onChange={(e) => {
+                                const nextSlides = [...(profile.visualAssets?.heroSlides || [])];
+                                nextSlides[idx] = { ...slide, title: e.target.value };
+                                setProfile({
+                                  ...profile,
+                                  visualAssets: { ...profile.visualAssets, heroSlides: nextSlides },
+                                });
+                              }}
+                              style={{ width: "100%", padding: "6px 8px", backgroundColor: "#0a192f", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px", fontSize: "12px" }}
+                            />
+                            <input
+                              value={slide.subtitle}
+                              placeholder="Slide Subtitle"
+                              onChange={(e) => {
+                                const nextSlides = [...(profile.visualAssets?.heroSlides || [])];
+                                nextSlides[idx] = { ...slide, subtitle: e.target.value };
+                                setProfile({
+                                  ...profile,
+                                  visualAssets: { ...profile.visualAssets, heroSlides: nextSlides },
+                                });
+                              }}
+                              style={{ width: "100%", padding: "6px 8px", backgroundColor: "#0a192f", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px", fontSize: "12px" }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* SECTION C: GDPR & LEGAL DETAILS EDITOR */}
+                <div style={{ backgroundColor: "#0a192f", border: "1px solid #1e293b", borderRadius: "6px", padding: "24px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px", marginBottom: "16px" }}>
+                    <h3 style={{ margin: 0, fontSize: "16px", fontWeight: "700", color: "#10b981", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                      3. UK / EU GDPR &amp; Legal Details (Syncs to /privacy &amp; /terms)
+                    </h3>
+                    <div style={{ display: "flex", gap: "10px", fontSize: "12px" }}>
+                      <Link href="/privacy" target="_blank" style={{ color: "#38bdf8", textDecoration: "underline" }}>Preview /privacy ↗</Link>
+                      <Link href="/terms" target="_blank" style={{ color: "#38bdf8", textDecoration: "underline" }}>Preview /terms ↗</Link>
+                    </div>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "14px", marginBottom: "14px" }}>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Data Controller Name</label>
+                      <input
+                        value={profile.legalGdpr?.controllerName || ""}
+                        onChange={(e) =>
+                          setProfile({
+                            ...profile,
+                            legalGdpr: { ...profile.legalGdpr, controllerName: e.target.value },
+                          })
+                        }
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Trading Name / Legal Entity Label</label>
+                      <input
+                        value={profile.legalGdpr?.tradingAs || ""}
+                        onChange={(e) =>
+                          setProfile({
+                            ...profile,
+                            legalGdpr: { ...profile.legalGdpr, tradingAs: e.target.value },
+                          })
+                        }
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Privacy Contact Email</label>
+                      <input
+                        type="email"
+                        value={profile.legalGdpr?.controllerEmail || ""}
+                        onChange={(e) =>
+                          setProfile({
+                            ...profile,
+                            legalGdpr: { ...profile.legalGdpr, controllerEmail: e.target.value },
+                          })
+                        }
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Legal / Contact Phone</label>
+                      <input
+                        value={profile.legalGdpr?.controllerPhone || ""}
+                        onChange={(e) =>
+                          setProfile({
+                            ...profile,
+                            legalGdpr: { ...profile.legalGdpr, controllerPhone: e.target.value },
+                          })
+                        }
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Registered / Mailing Address</label>
+                      <input
+                        value={profile.legalGdpr?.controllerAddress || ""}
+                        onChange={(e) =>
+                          setProfile({
+                            ...profile,
+                            legalGdpr: { ...profile.legalGdpr, controllerAddress: e.target.value },
+                          })
+                        }
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Effective / Last Updated Date</label>
+                      <input
+                        value={profile.legalGdpr?.lastUpdated || ""}
+                        onChange={(e) =>
+                          setProfile({
+                            ...profile,
+                            legalGdpr: { ...profile.legalGdpr, lastUpdated: e.target.value },
+                          })
+                        }
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ display: "grid", gap: "12px" }}>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Registration / ICO / Tax Note</label>
+                      <input
+                        value={profile.legalGdpr?.icoOrRegistrationNote || ""}
+                        onChange={(e) =>
+                          setProfile({
+                            ...profile,
+                            legalGdpr: { ...profile.legalGdpr, icoOrRegistrationNote: e.target.value },
+                          })
+                        }
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Data Retention Summary</label>
+                      <textarea
+                        rows={2}
+                        value={profile.legalGdpr?.dataRetentionSummary || ""}
+                        onChange={(e) =>
+                          setProfile({
+                            ...profile,
+                            legalGdpr: { ...profile.legalGdpr, dataRetentionSummary: e.target.value },
+                          })
+                        }
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Sub-Processors Disclosure</label>
+                      <textarea
+                        rows={2}
+                        value={profile.legalGdpr?.subProcessorsNote || ""}
+                        onChange={(e) =>
+                          setProfile({
+                            ...profile,
+                            legalGdpr: { ...profile.legalGdpr, subProcessorsNote: e.target.value },
+                          })
+                        }
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Custom Privacy Notice / UK &amp; EU Rep Addendum</label>
+                      <textarea
+                        rows={2}
+                        value={profile.legalGdpr?.privacyPolicyCustomNotes || ""}
+                        onChange={(e) =>
+                          setProfile({
+                            ...profile,
+                            legalGdpr: { ...profile.legalGdpr, privacyPolicyCustomNotes: e.target.value },
+                          })
+                        }
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Custom Terms of Service Addendum</label>
+                      <textarea
+                        rows={2}
+                        value={profile.legalGdpr?.termsCustomNotes || ""}
+                        onChange={(e) =>
+                          setProfile({
+                            ...profile,
+                            legalGdpr: { ...profile.legalGdpr, termsCustomNotes: e.target.value },
+                          })
+                        }
+                        style={{ width: "100%", padding: "8px 10px", backgroundColor: "#071324", border: "1px solid #1e293b", color: "#fff", borderRadius: "4px" }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
                   <button
                     type="submit"
+                    disabled={isSavingProfile}
                     style={{
-                      padding: "10px 24px",
+                      padding: "12px 28px",
                       backgroundColor: "#2563eb",
                       color: "#fff",
                       border: "none",
-                      borderRadius: "4px",
+                      borderRadius: "6px",
                       fontWeight: "700",
-                      cursor: "pointer",
+                      fontSize: "14px",
+                      cursor: isSavingProfile ? "not-allowed" : "pointer",
+                      opacity: isSavingProfile ? 0.7 : 1,
                     }}
                   >
-                    Save Profile Changes
+                    {isSavingProfile
+                      ? "Saving All Settings..."
+                      : "Save Profile, Visual Assets & GDPR Legal Settings"}
                   </button>
-                </form>
-              </div>
+                </div>
+              </form>
             </div>
           )}
 

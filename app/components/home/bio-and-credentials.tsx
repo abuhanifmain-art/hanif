@@ -3,9 +3,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Award, ChevronDown, ChevronUp, ExternalLink, ShieldCheck } from "lucide-react";
+import { ProfileData } from "../../data/portfolio-data";
 
-export default function BioAndCredentials() {
+export default function BioAndCredentials({ profile }: { profile?: ProfileData }) {
   const [isBioExpanded, setIsBioExpanded] = useState(false);
+  const profilePhoto = profile?.visualAssets?.profilePhotoUrl || "/images/profile.png";
+  const certPhoto = profile?.visualAssets?.certificatePhotoUrl || "/images/programming-hero-certificate.png";
+  const displayName = profile?.fullName || "MD Abu Hanif Mia";
+  const displayKicker = profile?.kicker || "Full-Stack Web Developer & International Operations Professional";
 
   function handleOpenCertificate(e: React.MouseEvent) {
     e.preventDefault();
@@ -31,8 +36,8 @@ export default function BioAndCredentials() {
           }}
         >
           <Image
-            src="/images/profile.png"
-            alt="MD Abu Hanif Mia - Staff Software Engineer"
+            src={profilePhoto}
+            alt={`${displayName} - Full-Stack Web Developer`}
             width={180}
             height={180}
             loading="lazy"
@@ -53,55 +58,54 @@ export default function BioAndCredentials() {
         <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", backgroundColor: "#eff6ff", border: "1px solid #bfdbfe", padding: "4px 10px", borderRadius: "20px", marginBottom: "8px" }}>
           <ShieldCheck size={14} className="text-blue-600" />
           <span style={{ fontSize: "11px", fontWeight: "800", color: "#1d4ed8", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-            Verified Systems Architect
+            Open to UK &amp; Europe • Remote, B2B &amp; On-Site Roles
           </span>
         </div>
         <h1 id="about" className="heading-about-desktop" style={{ margin: "4px 0 2px 0", color: "#0f172a", fontSize: "24px", fontWeight: "800" }}>
-          MD Abu Hanif Mia (Abu Hanif)
+          {displayName} (Abu Hanif)
         </h1>
         <strong className="heading4 heading-title-desktop" style={{ color: "#2563eb", margin: "0 0 14px 0", display: "block", fontSize: "14px" }}>
-          Staff Software Engineer &amp; Systems Architect
+          {displayKicker}
         </strong>
       </div>
 
       {/* Primary Bio Paragraphs (Always Visible) */}
       <div className="bio-text-container" style={{ color: "#334155", fontSize: "14.5px", lineHeight: "1.7" }}>
         <p style={{ margin: "0 0 14px 0" }}>
-          <strong>MD Abu Hanif Mia</strong> (known professionally as <strong>Abu Hanif</strong>) is a{" "}
-          <strong>Staff Software Engineer and Systems Architect</strong> holding a{" "}
-          <strong>Bachelor of Science in Computer Science &amp; Engineering (B.Sc. in CSE)</strong> with over 9 years of
-          hands-on experience designing high-concurrency, fault-tolerant production platforms for startups and enterprise
-          organizations worldwide. He combines modern <strong>Next.js 16 App Router</strong>,{" "}
-          <strong>React 19</strong>, and <strong>Cloudflare Edge</strong> delivery with low-level systems programming in{" "}
-          <strong>Rust (Tokio/Axum)</strong>, <strong>Go</strong>, and high-throughput <strong>PostgreSQL 16</strong>{" "}
-          database architecture. Formally recognized with the{" "}
-          <em>Certificate of Completion with Excellence</em> from <strong>Programming Hero</strong> (Batch-12 •{" "}
-          <code style={{ background: "#f1f5f9", padding: "1px 5px", borderRadius: "3px", fontSize: "12px", color: "#0f172a" }}>WEB12-3991</code>) and verified <strong>freeCodeCamp</strong> accreditations across JavaScript,
-          TypeScript, and Python, he pairs deep computer science fundamentals with rapid full-stack execution.
+          <strong>{displayName}</strong> (known as <strong>Abu Hanif</strong>) is a dedicated{" "}
+          <strong>Full-Stack Web Developer</strong> and adaptable{" "}
+          <strong>International Operations Professional</strong> seeking opportunities across the{" "}
+          <strong>United Kingdom, Europe, and remote teams worldwide</strong> — open to{" "}
+          <strong>Remote, B2B Contract, and Full-Time On-Site / Relocation</strong> positions across web development,
+          technical support, operations, and customer-facing roles. He builds practical, SEO-structured web platforms
+          with <strong>Next.js 16</strong>, <strong>React 19</strong>, <strong>TypeScript</strong>,{" "}
+          <strong>PostgreSQL / Supabase</strong>, and <strong>Cloudflare Pages</strong>, including his flagship live site{" "}
+          <strong>NexusCalculator.net</strong> (312 calculators and utilities in four languages).
         </p>
 
         <p style={{ margin: "0 0 14px 0" }}>
-          Specializing in distributed systems, PostgreSQL query tuning, Cloudflare Pages, and memory-safe concurrent
-          backends, Abu Hanif operates at the intersection of clean architecture, database performance, and edge network
-          delivery. Whether eliminating complex architectural bottlenecks, restructuring legacy codebases, or
-          deploying new greenfield products from technical requirements to production, Abu Hanif brings over 9 years
-          of battle-tested engineering leadership. Every system is built with high observability, rigorous test
-          coverage, and strict performance SLAs.
+          His academic foundation began with a <strong>Higher Secondary Certificate (HSC) in Commerce (2016–2017)</strong>{" "}
+          from <strong>Wali Neowaj Khan College</strong> (EIIN: <code>110495</code>, Dhaka Education Board). Alongside
+          building real-world web software, he completed the <strong>Programming Hero</strong> Web Development course in{" "}
+          <strong>2025</strong> (Batch-12 • <code>WEB12-3991</code>) and self-learned{" "}
+          <strong>TypeScript, Python, Rust, and C++</strong> through <strong>freeCodeCamp</strong>.
         </p>
 
         {/* Expandable Extended Bio on Mobile */}
         <div className={`bio-extended-content ${isBioExpanded ? "block" : "hidden md:block"}`}>
           <p style={{ margin: "0 0 14px 0" }}>
-            His core technical philosophy centers on empirical proof of execution: avoiding over-engineered microservice
-            sprawl in favor of modular monoliths, pushing computation to the edge via Cloudflare Workers &amp; Pages, and
-            extracting maximum throughput from PostgreSQL through connection pooling with PgBouncer, covering indexes, and
-            write-ahead log (WAL) change-data-capture streaming.
+            <strong>Work &amp; Operations Background (2017–2025):</strong> Before transitioning deeper into web software
+            and digital client systems, Abu Hanif worked three consecutive frontline roles requiring punctuality, team
+            communication, and high-pressure execution: <strong>Waiter</strong> at{" "}
+            <strong>WACASCO Catering Services (Oman, 2022–2025)</strong> serving diverse international guests;{" "}
+            <strong>Production Operator</strong> at <strong>PRAN-RFL Group (Palash, Narsingdi, 2018–2022)</strong>; and{" "}
+            <strong>Salesman</strong> at <strong>Unilever Bangladesh (2017–2018)</strong>.
           </p>
           <p style={{ margin: "0 0 14px 0" }}>
-            Beyond systems engineering, Abu Hanif works closely with CTOs, VP of Engineering, and technical founders
-            offering fixed-scope sprint execution, zero-budget-creep Statements of Work, and fractional Staff Engineer
-            retainers. All deliverables include automated CI/CD pipelines, architectural RFC specifications, full test
-            suites, and guaranteed 30-day post-launch warranty support.
+            <strong>Spoken Languages:</strong> Native in <strong>Bengali</strong>, conversational in{" "}
+            <strong>English</strong> for workplace collaboration and client communication, and conversational in{" "}
+            <strong>Hindi &amp; Urdu</strong>. Direct contact: <a href="mailto:abuhanifmain@gmail.com" style={{ color: "#2563eb", fontWeight: 600 }}>abuhanifmain@gmail.com</a> |{" "}
+            <a href="tel:+8801724010261" style={{ color: "#2563eb", fontWeight: 600 }}>+880 1724-010261</a>.
           </p>
         </div>
 
@@ -135,7 +139,7 @@ export default function BioAndCredentials() {
               </>
             ) : (
               <>
-                <span>Read Full Architectural Bio</span>
+                <span>Read Work History &amp; Full Bio</span>
                 <ChevronDown size={16} />
               </>
             )}
@@ -143,7 +147,7 @@ export default function BioAndCredentials() {
         </div>
       </div>
 
-      {/* VERIFIED CERTIFICATIONS & ACCREDITATIONS SECTION */}
+      {/* EDUCATION, TRAINING & WORK CREDENTIALS SECTION */}
       <div
         id="competencies"
         style={{
@@ -179,10 +183,10 @@ export default function BioAndCredentials() {
                 fontWeight: "800",
               }}
             >
-              Verified Accreditations &amp; Credentials
+              Verified Education, Training &amp; Languages
             </h3>
             <p style={{ margin: "2px 0 0 0", fontSize: "12.5px", color: "#64748b" }}>
-              Formally accredited development distinctions and verified technical certifications:
+              Formal college education, 2025 web development training, and self-directed technical study:
             </p>
           </div>
           <button
@@ -204,7 +208,7 @@ export default function BioAndCredentials() {
             }}
           >
             <Award size={16} />
-            <span>Inspect Full Certificate</span>
+            <span>Inspect Course Certificate</span>
           </button>
         </div>
 
@@ -215,7 +219,7 @@ export default function BioAndCredentials() {
             gap: "14px",
           }}
         >
-          {/* Credential 1: Programming Hero */}
+          {/* Credential 1: Programming Hero 2025 */}
           <div
             style={{
               background: "#ffffff",
@@ -241,8 +245,8 @@ export default function BioAndCredentials() {
                 }}
               >
                 <Image
-                  src="/images/programming-hero-certificate.png"
-                  alt="Programming Hero Certificate of Completion with Excellence"
+                  src={certPhoto}
+                  alt="Programming Hero Web Development Course Certificate"
                   width={320}
                   height={220}
                   style={{ width: "100%", height: "auto", display: "block" }}
@@ -261,7 +265,7 @@ export default function BioAndCredentials() {
                   marginBottom: "6px",
                 }}
               >
-                ★ Batch-12 Distinction
+                ★ 2025 Graduate • Batch-12
               </div>
               <span
                 style={{
@@ -272,16 +276,16 @@ export default function BioAndCredentials() {
                   display: "block",
                 }}
               >
-                Programming Hero
+                Programming Hero (2025)
               </span>
               <h4 style={{ margin: "2px 0 4px 0", fontSize: "14px", color: "#0f172a", fontWeight: "700" }}>
-                Complete Web Development Course with Excellence
+                Full-Stack Web Development Course
               </h4>
               <p style={{ margin: "0 0 6px 0", fontSize: "11.5px", color: "#047857", fontWeight: "bold" }}>
-                Credential ID: WEB12-3991 • Certified by CEO Jhankar Mahbub
+                Batch-12 • ID: WEB12-3991
               </p>
               <p style={{ margin: "0", fontSize: "12px", color: "#475569", lineHeight: "1.5" }}>
-                Distinction certified across modern JavaScript (ES6+), React 19, HTML5/CSS3 responsive layouts, asynchronous state handling, and multi-tier production architectures.
+                Structured hands-on web curriculum covering HTML5, CSS3, modern JavaScript, React, Next.js workflows, Node.js/Express backends, and full-stack deployment.
               </p>
             </div>
             <div style={{ marginTop: "12px", paddingTop: "8px", borderTop: "1px dotted #e2e8f0" }}>
@@ -302,13 +306,13 @@ export default function BioAndCredentials() {
                   gap: "4px",
                 }}
               >
-                <span>Verify &amp; View Credential</span>
+                <span>View Course Record</span>
                 <ExternalLink size={14} />
               </button>
             </div>
           </div>
 
-          {/* Credential 2: freeCodeCamp */}
+          {/* Credential 2: freeCodeCamp Self-Learning */}
           <div
             style={{
               background: "#ffffff",
@@ -333,7 +337,7 @@ export default function BioAndCredentials() {
                   marginBottom: "8px",
                 }}
               >
-                (fCC) Multi-Track Certified
+                (fCC) Self-Directed Study
               </div>
               <span
                 style={{
@@ -344,20 +348,17 @@ export default function BioAndCredentials() {
                   display: "block",
                 }}
               >
-                freeCodeCamp
+                freeCodeCamp Curriculum
               </span>
               <h4 style={{ margin: "2px 0 6px 0", fontSize: "14px", color: "#0f172a", fontWeight: "700" }}>
-                JavaScript, TypeScript &amp; Python Accreditations
+                TypeScript, Python, Rust &amp; C++ Self-Study
               </h4>
               <ul style={{ margin: "0 0 10px 16px", padding: 0, fontSize: "12px", color: "#475569", lineHeight: "1.55" }}>
                 <li>
-                  <strong>JavaScript Algorithms &amp; Data Structures:</strong> Algorithmic problem solving, recursion, OOP &amp; functional programming.
+                  <strong>TypeScript &amp; JavaScript:</strong> Strict typing, interfaces, async UI workflows, and production Next.js applications.
                 </li>
                 <li>
-                  <strong>TypeScript Platform Development:</strong> Static typing, generics, strict compiler configs, and interface design.
-                </li>
-                <li>
-                  <strong>Scientific Computing with Python:</strong> Data manipulation, automation scripting, algorithms, and backend utilities.
+                  <strong>Python, Rust &amp; C++:</strong> Self-taught programming fundamentals, problem-solving, algorithms, and systems concepts via freeCodeCamp.
                 </li>
               </ul>
             </div>
@@ -371,11 +372,11 @@ export default function BioAndCredentials() {
                 color: "#047857",
               }}
             >
-              ✓ Verified Curriculum Standard
+              ✓ Continuous Self-Learning &amp; GitHub Code
             </div>
           </div>
 
-          {/* Credential 3: Systems Programming in Rust & Go */}
+          {/* Credential 3: HSC Commerce & Spoken Languages */}
           <div
             style={{
               background: "#ffffff",
@@ -392,15 +393,15 @@ export default function BioAndCredentials() {
                 style={{
                   display: "inline-block",
                   padding: "3px 8px",
-                  background: "#431407",
-                  color: "#fb923c",
+                  background: "#eff6ff",
+                  color: "#1d4ed8",
                   fontWeight: "bold",
                   fontSize: "11px",
                   borderRadius: "4px",
                   marginBottom: "8px",
                 }}
               >
-                🦀 Systems &amp; Concurrency
+                🎓 Formal Education • 2016–2017
               </div>
               <span
                 style={{
@@ -411,27 +412,24 @@ export default function BioAndCredentials() {
                   display: "block",
                 }}
               >
-                Systems Architecture
+                Dhaka Education Board
               </span>
               <h4 style={{ margin: "2px 0 6px 0", fontSize: "14px", color: "#0f172a", fontWeight: "700" }}>
-                Rust &amp; Go Production Pipelines
+                HSC in Commerce — Wali Neowaj Khan College
               </h4>
               <p style={{ margin: "0 0 8px 0", fontSize: "12px", color: "#475569", lineHeight: "1.5" }}>
-                Engineering zero-cost abstractions, fearless memory safety without garbage collection pauses (Rust/Tokio/Axum),
-                and lock-free concurrent workers (Go goroutines) for sub-25ms edge telemetry.
+                Completed Higher Secondary Certificate in Commerce (2016–2017) at Wali Neowaj Khan College (EIIN:{" "}
+                <strong>110495</strong>, Dhaka Education Board), paired with multilingual international workplace communication:
               </p>
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                 <span style={{ fontSize: "11px", background: "#f1f5f9", border: "1px solid #cbd5e1", padding: "2px 8px", borderRadius: "4px", fontWeight: "bold", color: "#0f172a" }}>
-                  Rust Tokio
+                  Bengali (Native)
                 </span>
                 <span style={{ fontSize: "11px", background: "#f1f5f9", border: "1px solid #cbd5e1", padding: "2px 8px", borderRadius: "4px", fontWeight: "bold", color: "#0f172a" }}>
-                  WebAssembly
+                  English (Conversational)
                 </span>
                 <span style={{ fontSize: "11px", background: "#f1f5f9", border: "1px solid #cbd5e1", padding: "2px 8px", borderRadius: "4px", fontWeight: "bold", color: "#0f172a" }}>
-                  Go CSP
-                </span>
-                <span style={{ fontSize: "11px", background: "#f1f5f9", border: "1px solid #cbd5e1", padding: "2px 8px", borderRadius: "4px", fontWeight: "bold", color: "#0f172a" }}>
-                  Next.js 16
+                  Hindi &amp; Urdu (Conversational)
                 </span>
               </div>
             </div>
@@ -445,7 +443,7 @@ export default function BioAndCredentials() {
                 color: "#047857",
               }}
             >
-              ✓ High-Concurrency Production SLA
+              ✓ WACASCO Oman &amp; Bangladesh Operations
             </div>
           </div>
         </div>

@@ -108,7 +108,7 @@ export default async function Image({ params }: OgProps) {
               MD Abu Hanif Mia (Abu Hanif)
             </span>
             <span style={{ color: "#38bdf8", fontSize: "16px", fontWeight: 700, marginTop: "4px" }}>
-              Staff Software Engineer &amp; Systems Architect
+              Full-Stack Web Developer &bull; Technical Notes
             </span>
           </div>
 
@@ -122,7 +122,7 @@ export default async function Image({ params }: OgProps) {
             }}
           >
             <span style={{ color: "#94a3b8", fontSize: "14px" }}>
-              B.Sc. CSE &bull; Batch-12 PH Honor &bull; Rust &bull; Postgres 16
+              Next.js &bull; TypeScript &bull; PostgreSQL &bull; Python &bull; Rust
             </span>
           </div>
         </div>

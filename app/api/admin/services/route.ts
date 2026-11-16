@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
       description: `New service published in category ${service.category || "systems-architecture"} at ${service.priceDisplay}`,
       data: {
         clientName: "Admin",
-        clientEmail: "admin@abuhanifmia.com",
+        clientEmail: "abuhanifmain@gmail.com",
         url: `/services/${service.slug}`,
       },
     }).catch(() => {});

@@ -41,7 +41,7 @@ export async function GET() {
   <channel>
     <title>Abu Hanif Technical Engineering Blog</title>
     <link>${siteUrl}/blog</link>
-    <description>Technical write-ups, distributed systems architecture, Next.js 16, and PostgreSQL optimization by Staff Software Engineer MD Abu Hanif Mia.</description>
+    <description>Technical write-ups, Next.js web architecture notes, and PostgreSQL guides by MD Abu Hanif Mia.</description>
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>

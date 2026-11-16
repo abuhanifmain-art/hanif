@@ -24,117 +24,110 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abuhanifmia.com";
 const keywordMapping: Record<string, { title: string; metaDesc: string; keywords: string[] }> = {
   "technical-programmatic-seo": {
     title: "Technical & Programmatic SEO Engineering",
-    metaDesc: "High-density programmatic SEO architectures, Google Knowledge Graph JSON-LD schemas, and 100/100 Core Web Vitals engineering by Staff Software Engineer Abu Hanif.",
+    metaDesc: "Programmatic SEO architectures, Schema.org JSON-LD graphs, and fast Core Web Vitals engineering by Full-Stack Developer Abu Hanif (creator of NexusCalculator.net).",
     keywords: [
-      "Programmatic SEO Engineer",
-      "Technical SEO Consultant",
+      "Programmatic SEO Developer",
+      "Technical SEO Specialist",
       "Next.js Programmatic Architecture",
-      "Core Web Vitals 100 Specialist",
+      "Core Web Vitals Optimization",
       "Knowledge Graph Schema Injection",
       "Crawl Budget Optimization",
     ],
   },
   "social-media-automation": {
-    title: "Social Media Automation & Autonomous Growth Bots",
-    metaDesc: "Automated multi-platform content syndication engines, queue workers, and webhook-driven engagement bots across X/Twitter, LinkedIn, Discord & Telegram.",
+    title: "Social Media Automation & Workflow Systems",
+    metaDesc: "Automated multi-platform content syndication engines, queue workers, and webhook-driven bots across X/Twitter, LinkedIn, Discord & Telegram.",
     keywords: [
       "Social Media Automation Developer",
-      "Autonomous Content Syndication Engine",
-      "Twitter v2 API Engineer",
+      "Automated Content Syndication",
+      "Twitter v2 API Integration",
       "LinkedIn API Automation",
-      "Discord Telegram Webhook Bot Mesh",
-      "Growth Engineering Automation",
+      "Discord Telegram Webhooks",
+      "Workflow Automation",
     ],
   },
   "high-converting-landing-pages": {
-    title: "High-Converting Next.js Landing Pages & CRO Architecture",
-    metaDesc: "Ultra-fast Next.js 16 landing pages with sub-50ms global edge TTFB, high-converting interactive calculators, Stripe checkout flows, and 0 layout shift.",
+    title: "Fast Next.js Landing Pages & Web Builds",
+    metaDesc: "Responsive Next.js 16 landing pages with interactive calculators, payment checkouts, accessibility, and clean Core Web Vitals.",
     keywords: [
       "Next.js Landing Page Developer",
-      "High Conversion Rate Landing Page",
-      "Sub-50ms TTFB Edge Landing Page",
-      "Stripe Checkout Funnel Developer",
-      "Conversion Rate Optimization CRO Engineer",
-      "React 19 Landing Page Specialist",
+      "Interactive Web Utilities",
+      "Cloudflare Pages Hosting",
+      "Stripe Checkout Integration",
+      "React 19 Web Developer",
     ],
   },
   "custom-web-saas": {
-    title: "Bespoke Custom Web Applications & Full-Stack SaaS Platforms",
-    metaDesc: "Production-grade, full-stack software platforms engineered from technical specs to scalable cloud deployment in 3 to 4 weeks on Next.js 16, Supabase, and Cloudflare.",
+    title: "Custom Web Applications & Full-Stack SaaS Builds",
+    metaDesc: "Full-stack software platforms built from requirements to deployment in 3 to 4 weeks on Next.js 16, Supabase PostgreSQL, and Cloudflare Pages.",
     keywords: [
-      "Full-Stack SaaS Platform Engineer",
+      "Full-Stack SaaS Developer",
       "Hire Next.js 16 Supabase Developer",
-      "Custom Enterprise Web Platform",
-      "Zero-Trust Auth SaaS Architecture",
-      "Cloudflare Pages PostgreSQL Builder",
-      "Staff Software Engineer SaaS Sprints",
+      "Custom Web Platform Builder",
+      "Authentication & Database Architecture",
+      "Cloudflare Pages PostgreSQL",
+      "UK Europe B2B Web Developer",
     ],
   },
   "database-optimization": {
-    title: "PostgreSQL Query Optimization & Database Performance",
-    metaDesc: "Surgical database performance tuning, B-tree/GIN/BRIN composite indexing, connection pooling, and sub-20ms P99 query latency audits by Staff Engineer Abu Hanif.",
+    title: "PostgreSQL Query Optimization & Database Tuning",
+    metaDesc: "Focused database indexing, B-tree/GIN composite indexes, connection pooling setup, and EXPLAIN ANALYZE query improvements by Full-Stack Developer Abu Hanif.",
     keywords: [
-      "Hire PostgreSQL Consultant",
-      "PostgreSQL Query Optimization Specialist",
-      "Database Performance Audit",
-      "EXPLAIN ANALYZE Optimization",
-      "PostgreSQL Indexing Specialist",
-      "Slow Query Tuning",
+      "Hire PostgreSQL Developer",
+      "PostgreSQL Query Optimization",
+      "Database Index Review",
+      "EXPLAIN ANALYZE Profiling",
+      "Supabase PostgreSQL Tuning",
     ],
   },
   "cloudflare-edge-migration": {
-    title: "Cloudflare Pages & OpenNext Edge Migration",
-    metaDesc: "Migrate Next.js monolithic or AWS infrastructure to Cloudflare Pages edge compute. Sub-30ms global TTFB, zero cold starts, and 64% cloud bill reduction.",
+    title: "Cloudflare Pages & Next.js Deployment Setup",
+    metaDesc: "Deploy Next.js applications onto Cloudflare Pages edge hosting for fast global TTFB and predictable infrastructure costs.",
     keywords: [
-      "Cloudflare Pages Migration Consultant",
-      "OpenNext Next.js 16 Architect",
+      "Cloudflare Pages Deployment",
+      "Next.js 16 Edge Hosting",
       "Serverless Edge Optimization",
-      "Cloud Cost Reduction AWS to Cloudflare",
-      "Zero Downtime Edge Migration",
+      "Cloud Cost Optimization",
     ],
   },
   "architecture-audit": {
-    title: "Systems Architecture & Codebase Diagnostic Audit",
-    metaDesc: "A comprehensive architectural diagnostic inspection of your application, database queries, memory leaks, and cloud infrastructure costs with a 25+ page roadmap.",
+    title: "Codebase Review & Security Diagnostic Audit",
+    metaDesc: "Structured codebase, database index, and web performance diagnostic audit with an actionable roadmap.",
     keywords: [
-      "Systems Architecture Audit Consultant",
       "Codebase Diagnostic Review",
-      "Technical Debt Remediation",
-      "PostgreSQL Bottleneck Audit",
-      "Staff Software Engineer Audit",
+      "Next.js Security Audit",
+      "PostgreSQL Index Check",
+      "Full-Stack Code Review",
     ],
   },
   "mvp-feature-sprint": {
     title: "Full-Stack SaaS MVP Engineering Sprint",
-    metaDesc: "High-velocity delivery from technical specifications to a production-grade web platform on Next.js 16, Supabase, and Cloudflare with 100% client IP ownership.",
+    metaDesc: "Focused MVP delivery from specs to deployed Next.js 16, Supabase, and Cloudflare Pages application with 100% client IP ownership.",
     keywords: [
-      "Full-Stack SaaS MVP Developer",
-      "Hire Next.js 16 React 19 Engineer",
-      "Supabase PostgreSQL SaaS Builder",
-      "Production MVP in 4 Weeks",
-      "Staff Full-Stack Architect",
+      "Full-Stack MVP Developer",
+      "Hire Next.js 16 React 19 Developer",
+      "Supabase PostgreSQL MVP",
+      "Fixed-Scope Sprint",
     ],
   },
   "distributed-telemetry-engine": {
-    title: "Distributed Telemetry & Event Streaming Architect",
-    metaDesc: "High-throughput message streaming, pub/sub infrastructure, and sub-25ms WebSocket tick delivery built to handle 10M+ daily events with fault tolerance.",
+    title: "Real-Time Telemetry & Streaming Systems Build",
+    metaDesc: "Concurrent WebSocket streaming, pub/sub queues, and time-series data pipelines designed for responsive real-time dashboards.",
     keywords: [
-      "Distributed Systems Architect",
-      "Event Streaming Engineer",
-      "High-Throughput WebSocket Pipeline",
-      "Go Tokio Concurrency Specialist",
-      "Kafka Redis Streaming Architect",
+      "Real-Time Telemetry Pipeline",
+      "Event Streaming Developer",
+      "WebSocket Pipeline Build",
+      "Redis PostgreSQL Streaming",
     ],
   },
   "fractional-staff-engineer": {
-    title: "Fractional Staff Systems Architect Retainer",
-    metaDesc: "On-demand senior technical leadership, architectural RFC reviews, PR sign-offs, and critical path execution for growing engineering teams.",
+    title: "Dedicated Full-Stack Engineering Retainer",
+    metaDesc: "Ongoing remote/B2B engineering capacity for growing teams: feature builds, PR reviews, TypeScript/Next.js delivery, and UK/EU timezone overlap.",
     keywords: [
-      "Fractional Staff Software Engineer",
-      "Fractional Systems Architect",
-      "Engineering Leadership Retainer",
-      "Technical Advisory for Startups",
-      "Staff Engineer on Demand",
+      "Dedicated Full-Stack Developer",
+      "Remote B2B Web Developer",
+      "Next.js TypeScript Retainer",
+      "UK Europe Timezone Aligned Developer",
     ],
   },
 };
@@ -144,13 +137,13 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
   const service = await getServiceBySlug(slug);
 
   if (!service) {
-    return { title: "Engineering Service Not Found | Abu Hanif" };
+    return { title: "Service Package Not Found | Abu Hanif" };
   }
 
   const customSeo = keywordMapping[service.slug] || {
-    title: `${service.title} — Consulting & Architecture`,
+    title: `${service.title} — Fixed Milestone Service`,
     metaDesc: service.description,
-    keywords: [service.title, "Systems Architecture", "Abu Hanif", "Staff Software Engineer"],
+    keywords: [service.title, "Full-Stack Development", "Abu Hanif", "Next.js Developer"],
   };
 
   return {
@@ -198,7 +191,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
       "@type": "Person",
       name: "MD Abu Hanif Mia",
       alternateName: ["Abu Hanif", "md abu hanif mia"],
-      jobTitle: "Staff Software Engineer & Systems Architect",
+      jobTitle: "Full-Stack Web Developer & Digital Systems Specialist",
       url: siteUrl,
       email: "abuhanifmain@gmail.com",
       telephone: "+8801724010261",
@@ -383,9 +376,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
 
                       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                         <a
-                          href="https://cal.com/abuhanif/15min"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          href={`mailto:abuhanifmain@gmail.com?subject=Service%20Inquiry:%20${encodeURIComponent(service.title)}`}
                           style={{
                             display: "inline-flex",
                             alignItems: "center",
@@ -401,7 +392,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                             boxShadow: "0 2px 8px rgba(37,99,235,0.4)",
                           }}
                         >
-                          📅 Schedule 15-Min Discovery Call ↗
+                          ✉️ Direct Email Inquiry ↗
                         </a>
                         <Link
                           href="/pricing#sow-builder"
@@ -579,9 +570,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                       </div>
                       <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                         <a
-                          href="https://cal.com/abuhanif/15min"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          href={`mailto:abuhanifmain@gmail.com?subject=Service%20Inquiry:%20${encodeURIComponent(service.title)}`}
                           style={{
                             padding: "10px 18px",
                             backgroundColor: "#10b981",
@@ -592,7 +581,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                             textDecoration: "none",
                           }}
                         >
-                          📅 Schedule 15-Min Call ↗
+                          ✉️ Contact via Email ↗
                         </a>
                         <Link
                           href="/pricing#inquiry"

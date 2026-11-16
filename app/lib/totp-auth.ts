@@ -129,7 +129,7 @@ export function isTotpConfigured(): boolean {
  * Generates an otpauth:// URI to display in a QR code for authenticator apps.
  */
 export function generateTotpUri(
-  account: string = "admin@abuhanifmia.com",
+  account: string = "abuhanifmain@gmail.com",
   issuer: string = "Abu Hanif Architecture",
   secretBase32: string
 ): string {

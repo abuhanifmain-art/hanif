@@ -221,7 +221,7 @@ export function formatEmailHtml(event: Omit<NotificationEvent<any>, "deliverySta
     ${d.trackerUrl ? `<a href="${d.trackerUrl}" class="cta-btn">Open Live Client Portal ↗</a>` : ""}
 
     <div class="footer">
-      Abu Hanif Mia • Principal Full-Stack & Cloud Systems Architect • Event Notification Mesh
+      Abu Hanif Mia • Full-Stack Web Developer &amp; OMS Portal • Event Notification Mesh
     </div>
   </div>
 </body>
@@ -296,7 +296,7 @@ export async function dispatchNotification<T extends Record<string, any> = Recor
 
   // 3. Dispatch Transactional Email via Resend if API key is present
   const resendApiKey = process.env.RESEND_API_KEY;
-  const toEmail = (params.data as any)?.email || "contact@abuhanifmia.com";
+  const toEmail = (params.data as any)?.email || "abuhanifmain@gmail.com";
 
   if (resendApiKey) {
     try {

@@ -26,8 +26,8 @@ export default function BadgesBar() {
         borderBottom: "1px solid #e2e8f0",
       }}
     >
-      {/* 1. 9+ YRS EXP Badge */}
-      <span className="badge" title="Staff Systems Architect & Senior Full-Stack Engineer">
+      {/* 1. UK & Europe Work Availability Badge */}
+      <span className="badge" title="Open to Remote, B2B Contract, and On-Site / Relocation roles in UK, Europe & Worldwide">
         <strong
           style={{
             display: "inline-block",
@@ -41,12 +41,12 @@ export default function BadgesBar() {
             boxShadow: "0 1px 3px rgba(0,0,0,0.15)",
           }}
         >
-          9+ YRS EXP
+          UK &amp; EU: REMOTE / B2B / ON-SITE
         </strong>
       </span>
 
-      {/* 2. 99.99% UPTIME Badge */}
-      <span className="badge" title="99.99% Production Uptime SLA with Sub-30ms Global Edge">
+      {/* 2. Spoken Languages Badge */}
+      <span className="badge" title="Spoken Languages: Bengali (Native), English (Conversational), Hindi & Urdu (Conversational)">
         <strong
           style={{
             display: "inline-flex",
@@ -72,12 +72,12 @@ export default function BadgesBar() {
               boxShadow: "0 0 6px #4ade80",
             }}
           />
-          99.99% UPTIME
+          EN • BN • HI • UR
         </strong>
       </span>
 
-      {/* 3. Rust & Go Systems Badge */}
-      <span className="badge" title="High-Concurrency Systems in Rust, Go & Next.js 16">
+      {/* 3. Live Product Badge */}
+      <span className="badge" title="Creator of NexusCalculator.net — 312 live tools across 4 languages">
         <strong
           style={{
             display: "inline-flex",
@@ -93,12 +93,12 @@ export default function BadgesBar() {
             boxShadow: "0 1px 3px rgba(0,0,0,0.15)",
           }}
         >
-          <span>🦀</span> RUST &amp; GO SYSTEMS
+          <span>⚡</span> NEXUSCALCULATOR.NET
         </strong>
       </span>
 
-      {/* 4. 50+ SHIPPED APPS Badge */}
-      <span className="badge" title="50+ Shipped Production Deployments">
+      {/* 4. International Ops Work History Badge */}
+      <span className="badge" title="2017–2025 Work History: WACASCO Oman (2022–2025), PRAN-RFL Group (2018–2022), Unilever BD (2017–2018)">
         <strong
           style={{
             display: "inline-block",
@@ -112,18 +112,18 @@ export default function BadgesBar() {
             boxShadow: "0 1px 3px rgba(0,0,0,0.15)",
           }}
         >
-          50+ SHIPPED APPS
+          OMAN &amp; BD OPS (2017–2025)
         </strong>
       </span>
 
-      {/* 5. Verified Technical Credential: Programming Hero Certificate of Excellence */}
+      {/* 5. Verified Training: Programming Hero 2025 */}
       <a
         href="#certificate-modal"
         id="ph-certificate-trigger"
         data-certificate-trigger="programming-hero"
         onClick={handleOpenCertificate}
         className="badge"
-        title="Click to inspect verified Programming Hero Certificate of Excellence (Batch-12 • ID: WEB12-3991)"
+        title="Click to inspect Programming Hero Web Development Course record (2025 • Batch-12 • ID: WEB12-3991)"
         style={{
           display: "inline-flex",
           alignItems: "center",
@@ -186,10 +186,10 @@ export default function BadgesBar() {
               letterSpacing: "0.5px",
             }}
           >
-            PROGRAMMING HERO
+            PROGRAMMING HERO • 2025
           </span>
           <strong style={{ fontSize: "12px", fontWeight: 800, color: "#ffffff", letterSpacing: "-0.1px" }}>
-            CERTIFICATE OF EXCELLENCE
+            WEB DEVELOPMENT COURSE
           </strong>
           <span style={{ fontSize: "10px", color: "#cbd5e1", fontWeight: 600 }}>
             Batch-12 • ID: WEB12-3991 <span style={{ color: "#4ade80" }}>(Inspect ↗)</span>
@@ -197,10 +197,10 @@ export default function BadgesBar() {
         </div>
       </a>
 
-      {/* 6. freeCodeCamp Verified Badge */}
+      {/* 6. freeCodeCamp Self-Learning Badge */}
       <span
         className="badge"
-        title="freeCodeCamp Verified Certifications: JavaScript Algorithms, TypeScript, Python"
+        title="Self-learned TypeScript, Python, Rust, and C++ on freeCodeCamp"
       >
         <strong
           style={{
@@ -217,7 +217,7 @@ export default function BadgesBar() {
             boxShadow: "0 1px 3px rgba(0,0,0,0.15)",
           }}
         >
-          <span>(fCC)</span> JS • TS • PYTHON
+          <span>(fCC)</span> TS • PY • RUST • C++
         </strong>
       </span>
     </div>

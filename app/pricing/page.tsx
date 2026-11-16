@@ -5,15 +5,15 @@ import { getServices } from "../lib/portfolio-store";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abuhanifmia.com";
 
 export const metadata: Metadata = {
-  title: "Engineering Services, SOW & Pricing",
+  title: "B2B Services, SOW & Pricing",
   description:
-    "Transparent pricing for staff-level software engineering, PostgreSQL performance tuning sprints, Cloudflare edge migrations, and full-stack SaaS MVP architecture.",
+    "Transparent B2B milestone pricing for Next.js web development, PostgreSQL optimization, Cloudflare deployments, and full-stack software sprints by MD Abu Hanif Mia.",
   keywords: [
-    "Software Engineering Pricing",
-    "Staff Software Engineer Rates",
+    "Software Development Pricing",
+    "Full-Stack B2B Rates",
     "PostgreSQL Optimization Consultant",
-    "Next.js Architecture Consulting",
-    "Cloudflare Edge Migration Pricing",
+    "Next.js Web Development",
+    "Cloudflare Pages Setup",
     "Full-Stack MVP Development",
     "Abu Hanif",
     "MD Abu Hanif Mia",
@@ -22,18 +22,18 @@ export const metadata: Metadata = {
     canonical: `${siteUrl}/pricing`,
   },
   openGraph: {
-    title: "Engineering Services & Work Pricing | Abu Hanif",
+    title: "B2B Services & Work Pricing | Abu Hanif",
     description:
-      "Transparent engineering tiers: Architecture Audits, Postgres Query Sprints, Edge Migrations, and Full-Stack MVP builds.",
+      "Transparent milestone tiers: Codebase Audits, Postgres Query Sprints, Edge Deployments, and Full-Stack Web Builds.",
     url: `${siteUrl}/pricing`,
     type: "website",
-    locale: "en_US",
+    locale: "en_GB",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Engineering Services & Work Pricing | Abu Hanif",
+    title: "B2B Services & Work Pricing | Abu Hanif",
     description:
-      "Transparent engineering tiers: Architecture Audits, Postgres Query Sprints, Edge Migrations, and Full-Stack MVP builds.",
+      "Transparent milestone tiers: Codebase Audits, Postgres Query Sprints, Edge Deployments, and Full-Stack Web Builds.",
     creator: "@MohammadBitull1",
   },
 };
@@ -41,27 +41,27 @@ export const metadata: Metadata = {
 const pricingFaqs = [
   {
     q: "Why do you use fixed-price milestones instead of open-ended hourly billing?",
-    a: "Hourly billing misaligns incentives: slower development yields higher contractor bills, while efficient engineering is penalized. By structuring projects around transparent, fixed-scope milestones, you know the exact cost and delivery timeline before code is written. I assume the delivery risk, and you receive verified production deliverables without budget creep.",
+    a: "Fixed-scope milestones give you the exact cost and delivery timeline up front before code is written, ensuring predictable budgeting without scope surprises.",
   },
   {
     q: "Who owns the intellectual property and source code?",
-    a: "You do. 100% of all intellectual property, git commit histories, documentation, schemas, and assets belong to you from the moment they are written. Work is committed directly to your private GitHub or GitLab organization under standard clean IP assignment terms.",
+    a: "You do. 100% of all intellectual property, git commit histories, documentation, schemas, and assets belong to the client once milestones are delivered.",
   },
   {
     q: "What is your typical project kickoff turnaround time?",
-    a: "Diagnostic audits and database tuning sprints typically commence within 48 to 72 hours of an executed Statement of Work. Larger MVP builds and architecture refactors are scheduled in prioritized engineering blocks to ensure 100% focused attention.",
+    a: "Diagnostic audits and focused web builds typically begin within 48 to 72 hours of confirming the Statement of Work. Multi-week SaaS builds are scheduled in dedicated sprints.",
   },
   {
-    q: "How do you handle post-launch bugs, production issues, and warranty?",
-    a: "Every fixed-price milestone includes an unconditional 30-day post-launch warranty covering any bugs, edge regressions, or configuration defects at zero additional charge. An optional extended 60-day SLA is also available.",
+    q: "How do you handle post-launch bugs and warranty support?",
+    a: "Every fixed milestone includes a 30-day post-launch warranty covering any bugs or configuration regressions at zero additional charge.",
   },
   {
-    q: "Can you collaborate with our existing in-house engineering team?",
-    a: "Yes. I frequently operate as a fractional Staff Architect or senior delivery lead embedded directly into internal teams, mentoring developers, running PR reviews, and instilling strict production-grade patterns.",
+    q: "Are you open to remote UK/EU full-time employment as well as B2B contracts?",
+    a: "Yes. Alongside independent B2B project work, I am open to full-time Remote, Hybrid, or On-Site / Relocation opportunities in the UK, Europe, and internationally.",
   },
   {
     q: "What are your payment terms and invoicing methods?",
-    a: "Fixed milestones are split into 50% upfront to reserve sprint capacity and 50% upon verified production deployment. Invoicing is processed through Stripe (Credit Card, Wire, ACH) or direct international bank transfer with full tax receipts.",
+    a: "Standard SOW milestones follow a 25% kickoff deposit, 50% upon core implementation milestone review, and 25% upon final handover via international bank transfer (Wise / SWIFT) or Stripe.",
   },
 ];
 

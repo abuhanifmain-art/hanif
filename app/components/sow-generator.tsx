@@ -395,9 +395,9 @@ export function generateSowPrintHtml(data: SowPrintData): string {
         <p><strong>Jurisdiction:</strong> Standard Commercial / Applicable Law</p>
       </div>
       <div class="party-box">
-        <h4>Principal Systems Architect (Party B)</h4>
-        <p><strong>Engineer:</strong> MD Abu Hanif Mia</p>
-        <p><strong>Credentials:</strong> B.Sc. in CSE &bull; Batch-12 PH Honor (WEB12-3991)</p>
+        <h4>Service Provider (Party B)</h4>
+        <p><strong>Developer:</strong> MD Abu Hanif Mia</p>
+        <p><strong>Credentials:</strong> HSC Commerce (Wali Neowaj Khan College) &bull; Programming Hero 2025 (WEB12-3991)</p>
         <p><strong>Direct Email:</strong> abuhanifmain@gmail.com &bull; abuhanifmia.com</p>
       </div>
     </div>
@@ -466,16 +466,16 @@ export function generateSowPrintHtml(data: SowPrintData): string {
       <h2>3. Intellectual Property, Warranty &amp; SLA Terms</h2>
       <div class="legal-box">
         <p style="margin: 0 0 6px 0;"><strong>1. 100% Client IP Ownership:</strong> Upon settlement of final milestone invoice, all git histories, pull requests, architectures, schemas, and deployed codebases become the sole and exclusive intellectual property of the Client.</p>
-        <p style="margin: 0 0 6px 0;"><strong>2. 30-Day Production Bug Warranty:</strong> Abu Hanif warrants the codebase for 30 consecutive calendar days against regressions or SLA deviations with zero additional billing.</p>
+        <p style="margin: 0 0 6px 0;"><strong>2. 30-Day Production Bug Warranty:</strong> Abu Hanif warrants the codebase for 30 consecutive calendar days against regressions with zero additional billing.</p>
         <p style="margin: 0 0 6px 0;"><strong>3. Mutual NDA &amp; Confidentiality:</strong> All technical schemas, database tokens, proprietary logic, and business requirements remain strictly confidential under mutual non-disclosure obligations.</p>
-        <p style="margin: 0;"><strong>4. Direct Execution:</strong> 100% of architectural and code tasks are delivered directly by Abu Hanif with no offshore junior delegation.</p>
+        <p style="margin: 0;"><strong>4. Direct Execution:</strong> 100% of coding and delivery tasks are executed directly by MD Abu Hanif Mia.</p>
       </div>
 
       <div class="signature-grid">
         <div>
-          <div class="stamp-badge">✓ Verified Principal Architect</div>
+          <div class="stamp-badge">✓ Verified Service Provider</div>
           <p style="margin: 6px 0 2px 0; font-weight: bold; font-size: 13px;">MD Abu Hanif Mia</p>
-          <p style="margin: 0 0 22px 0; font-size: 11.5px; color: #64748b;">Staff Software Engineer &amp; Systems Architect</p>
+          <p style="margin: 0 0 22px 0; font-size: 11.5px; color: #64748b;">Full-Stack Web Developer &bull; WEB12-3991</p>
           <div class="sig-line">
             <span>Authorized Signature &bull; Date: ${today}</span>
           </div>
@@ -559,8 +559,8 @@ export default function StatementOfWorkGenerator() {
 ## PARTIES & ROLES
 - **Client Organization:** ${clientCompany || "Client Organization"}  
 - **Technical Sponsor / Contact:** ${clientContact || "Engineering Leadership"}  
-- **Principal Systems Architect:** MD Abu Hanif Mia (Staff Software Engineer & Systems Architect)  
-  *Credentials: B.Sc. in Computer Science & Engineering • Programming Hero Batch-12 (WEB12-3991)*  
+- **Service Provider:** MD Abu Hanif Mia (Full-Stack Web Developer & Digital Services)  
+  *Credentials: HSC in Commerce (Wali Neowaj Khan College) • Programming Hero 2025 (Batch-12 • WEB12-3991)*  
   *Contact: abuhanifmain@gmail.com • https://abuhanifmia.com*  
 
 ---
@@ -717,7 +717,7 @@ ${submitNotes || "Please review this configured SOW and schedule our 30-minute t
       }
 
       setSubmitSuccess(
-        `✓ Statement of Work successfully submitted (Inquiry ID: ${data.inquiryId})! Principal Architect Abu Hanif will review your scope and follow up within 24 hours.`
+        `✓ Statement of Work successfully submitted (Inquiry ID: ${data.inquiryId})! MD Abu Hanif Mia will review your scope and follow up within 24 hours.`
       );
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Submission failed.";
@@ -984,7 +984,7 @@ ${submitNotes || "Please review this configured SOW and schedule our 30-minute t
                 type="text"
                 value={clientContact}
                 onChange={(e) => setClientContact(e.target.value)}
-                placeholder="e.g. Sarah Jenkins (VP Engineering)"
+                placeholder="e.g. Client Sponsor Name / Role"
                 style={{
                   width: "100%",
                   padding: "8px 12px",
@@ -1146,10 +1146,10 @@ ${submitNotes || "Please review this configured SOW and schedule our 30-minute t
               </div>
               <div>
                 <h5 style={{ margin: "0 0 6px 0", fontSize: "11px", textTransform: "uppercase", color: "#64748b", letterSpacing: "0.5px" }}>
-                  Party B (Principal Architect)
+                  Party B (Service Provider)
                 </h5>
-                <div><strong>Engineer:</strong> MD Abu Hanif Mia</div>
-                <div><strong>Credentials:</strong> B.Sc. in CSE • Batch-12 PH Honor (WEB12-3991)</div>
+                <div><strong>Developer:</strong> MD Abu Hanif Mia</div>
+                <div><strong>Credentials:</strong> HSC Commerce (Wali Neowaj Khan College) • PH 2025 (WEB12-3991)</div>
                 <div><strong>Direct Contact:</strong> abuhanifmain@gmail.com</div>
               </div>
             </div>
@@ -1234,11 +1234,11 @@ ${submitNotes || "Please review this configured SOW and schedule our 30-minute t
                     marginBottom: "8px",
                   }}
                 >
-                  ✓ Verified Principal Architect
+                  ✓ Verified Service Provider
                 </span>
                 <div style={{ fontWeight: "bold", fontSize: "13px" }}>MD Abu Hanif Mia</div>
                 <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "16px" }}>
-                  Staff Software Engineer &bull; Batch-12 WEB12-3991
+                  Full-Stack Web Developer &bull; WEB12-3991
                 </div>
                 <div style={{ borderTop: "1px dashed #94a3b8", paddingTop: "6px", fontSize: "11px", color: "#64748b" }}>
                   Authorized Digital Seal

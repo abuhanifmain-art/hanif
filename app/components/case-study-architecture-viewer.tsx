@@ -459,9 +459,9 @@ export function generateArchitectureBlueprintHtml(arch: ProjectArchitecture): st
 
       <div class="signature-grid">
         <div>
-          <div class="stamp-badge">✓ Verified Principal Architect</div>
+          <div class="stamp-badge">✓ Verified Reference Blueprint</div>
           <p style="margin: 6px 0 2px 0; font-weight: bold; font-size: 13px;">MD Abu Hanif Mia</p>
-          <p style="margin: 0 0 22px 0; font-size: 11.5px; color: #64748b;">Staff Software Engineer &amp; Systems Architect &bull; Batch-12 WEB12-3991</p>
+          <p style="margin: 0 0 22px 0; font-size: 11.5px; color: #64748b;">Full-Stack Web Developer &bull; Programming Hero 2025 (WEB12-3991)</p>
           <div class="sig-line">
             <span>Authorized Signature &bull; Date: ${today}</span>
           </div>

@@ -693,27 +693,26 @@ export default function ProjectsClientView({ initialProjects }: ProjectsClientVi
                     </div>
                   </div>
 
-                  {/* Client Testimonial Widget */}
+                  {/* Flagship Product Highlight */}
                   <div className="widget amp-include" id="wdgt-review">
                     <strong className="heading4 widget-title">
-                      <a href="/#feedback">Client Feedback</a>
+                      <Link href="/projects/nexus-calculator-platform">Flagship Live Platform</Link>
                     </strong>
                     <div className="description">
-                      <blockquote
+                      <p
                         style={{
                           margin: 0,
                           fontSize: "13px",
                           lineHeight: "1.6",
                           color: "#334155",
-                          fontStyle: "italic",
                           borderLeft: "3px solid #2563eb",
                           paddingLeft: "12px",
                         }}
                       >
-                        &ldquo;Abu Hanif transformed our core telemetry architecture in three weeks. Cut P99 latency by 75% and reduced our infrastructure bill by 64%.&rdquo;
-                      </blockquote>
+                        <strong>NexusCalculator.net</strong> serves 312 interactive tools and calculators across 3,200+ static pages in English, Spanish, French, and German.
+                      </p>
                       <div style={{ marginTop: "8px", fontSize: "12px", fontWeight: "bold", color: "#0f172a" }}>
-                        - VP of Engineering, Apex Telemetry Labs
+                        — Built &amp; Maintained by MD Abu Hanif Mia
                       </div>
                     </div>
                   </div>

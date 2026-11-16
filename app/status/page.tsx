@@ -7,32 +7,32 @@ import StatusDashboardClient from "./status-dashboard-client";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abuhanifmia.com";
 
 export const metadata: Metadata = {
-  title: "Live Systems Status & Edge Observability",
+  title: "Live Systems Status & Edge Diagnostics",
   description:
-    "Real-time operational status, Cloudflare Pages edge health, PostgreSQL database connection pool metrics, and multi-region latency benchmarks for Abu Hanif's production architecture.",
+    "Live runtime diagnostics, edge ping monitoring, and reference status telemetry for Abu Hanif's portfolio platform.",
   keywords: [
     "Systems Status",
-    "Edge Network Uptime",
-    "PostgreSQL Connection Pool Status",
+    "Edge Ping Diagnostics",
+    "PostgreSQL Connection Status",
     "Cloudflare Pages Telemetry",
     "Abu Hanif",
     "MD Abu Hanif Mia",
-    "Staff Software Engineer Observability",
+    "Platform Health Diagnostics",
   ],
   alternates: {
     canonical: `${siteUrl}/status`,
   },
   openGraph: {
-    title: "Live Systems Status & Edge Observability | Abu Hanif",
+    title: "Live Systems Status & Edge Diagnostics | Abu Hanif",
     description:
-      "Real-time operational status and multi-region edge telemetry for Abu Hanif's production architecture.",
+      "Live runtime diagnostics and edge ping telemetry for Abu Hanif's portfolio platform.",
     url: `${siteUrl}/status`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Live Systems Status & Edge Observability | Abu Hanif",
-    description: "99.994% Uptime • Real-time Cloudflare Edge & PostgreSQL Telemetry.",
+    title: "Live Systems Status & Edge Diagnostics | Abu Hanif",
+    description: "Live Edge Diagnostics & Portfolio Service Status.",
     creator: "@MohammadBitull1",
   },
 };
@@ -41,14 +41,14 @@ export default function StatusPage() {
   const statusSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Live Systems Status & Edge Observability",
-    description: "Real-time production health and multi-region latency telemetry.",
+    name: "Live Systems Status & Edge Diagnostics",
+    description: "Live portfolio service health and edge ping diagnostics.",
     url: `${siteUrl}/status`,
     author: {
       "@type": "Person",
       name: "MD Abu Hanif Mia",
       url: siteUrl,
-      jobTitle: "Staff Software Engineer & Systems Architect",
+      jobTitle: "Full-Stack Web Developer",
     },
   };
 

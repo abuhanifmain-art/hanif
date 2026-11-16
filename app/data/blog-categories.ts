@@ -67,13 +67,13 @@ export const blogCategoryPillars: BlogCategoryPillar[] = [
     slug: "architecture",
     name: "Distributed Systems & Modular Monoliths",
     tagline: "High-throughput APIs, telemetry streaming, event-driven decoupling, and clean domain design.",
-    description: "Strategic software architecture for enterprise web applications: choosing between microservices and modular monoliths, designing event-driven telemetry pipelines (12M+ events/s), and eliminating distributed systems debt.",
+    description: "Strategic software architecture for modern web applications: choosing between microservices and modular monoliths, designing event-driven pipelines, and eliminating unnecessary complexity.",
     keywords: [
       "Distributed Systems Architecture",
       "Modular Monolith vs Microservices",
       "Event-Driven Telemetry",
       "High-Throughput APIs",
-      "Staff Software Engineer Advisory",
+      "Full-Stack Systems Architecture",
     ],
     matchingTags: ["Architecture", "System Design", "Microservices", "Clean Code"],
     consultingServiceSlug: "architecture-audit",
@@ -127,9 +127,9 @@ export const blogCategoryPillars: BlogCategoryPillar[] = [
       "Security Audit Consultant",
     ],
     matchingTags: ["Security", "Authentication", "Zero-Trust", "RLS"],
-    consultingServiceSlug: "security-hardening",
-    consultingServiceTitle: "Security Hardening & SOC2 Readiness Sprint",
-    consultingPrice: "$3,800",
+    consultingServiceSlug: "architecture-audit",
+    consultingServiceTitle: "Security & Architecture Codebase Review",
+    consultingPrice: "$2,500",
   },
 ];
 

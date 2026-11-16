@@ -173,12 +173,12 @@ export default function StatusDashboardClient() {
           boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
         }}
       >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "12px" }}>
-          <strong style={{ fontSize: "14px", color: "#0f172a" }}>90-Day Historical Uptime Track Record</strong>
-          <span style={{ fontSize: "14px", fontWeight: "800", color: "#047857" }}>99.994% Overall SLA</span>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "12px", flexWrap: "wrap", gap: "8px" }}>
+          <strong style={{ fontSize: "14px", color: "#0f172a" }}>Simulated Availability Baseline Strip (Reference Status UI)</strong>
+          <span style={{ fontSize: "13px", fontWeight: "800", color: "#047857" }}>Demo Baseline UI &bull; Live Check via /api/health</span>
         </div>
 
-        {/* 90 Uptime Tick Bars */}
+        {/* 90 Reference Uptime Tick Bars */}
         <div
           style={{
             display: "grid",
@@ -191,7 +191,7 @@ export default function StatusDashboardClient() {
           {Array.from({ length: 90 }).map((_, idx) => (
             <div
               key={idx}
-              title={`Day ${90 - idx} Days Ago: 100% Uptime (0 Incidents)`}
+              title={`Day ${90 - idx} Reference Slot: Nominal`}
               style={{
                 backgroundColor: "#10b981",
                 borderRadius: "2px",
@@ -359,17 +359,15 @@ export default function StatusDashboardClient() {
       >
         <div>
           <strong style={{ fontSize: "17px", color: "#ffffff", display: "block" }}>
-            Need 99.99% Availability &amp; Sub-25ms Latency for Your Architecture?
+            Open for UK &amp; Europe Web Development and Operations Roles
           </strong>
           <span style={{ fontSize: "13px", color: "#cbd5e1" }}>
-            Abu Hanif is available for targeted edge migrations, database scaling, and distributed systems sprints.
+            Available for Remote, B2B Contract, and On-Site positions. Direct email: abuhanifmain@gmail.com.
           </span>
         </div>
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
           <a
-            href="https://cal.com/abuhanif/15min"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="mailto:abuhanifmain@gmail.com?subject=Role%20or%20Project%20Inquiry"
             style={{
               padding: "10px 18px",
               backgroundColor: "#10b981",
@@ -380,7 +378,7 @@ export default function StatusDashboardClient() {
               textDecoration: "none",
             }}
           >
-            📅 Schedule 15-Min Call ↗
+            ✉️ Contact via Email ↗
           </a>
           <Link
             href="/pricing"

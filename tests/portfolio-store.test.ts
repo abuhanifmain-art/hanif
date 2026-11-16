@@ -23,7 +23,12 @@ describe("Portfolio Store & Slug Unification", () => {
     }
   });
 
-  it("should resolve canonical project slugs", async () => {
+  it("should resolve canonical project slugs including live flagship Nexus Calculator", async () => {
+    const nexus = await getProjectBySlug("nexus-calculator-platform");
+    expect(nexus).toBeDefined();
+    expect(nexus?.title).toContain("Nexus Calculator");
+    expect(nexus?.demoUrl).toBe("https://nexuscalculator.net");
+
     const telemetry = await getProjectBySlug("financial-telemetry-pipeline");
     expect(telemetry).toBeDefined();
     expect(telemetry?.title).toContain("Financial Telemetry");

@@ -33,8 +33,8 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
       ...pillar.keywords,
       "Abu Hanif Blog",
       "MD Abu Hanif Mia",
-      "Staff Software Engineer",
-      "Software Architecture Articles",
+      "Full-Stack Web Developer",
+      "Web Architecture Articles",
     ],
     alternates: {
       canonical: `${siteUrl}/blog/category/${pillar.slug}`,
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
       description: pillar.description,
       url: `${siteUrl}/blog/category/${pillar.slug}`,
       type: "website",
-      locale: "en_US",
+      locale: "en_GB",
     },
     twitter: {
       card: "summary_large_image",
@@ -82,7 +82,7 @@ export default async function BlogCategoryPage({ params }: CategoryPageProps) {
       "@type": "Person",
       name: "MD Abu Hanif Mia",
       url: siteUrl,
-      jobTitle: "Staff Software Engineer & Systems Architect",
+      jobTitle: "Full-Stack Web Developer & International Operations",
     },
     hasPart: matchingPosts.map((post) => ({
       "@type": "TechArticle",
@@ -320,7 +320,7 @@ export default async function BlogCategoryPage({ params }: CategoryPageProps) {
                         Need Hands-On {pillar.name} Support?
                       </h3>
                       <p style={{ margin: "0 0 16px 0", fontSize: "13.5px", color: "#cbd5e1", lineHeight: "1.6" }}>
-                        Book the <strong>{pillar.consultingServiceTitle}</strong> ({pillar.consultingPrice} fixed milestone). Direct 1:1 engagement with Staff Software Engineer Abu Hanif with verified production deliverables and zero budget creep.
+                        Review the <strong>{pillar.consultingServiceTitle}</strong> ({pillar.consultingPrice} milestone) or contact Abu Hanif directly for UK/EU remote, B2B, or on-site roles.
                       </p>
                       <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
                         <Link
@@ -393,9 +393,9 @@ export default async function BlogCategoryPage({ params }: CategoryPageProps) {
                       </h4>
                       <div style={{ fontSize: "13px", color: "#334155", lineHeight: "1.6" }}>
                         <strong>MD Abu Hanif Mia</strong><br />
-                        Staff Software Engineer &amp; Systems Architect.<br />
+                        Full-Stack Web Developer &amp; Int&apos;l Ops.<br />
                         <span style={{ fontSize: "12px", color: "#64748b" }}>
-                          B.Sc. in CSE &bull; Programming Hero Honor (Batch-12 &bull; WEB12-3991) &bull; freeCodeCamp Certified &bull; Rust &amp; Go.
+                          HSC Commerce (EIIN: 110495) &bull; Programming Hero 2025 (WEB12-3991) &bull; freeCodeCamp (TS, Python, Rust, C++).
                         </span>
                       </div>
                       <Link href="/resume" style={{ display: "inline-block", marginTop: "10px", fontSize: "12px", color: "#2563eb", fontWeight: "700" }}>

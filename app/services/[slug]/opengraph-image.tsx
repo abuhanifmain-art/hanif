@@ -156,7 +156,7 @@ export default async function Image({ params }: OgProps) {
               MD Abu Hanif Mia (Abu Hanif)
             </div>
             <div style={{ color: "#38bdf8", fontSize: "14px", fontWeight: 600 }}>
-              Staff Software Engineer &amp; Systems Architect &bull; 9+ Years High-Concurrency Experience
+              Full-Stack Web Developer &bull; Next.js 16 &bull; TypeScript &bull; PostgreSQL
             </div>
           </div>
 

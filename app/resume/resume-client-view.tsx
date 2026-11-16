@@ -4,9 +4,12 @@ import React, { useState } from "react";
 import Link from "next/link";
 import SiteHeader from "../components/site-header";
 import SiteFooter from "../components/site-footer";
+import { ProfileData, initialProfile } from "../data/portfolio-data";
 
-export default function ResumeClientView() {
+export default function ResumeClientView({ profile = initialProfile }: { profile?: ProfileData }) {
   const [copied, setCopied] = useState(false);
+
+  const phoneClean = profile.phone.replace(/[^+\d]/g, "");
 
   function handlePrint() {
     if (typeof window !== "undefined") {
@@ -16,54 +19,47 @@ export default function ResumeClientView() {
 
   function handleCopyText() {
     const plainText = `
-MD ABU HANIF MIA (ABU HANIF)
-Staff Software Engineer & Systems Architect
-Sadar Upazila, Kishoreganj, Dhaka, Bangladesh | Global Remote (US Pacific, Central European, Asia Timezones)
-Email: abuhanifmain@gmail.com | Phone: +880 1724-010261 | Portfolio: https://abuhanifmia.com
-LinkedIn: https://www.linkedin.com/in/md-abu-hanif-mia | GitHub: https://github.com/abuhanif254 | X: https://x.com/MohammadBitull1
+${profile.fullName.toUpperCase()} (ABU HANIF)
+${profile.kicker}
+${profile.location} | Open to Remote, B2B Contract & On-Site / Relocation (UK, Europe & Worldwide)
+Email: ${profile.email} | Phone: ${profile.phone} | Portfolio: https://abuhanifmia.com
+LinkedIn: ${profile.socialLinks.linkedin} | GitHub: ${profile.socialLinks.github} | X: ${profile.socialLinks.twitter}
 
-EXECUTIVE SUMMARY
-Senior Full-Stack Software Engineer & Systems Architect with 9+ years of production experience architecting high-concurrency distributed systems, edge-computed web applications, and database infrastructure. Battle-tested track record maintaining 99.99% production uptime for 10M+ daily users, cutting global P99 latency below 25ms, and reducing cloud infrastructure costs by up to 64%.
+PROFILE SUMMARY
+${profile.bio}
 
-CORE TECHNICAL SKILLS
-- Languages: Rust (Tokio, Axum, Wasm), Go (Golang), TypeScript, JavaScript (ESNext), Python, SQL (PostgreSQL), HTML5, CSS3
-- Frameworks & Edge: Next.js 16 (App Router, Server Components), React 19, Cloudflare Pages & Workers, Node.js, FastAPI, Tailwind CSS
-- Data & Storage: PostgreSQL, Supabase, TimescaleDB, Redis Cluster, pgvector (AI RAG), Prisma
-- Infrastructure & Cloud: Cloudflare Edge (330+ Cities), AWS (ECS, Lambda, S3), Docker, Terraform, GitHub Actions CI/CD
-- Architecture: Distributed Systems, High-Throughput APIs, Event-Driven Architecture, Microservices to Modular Monoliths, Zero-Trust Auth (OAuth2, Passkeys, RLS)
+WORK PREFERENCES & SPOKEN LANGUAGES
+- Target Roles: ${profile.workPreferences.targetRoles}
+- Work Modes: ${profile.workPreferences.modes.join(", ")}
+- Target Regions: ${profile.workPreferences.regions.join(", ")}
+- Timezone Alignment: ${profile.workPreferences.timezoneOverlap}
+- Spoken Languages: ${profile.spokenLanguages.map((l) => `${l.language} (${l.level})`).join(", ")}
 
-PROFESSIONAL EXPERIENCE
+TECHNICAL SKILLS & SELF-DIRECTED LEARNING
+- Web & Full-Stack: Next.js 16 (App Router), React 19, TypeScript, JavaScript, Node.js, Tailwind CSS, HTML5, CSS3
+- Databases & Cloud: PostgreSQL, Supabase, Cloudflare Pages, Vercel, REST APIs, Git / GitHub CI
+- Self-Learned Programming (freeCodeCamp): TypeScript, Python, Rust, C++
 
-Staff Software Engineer & Systems Architect | Independent Advisory & Consulting
-2022 – Present
-- Architected and delivered high-throughput streaming and edge web applications for international startups and mid-market enterprises.
-- Designed real-time financial telemetry pipeline processing 12,000,000 events/second at peak with sub-22ms P99 delivery to browser clients.
-- Re-architected multi-tenant e-commerce platform onto Cloudflare Pages and Supabase PostgreSQL, reducing initial page render from 1.8s to 95ms worldwide and cutting cloud bills by 64%.
-- Conducted deep PostgreSQL query audits, diagnosing slow query plans and designing composite partial indexes to achieve 10x throughput improvement.
+LIVE WEB PROJECTS
+1. NexusCalculator.net (Live Product) - 312 interactive calculators & developer tools, 190+ guides, 3,200+ static pages across English, Spanish, French, and German using Next.js, TypeScript, and next-intl.
+2. Abu Hanif Portfolio & Client Portal (abuhanifmia.com) - Full-stack Next.js 16 + Supabase portfolio, CRM, SOW builder, and HMAC-protected Admin dashboard.
 
-Lead Full-Stack Engineer | Distributed Systems & Web Platforms
-2019 – 2022
-- Led a 7-engineer cross-functional team delivering mission-critical SaaS platforms from architecture design to production rollout.
-- Introduced strict TypeScript guidelines, automated CI/CD deployment pipelines, and end-to-end integration test suites resulting in zero critical production bugs across 14 quarters.
-- Engineered high-throughput WebSocket microservices handling 45,000 concurrent live sessions.
+WORK EXPERIENCE
+${profile.workHistory
+  .map(
+    (w) => `${w.role} | ${w.company} (${w.location})
+${w.period}
+- ${w.summary}`
+  )
+  .join("\n\n")}
 
-Senior Software Engineer | Backend & Cloud Infrastructure
-2016 – 2019
-- Developed RESTful APIs, asynchronous job queues, and caching layers with Go, Rust, and Redis.
-- Optimized relational database schemas and automated migration rollbacks for high-availability production clusters.
-- Mentored junior and mid-level software engineers on clean architecture patterns, code reviews, and observability.
-
-SELECTED SHIPPED PRODUCTION ARCHITECTURES
-1. Real-Time Financial Telemetry Pipeline (Go, Next.js, Redis, TimescaleDB, WebSockets) - 12M events/sec, <22ms P99.
-2. Cloudflare Edge Multi-Tenant E-Commerce Platform (Next.js 16, Cloudflare Pages, Supabase) - 95ms P99, +28% checkout conversion.
-3. Enterprise AI Document Search & RAG Pipeline (FastAPI, pgvector, Next.js, Hybrid Search) - 500k+ docs, 82% search speedup.
-4. High-Concurrency PostgreSQL Optimization & RLS Hardening - 10x throughput, sub-5ms query latency.
-
-EDUCATION & ACCREDITATIONS
-- Bachelor of Science in Computer Science & Engineering (B.Sc. in CSE) - 4-Year Formal Engineering Degree
-- Programming Hero: Complete Web Development Course with Excellence (Batch-12 • Credential ID: WEB12-3991 • Issued by Jhankar Mahbub)
-- freeCodeCamp: Verified Full-Stack Accreditations (JavaScript Algorithms & Data Structures, TypeScript Production Engineering, Scientific Computing with Python)
-- Rust Systems Specialization: Concurrency, Zero-Cost Abstractions, Tokio Async Runtime, and WebAssembly Edge Compilation
+EDUCATION & TRAINING
+${profile.educationHistory
+  .map(
+    (edu) => `- ${edu.credential} — ${edu.institution} (${edu.period})
+  ${edu.details}`
+  )
+  .join("\n")}
     `.trim();
 
     if (navigator.clipboard) {
@@ -89,73 +85,75 @@ EDUCATION & ACCREDITATIONS
                     <div className="banner-text-wrapper">
                       <div>
                         <h1 className="subpage-banner-title" style={{ margin: 0, textTransform: "uppercase", letterSpacing: "1px" }}>
-                          Curriculum Vitae &amp; Engineering Dossier
+                          Curriculum Vitae &amp; Verifiable Background
                         </h1>
                         <p style={{ margin: "8px 0 0 0", fontSize: "14px", fontWeight: "normal", color: "#e2e8f0" }}>
-                          MD Abu Hanif Mia • Staff Software Engineer &amp; Systems Architect • 9+ Years Track Record
+                          {profile.fullName} &bull; {profile.kicker} &bull; Open to UK &amp; Europe
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
 
+                <div className="tcfrags"></div>
+
                 <div id="content">
                   <div id="breadcrumbs">
                     <div className="wrapper">
-                      <Link href="/">Home</Link> &gt; <span>Resume / CV</span>
+                      <Link href="/" style={{ color: "#2563eb" }}>Home</Link> &gt; <span>Resume / CV</span>
                     </div>
                   </div>
 
-                  <div className="bodytext">
-                    {/* Resume Action Bar (Hidden during print) */}
+                  <div className="bodytext" style={{ maxWidth: "900px", margin: "0 auto", padding: "12px 0 40px 0" }}>
+                    {/* Control Toolbar (Hidden on Print) */}
                     <div
-                      className="resume-action-bar no-print"
+                      className="no-print"
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        background: "#0b132b",
-                        border: "1px solid #1e293b",
+                        flexWrap: "wrap",
+                        gap: "12px",
+                        backgroundColor: "#0b132b",
                         color: "#ffffff",
                         padding: "16px 20px",
                         borderRadius: "8px",
-                        marginBottom: "24px",
-                        flexWrap: "wrap",
-                        gap: "10px",
+                        marginBottom: "28px",
+                        boxShadow: "0 4px 12px rgba(11, 19, 43, 0.25)",
                       }}
                     >
                       <div>
-                        <strong style={{ fontSize: "15px", color: "#ffffff" }}>
-                          Verified Engineering Credentials
+                        <strong style={{ display: "block", fontSize: "15px", color: "#ffffff" }}>
+                          UK &amp; Europe ATS-Friendly CV
                         </strong>
-                        <span style={{ fontSize: "13px", color: "#cbd5e1", display: "block" }}>
-                          ATS-Compatible Format • Available for High-Impact Contracts
+                        <span style={{ fontSize: "12.5px", color: "#94a3b8" }}>
+                          Verified work history, HSC Commerce education, languages &amp; live web projects.
                         </span>
                       </div>
-                      <div style={{ display: "flex", gap: "8px" }}>
+                      <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                         <button
-                          type="button"
                           onClick={handlePrint}
+                          type="button"
                           style={{
-                            background: "#2563eb",
+                            backgroundColor: "#2563eb",
                             color: "#ffffff",
                             border: "none",
                             borderRadius: "6px",
-                            padding: "8px 16px",
+                            padding: "8px 14px",
                             fontWeight: "700",
                             fontSize: "13px",
                             cursor: "pointer",
                             transition: "background-color 0.15s ease",
                           }}
                         >
-                          🖨️ Print / Save as PDF
+                          🖨️ Print / Save PDF
                         </button>
                         <button
-                          type="button"
                           onClick={handleCopyText}
+                          type="button"
                           style={{
-                            background: "#111e38",
-                            color: copied ? "#10b981" : "#38bdf8",
+                            backgroundColor: copied ? "#065f46" : "#111e38",
+                            color: copied ? "#ffffff" : "#e2e8f0",
                             border: "1px solid #1e293b",
                             borderRadius: "6px",
                             padding: "8px 14px",
@@ -187,230 +185,177 @@ EDUCATION & ACCREDITATIONS
                       {/* Paper Header */}
                       <div style={{ borderBottom: "2px solid #2563eb", paddingBottom: "18px", marginBottom: "24px" }}>
                         <h1 style={{ margin: "0 0 4px 0", fontSize: "30px", color: "#0f172a", fontWeight: "bold" }}>
-                          MD Abu Hanif Mia
+                          {profile.fullName}
                         </h1>
                         <div style={{ fontSize: "17px", fontWeight: "bold", color: "#2563eb", marginBottom: "10px" }}>
-                          Staff Software Engineer &amp; Systems Architect
+                          {profile.kicker}
                         </div>
                         <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", fontSize: "13px", color: "#475569" }}>
-                          <span>📍 <strong>Address:</strong> Sadar Upazila, Kishoreganj, Dhaka, Bangladesh</span>
-                          <span>📞 <strong>Phone:</strong> <a href="tel:+8801724010261" style={{ color: "#2563eb", fontWeight: "bold" }}>+880 1724-010261</a></span>
-                          <span>✉️ <strong>Direct:</strong> <a href="mailto:abuhanifmain@gmail.com" style={{ color: "#2563eb", fontWeight: "bold" }}>abuhanifmain@gmail.com</a></span>
+                          <span>📍 <strong>Location:</strong> {profile.location}</span>
+                          <span>📞 <strong>Phone:</strong> <a href={`tel:${phoneClean}`} style={{ color: "#2563eb", fontWeight: "bold" }}>{profile.phone}</a></span>
+                          <span>✉️ <strong>Email:</strong> <a href={`mailto:${profile.email}`} style={{ color: "#2563eb", fontWeight: "bold" }}>{profile.email}</a></span>
                           <span>🌐 <strong>Portfolio:</strong> <a href="https://abuhanifmia.com" style={{ color: "#2563eb" }}>https://abuhanifmia.com</a></span>
                         </div>
                         <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", fontSize: "12.5px", color: "#2563eb", marginTop: "8px" }}>
-                          <a href="https://github.com/abuhanif254" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
+                          <a href={profile.socialLinks.github} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
                             GitHub ↗
                           </a>
                           <span>•</span>
-                          <a href="https://www.linkedin.com/in/md-abu-hanif-mia" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
+                          <a href={profile.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
                             LinkedIn ↗
                           </a>
                           <span>•</span>
-                          <a href="https://x.com/MohammadBitull1" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
+                          <a href={profile.socialLinks.twitter} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
                             X (Twitter) ↗
                           </a>
-                          <span>•</span>
-                          <a href="https://www.facebook.com/bitulla" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
-                            Facebook ↗
-                          </a>
-                          <span>•</span>
-                          <a href="https://www.instagram.com/bitullah_aj" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
-                            Instagram ↗
-                          </a>
+                          {profile.socialLinks.facebook && (
+                            <>
+                              <span>•</span>
+                              <a href={profile.socialLinks.facebook} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
+                                Facebook ↗
+                              </a>
+                            </>
+                          )}
+                          {profile.socialLinks.instagram && (
+                            <>
+                              <span>•</span>
+                              <a href={profile.socialLinks.instagram} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}>
+                                Instagram ↗
+                              </a>
+                            </>
+                          )}
                         </div>
                       </div>
 
-                      {/* Executive Summary */}
+                      {/* Profile Summary & Availability */}
                       <div style={{ marginBottom: "26px" }}>
                         <h2 style={{ fontSize: "16px", textTransform: "uppercase", letterSpacing: "1px", color: "#0f172a", borderBottom: "2px solid #f1f5f9", paddingBottom: "6px", margin: "0 0 10px 0" }}>
-                          Executive Summary
+                          Profile Summary &amp; Availability
                         </h2>
-                        <p style={{ margin: 0, fontSize: "14px", color: "#334155" }}>
-                          Senior Full-Stack Software Engineer &amp; Systems Architect with <strong>9+ years of verified production experience</strong> architecting high-concurrency distributed backends, edge-computed web applications, and database infrastructure. Battle-tested track record maintaining <strong>99.99% production uptime</strong> for 10M+ daily users, cutting global P99 latency below 25ms, and eliminating thousands of dollars in monthly cloud compute waste. Available for high-impact contracts, fractional Staff roles, and architectural advisory.
+                        <p style={{ margin: "0 0 10px 0", fontSize: "14px", color: "#334155" }}>
+                          {profile.bio}
                         </p>
+                        <div style={{ background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: "6px", padding: "10px 14px", fontSize: "13px", color: "#1e3a8a" }}>
+                          <strong>Work Availability:</strong> {profile.workPreferences.modes.join(" • ")} across <strong>{profile.workPreferences.regions.join(" / ")}</strong> &bull; {profile.workPreferences.timezoneOverlap}
+                        </div>
                       </div>
 
-                      {/* Technical Competencies Matrix */}
+                      {/* Spoken Languages & Technical Skills Matrix */}
                       <div style={{ marginBottom: "26px" }}>
                         <h2 style={{ fontSize: "16px", textTransform: "uppercase", letterSpacing: "1px", color: "#0f172a", borderBottom: "2px solid #f1f5f9", paddingBottom: "6px", margin: "0 0 10px 0" }}>
-                          Technical Competencies Matrix
+                          Languages &amp; Core Skills
                         </h2>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", fontSize: "13px" }}>
                           <div style={{ background: "#f8fafc", padding: "12px 14px", border: "1px solid #e2e8f0", borderRadius: "6px" }}>
-                            <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>Core Languages &amp; Runtimes</strong>
-                            Rust (Tokio, Axum, Wasm), Go (Golang), TypeScript, JavaScript (ESNext), Python, SQL (PostgreSQL/TimescaleDB), HTML5, CSS3
+                            <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>Spoken Languages</strong>
+                            {profile.spokenLanguages.map((lang) => (
+                              <div key={lang.language}>
+                                <strong>{lang.language}:</strong> {lang.level}
+                              </div>
+                            ))}
                           </div>
                           <div style={{ background: "#f8fafc", padding: "12px 14px", border: "1px solid #e2e8f0", borderRadius: "6px" }}>
-                            <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>Frameworks &amp; Edge Delivery</strong>
-                            Next.js 16 (App Router, RSC), React 19, Cloudflare Pages &amp; Workers, Node.js, FastAPI, Tailwind CSS
+                            <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>Web &amp; Full-Stack Tools</strong>
+                            Next.js 16 (App Router), React 19, TypeScript, JavaScript, Node.js, Tailwind CSS, HTML5, CSS3
                           </div>
                           <div style={{ background: "#f8fafc", padding: "12px 14px", border: "1px solid #e2e8f0", borderRadius: "6px" }}>
-                            <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>Databases &amp; Vector Search</strong>
-                            PostgreSQL 16, Supabase, TimescaleDB (Time-Series), Redis Cluster, pgvector (Semantic RAG), Prisma
+                            <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>Self-Learned via freeCodeCamp</strong>
+                            TypeScript, Python, Rust, C++ — practical problem solving and software foundations
                           </div>
                           <div style={{ background: "#f8fafc", padding: "12px 14px", border: "1px solid #e2e8f0", borderRadius: "6px" }}>
-                            <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>DevOps, Security &amp; Infra</strong>
-                            Cloudflare Edge, AWS (ECS, Lambda, S3), Docker, Terraform, GitHub Actions CI/CD, OAuth2/OIDC, RLS
+                            <strong style={{ color: "#0f172a", display: "block", marginBottom: "4px" }}>Databases &amp; Cloud Workflow</strong>
+                            PostgreSQL, Supabase (RLS &amp; Auth), Cloudflare Pages, Vercel, Git / GitHub Actions
                           </div>
                         </div>
                       </div>
 
-                      {/* Professional Experience */}
+                      {/* Real Work Experience */}
                       <div style={{ marginBottom: "26px" }}>
                         <h2 style={{ fontSize: "16px", textTransform: "uppercase", letterSpacing: "1px", color: "#0f172a", borderBottom: "2px solid #f1f5f9", paddingBottom: "6px", margin: "0 0 16px 0" }}>
-                          Professional Experience
+                          Work Experience (2017 – 2025)
                         </h2>
 
-                        {/* Experience 1 */}
-                        <div style={{ marginBottom: "20px" }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap" }}>
-                            <strong style={{ fontSize: "16px", color: "#0f172a" }}>
-                              Staff Software Engineer &amp; Systems Architect
-                            </strong>
-                            <span style={{ fontSize: "13px", fontWeight: "bold", color: "#334155" }}>
-                              2022 – Present | Independent Practice
-                            </span>
+                        {profile.workHistory.map((job, idx) => (
+                          <div key={idx} style={{ marginBottom: "18px" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap" }}>
+                              <strong style={{ fontSize: "15.5px", color: "#0f172a" }}>
+                                {job.role}
+                              </strong>
+                              <span style={{ fontSize: "13px", fontWeight: "bold", color: "#334155" }}>
+                                {job.period}
+                              </span>
+                            </div>
+                            <div style={{ fontSize: "13px", fontWeight: 700, color: "#2563eb", marginBottom: "6px" }}>
+                              {job.company} &bull; {job.location}
+                            </div>
+                            <p style={{ margin: 0, fontSize: "13.5px", color: "#334155", lineHeight: 1.6 }}>
+                              {job.summary}
+                            </p>
                           </div>
-                          <div style={{ fontSize: "13px", fontStyle: "italic", color: "#475569", marginBottom: "8px" }}>
-                            Specialized Advisory, Greenfield Architecture &amp; High-Throughput Distributed Contracts
-                          </div>
-                          <ul style={{ margin: "0 0 0 18px", padding: 0, fontSize: "13.5px", color: "#334155" }}>
-                            <li style={{ marginBottom: "6px" }}>
-                              Architected and shipped an event-driven telemetry pipeline ingesting 12M events/sec with sub-22ms P99 delivery to 45,000 active WebSocket clients.
-                            </li>
-                            <li style={{ marginBottom: "6px" }}>
-                              Migrated legacy server-rendered monoliths to Next.js 16 on Cloudflare Pages and Supabase PostgreSQL, reducing initial page render from 1.8s down to 95ms and cloud hosting bills by 64%.
-                            </li>
-                            <li style={{ marginBottom: "6px" }}>
-                              Delivered comprehensive PostgreSQL database audits for high-traffic platforms, optimizing query plans with EXPLAIN ANALYZE and achieving 10x throughput increases.
-                            </li>
-                            <li style={{ marginBottom: "6px" }}>
-                              Integrated autonomous AI retrieval pipelines indexing 500k+ documents into pgvector embeddings, cutting internal documentation lookup times by 82%.
-                            </li>
-                          </ul>
-                        </div>
-
-                        {/* Experience 2 */}
-                        <div style={{ marginBottom: "20px" }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap" }}>
-                            <strong style={{ fontSize: "16px", color: "#0f172a" }}>
-                              Lead Full-Stack Software Engineer
-                            </strong>
-                            <span style={{ fontSize: "13px", fontWeight: "bold", color: "#334155" }}>
-                              2019 – 2022 | Distributed Cloud Platforms
-                            </span>
-                          </div>
-                          <div style={{ fontSize: "13px", fontStyle: "italic", color: "#475569", marginBottom: "8px" }}>
-                            Technical Leadership, Platform Engineering &amp; Team Mentorship
-                          </div>
-                          <ul style={{ margin: "0 0 0 18px", padding: 0, fontSize: "13.5px", color: "#334155" }}>
-                            <li style={{ marginBottom: "6px" }}>
-                              Led architecture and delivery across a team of 7 senior software engineers, maintaining 99.99% production uptime SLAs for enterprise SaaS clients.
-                            </li>
-                            <li style={{ marginBottom: "6px" }}>
-                              Standardized company-wide strict TypeScript type-checking, automated CI/CD quality gates, and Docker build pipelines, eliminating deployment friction.
-                            </li>
-                            <li style={{ marginBottom: "6px" }}>
-                              Engineered high-concurrency WebSocket channels supporting 45,000 simultaneous live clients with automatic failover and reconnect backoff.
-                            </li>
-                          </ul>
-                        </div>
-
-                        {/* Experience 3 */}
-                        <div style={{ marginBottom: "16px" }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap" }}>
-                            <strong style={{ fontSize: "16px", color: "#0f172a" }}>
-                              Senior Backend &amp; Cloud Engineer
-                            </strong>
-                            <span style={{ fontSize: "13px", fontWeight: "bold", color: "#334155" }}>
-                              2016 – 2019 | Enterprise Solutions
-                            </span>
-                          </div>
-                          <div style={{ fontSize: "13px", fontStyle: "italic", color: "#475569", marginBottom: "8px" }}>
-                            API Engineering, Database Optimization &amp; Async Job Processing
-                          </div>
-                          <ul style={{ margin: "0 0 0 18px", padding: 0, fontSize: "13.5px", color: "#334155" }}>
-                            <li style={{ marginBottom: "6px" }}>
-                              Engineered mission-critical microservice APIs with Go and Node.js, utilizing Redis pub/sub backbones for background job dispatch.
-                            </li>
-                            <li style={{ marginBottom: "6px" }}>
-                              Modeled relational PostgreSQL schemas with automated zero-downtime database migrations.
-                            </li>
-                          </ul>
-                        </div>
+                        ))}
                       </div>
 
-                      {/* Selected Case Studies & Production Systems */}
+                      {/* Live Deployed Projects */}
                       <div style={{ marginBottom: "26px" }}>
                         <h2 style={{ fontSize: "16px", textTransform: "uppercase", letterSpacing: "1px", color: "#0f172a", borderBottom: "2px solid #f1f5f9", paddingBottom: "6px", margin: "0 0 12px 0" }}>
-                          Selected Shipped Systems &amp; Measured SLAs
+                          Real-World Web Projects
                         </h2>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", fontSize: "13px" }}>
                           <div style={{ borderLeft: "3px solid #2563eb", paddingLeft: "12px" }}>
-                            <strong style={{ color: "#0f172a" }}>Real-Time Financial Telemetry Pipeline</strong>
+                            <strong style={{ color: "#0f172a" }}>NexusCalculator.net (Live Production)</strong>
                             <p style={{ margin: "2px 0 0 0", color: "#475569" }}>
-                              Go, Next.js, Redis, TimescaleDB • <strong>12M events/s • &lt;22ms P99</strong>
+                              Next.js 15, TypeScript, next-intl • <strong>312 interactive tools • 4 languages (EN/ES/FR/DE) • 3,200+ static pages</strong>
                             </p>
                           </div>
                           <div style={{ borderLeft: "3px solid #2563eb", paddingLeft: "12px" }}>
-                            <strong style={{ color: "#0f172a" }}>Cloudflare Edge Multi-Tenant E-Commerce</strong>
+                            <strong style={{ color: "#0f172a" }}>Portfolio, CRM &amp; Order Portal (This App)</strong>
                             <p style={{ margin: "2px 0 0 0", color: "#475569" }}>
-                              Next.js 16, Cloudflare Pages, Supabase • <strong>95ms P99 • +28% Conversion</strong>
-                            </p>
-                          </div>
-                          <div style={{ borderLeft: "3px solid #2563eb", paddingLeft: "12px" }}>
-                            <strong style={{ color: "#0f172a" }}>Enterprise AI Knowledge Search &amp; RAG</strong>
-                            <p style={{ margin: "2px 0 0 0", color: "#475569" }}>
-                              FastAPI, pgvector, Next.js • <strong>500k+ Docs • 82% Faster Discovery</strong>
-                            </p>
-                          </div>
-                          <div style={{ borderLeft: "3px solid #2563eb", paddingLeft: "12px" }}>
-                            <strong style={{ color: "#0f172a" }}>PostgreSQL Query Tuning &amp; Index Audit</strong>
-                            <p style={{ margin: "2px 0 0 0", color: "#475569" }}>
-                              Postgres 16, Supabase RLS • <strong>10x Query Speedup • 0 Deadlocks</strong>
+                              Next.js 16, Supabase PostgreSQL, TypeScript • <strong>Admin CMS, SOW generator, GDPR &amp; invoice workflows</strong>
                             </p>
                           </div>
                         </div>
                       </div>
 
-                      {/* Formal Education & Verified Accreditations */}
-                      <div>
+                      {/* Education & Programming Training */}
+                      <div id="education">
                         <h2 style={{ fontSize: "16px", textTransform: "uppercase", letterSpacing: "1px", color: "#0f172a", borderBottom: "2px solid #f1f5f9", paddingBottom: "6px", margin: "0 0 14px 0" }}>
-                          Education &amp; Verified Credentials
+                          Education &amp; Programming Training
                         </h2>
 
-                        {/* Formal CSE Degree */}
-                        <div style={{ marginBottom: "16px" }}>
+                        {/* Formal College Education */}
+                        <div style={{ marginBottom: "16px", background: "#f8fafc", border: "1px solid #e2e8f0", borderLeft: "4px solid #0f172a", padding: "14px 16px", borderRadius: "6px" }}>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", fontSize: "13.5px" }}>
                             <div>
-                              <strong style={{ color: "#0f172a", fontSize: "14px" }}>Bachelor of Science in Computer Science &amp; Engineering (B.Sc. in CSE)</strong>
+                              <strong style={{ color: "#0f172a", fontSize: "14.5px" }}>Higher Secondary Certificate (HSC) in Commerce</strong>
                             </div>
                             <div style={{ color: "#334155", fontWeight: "bold" }}>
-                              4-Year Formal Engineering Degree
+                              2016 – 2017
                             </div>
                           </div>
-                          <p style={{ margin: "3px 0 0 0", fontSize: "13px", color: "#475569" }}>
-                            Academic Focus: Distributed Algorithms, Relational Database Internals, Operating Systems, Computer Networks &amp; High-Throughput Software Architecture.
+                          <div style={{ fontSize: "13px", fontWeight: 700, color: "#2563eb", marginTop: "2px" }}>
+                            Wali Neowaj Khan College
+                          </div>
+                          <p style={{ margin: "4px 0 0 0", fontSize: "12.5px", color: "#475569" }}>
+                            EIIN: <strong>110495</strong> &bull; Board: <strong>Dhaka Education Board</strong>
                           </p>
                         </div>
 
-                        {/* Programming Hero Certificate Showcase */}
+                        {/* Programming Hero Course */}
                         <div style={{ marginBottom: "16px", background: "#f8fafc", border: "1px solid #e2e8f0", borderLeft: "4px solid #2563eb", padding: "14px 16px", borderRadius: "6px" }}>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "10px" }}>
                             <div style={{ flex: 1, minWidth: "260px" }}>
                               <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-                                <span style={{ background: "#ecfdf5", color: "#047857", border: "1px solid #a7f3d0", padding: "2px 8px", borderRadius: "4px", fontSize: "11px", fontWeight: "800", letterSpacing: "0.5px" }}>VERIFIED HONOR</span>
-                                <strong style={{ color: "#0f172a", fontSize: "14px" }}>Programming Hero — Complete Web Development with Excellence</strong>
+                                <span style={{ background: "#ecfdf5", color: "#047857", border: "1px solid #a7f3d0", padding: "2px 8px", borderRadius: "4px", fontSize: "11px", fontWeight: "800", letterSpacing: "0.5px" }}>2025 COURSE</span>
+                                <strong style={{ color: "#0f172a", fontSize: "14px" }}>Programming Hero — Web Development Course</strong>
                               </div>
                               <p style={{ margin: "2px 0 6px 0", fontSize: "13px", color: "#334155" }}>
-                                <strong>Batch-12 • Credential ID: WEB12-3991</strong> • Certified by CEO Jhankar Mahbub
+                                <strong>Batch-12 • ID: WEB12-3991</strong> &bull; Year: <strong>2025</strong>
                               </p>
                               <p style={{ margin: 0, fontSize: "12.5px", color: "#64748b", lineHeight: "1.5" }}>
-                                Intensive full-stack engineering track covering Modern JavaScript (ESNext), TypeScript, React 19 architecture, Node.js runtime, REST API design, MongoDB, and production deployment lifecycles.
+                                Practical full-stack training in HTML, CSS, modern JavaScript, React, Next.js workflows, Node.js backends, and database-backed web apps.
                               </p>
                             </div>
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                            <div className="no-print" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                               <a
                                 href="#certificate-modal"
                                 data-certificate-trigger="programming-hero"
@@ -428,36 +373,21 @@ EDUCATION & ACCREDITATIONS
                                   transition: "background-color 0.15s ease",
                                 }}
                               >
-                                📜 View Certificate Modal
+                                📜 View Course Certificate
                               </a>
                             </div>
                           </div>
                         </div>
 
-                        {/* freeCodeCamp & Rust Systems Credentials */}
-                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", fontSize: "13px" }}>
-                          <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderLeft: "4px solid #2563eb", padding: "12px 14px", borderRadius: "6px" }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
-                              <span style={{ background: "#eff6ff", color: "#1d4ed8", border: "1px solid #bfdbfe", padding: "2px 6px", borderRadius: "4px", fontSize: "10px", fontWeight: "bold" }}>fCC ACCREDITED</span>
-                              <strong style={{ color: "#0f172a" }}>freeCodeCamp Verified Accreditations</strong>
-                            </div>
-                            <p style={{ margin: "2px 0 0 0", color: "#475569", lineHeight: "1.5", fontSize: "12.5px" }}>
-                              • <strong>JavaScript Algorithms &amp; Data Structures</strong> (ES6+, Functional &amp; OOP)<br />
-                              • <strong>TypeScript Production Engineering</strong> (Strict Type Systems &amp; Generics)<br />
-                              • <strong>Scientific Computing with Python</strong> (Algorithms &amp; Numerical Pipelines)
-                            </p>
+                        {/* freeCodeCamp Self-Learning */}
+                        <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderLeft: "4px solid #10b981", padding: "12px 14px", borderRadius: "6px", fontSize: "13px" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
+                            <span style={{ background: "#eff6ff", color: "#1d4ed8", border: "1px solid #bfdbfe", padding: "2px 6px", borderRadius: "4px", fontSize: "10px", fontWeight: "bold" }}>SELF-LEARNED</span>
+                            <strong style={{ color: "#0f172a" }}>freeCodeCamp — Independent Technical Learning</strong>
                           </div>
-
-                          <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderLeft: "4px solid #2563eb", padding: "12px 14px", borderRadius: "6px" }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
-                              <span style={{ background: "#eff6ff", color: "#1d4ed8", border: "1px solid #bfdbfe", padding: "2px 6px", borderRadius: "4px", fontSize: "10px", fontWeight: "bold" }}>SYSTEMS SPECIALIZATION</span>
-                              <strong style={{ color: "#0f172a" }}>Rust &amp; Go Concurrency</strong>
-                            </div>
-                            <p style={{ margin: "2px 0 0 0", color: "#475569", lineHeight: "1.5", fontSize: "12.5px" }}>
-                              • <strong>Rust Systems</strong>: Zero-cost abstractions, borrow checker memory safety, Tokio async event loops &amp; Axum.<br />
-                              • <strong>WebAssembly (Wasm)</strong>: Compiling high-throughput Rust routines for browser &amp; Cloudflare Workers execution.
-                            </p>
-                          </div>
+                          <p style={{ margin: "2px 0 0 0", color: "#475569", lineHeight: "1.5", fontSize: "12.5px" }}>
+                            Self-learned <strong>TypeScript</strong>, <strong>Python</strong>, <strong>Rust</strong>, and <strong>C++</strong> from the freeCodeCamp curriculum and hands-on documentation practice.
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -471,7 +401,7 @@ EDUCATION & ACCREDITATIONS
         <SiteFooter />
       </div>
 
-      {/* Print CSS styling for pristine 2-page physical printout / PDF save */}
+      {/* Print CSS styling for clean printout / PDF save */}
       <style jsx global>{`
         @media print {
           body {

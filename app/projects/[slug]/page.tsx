@@ -235,7 +235,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
       name: "MD Abu Hanif Mia",
       alternateName: ["Abu Hanif", "md abu hanif mia"],
       url: siteUrl,
-      jobTitle: "Staff Software Engineer & Systems Architect",
+      jobTitle: "Full-Stack Web Developer & Digital Systems Specialist",
       address: {
         "@type": "PostalAddress",
         streetAddress: "Sadar Upazila",

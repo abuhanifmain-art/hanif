@@ -1,16 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { isSupabaseConfigured, supabase } from "../../lib/supabase";
+import Link from "next/link";
 
 export default function BottomContactStripe() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    projectType: "Full-Stack Web App",
+    projectType: "Full-Time Job / Interview Inquiry",
     message: "",
-    disclaimer: true,
+    disclaimer: false,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,6 +19,10 @@ export default function BottomContactStripe() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!formData.disclaimer) {
+      setErrorMessage("Please confirm GDPR consent before submitting.");
+      return;
+    }
     setIsSubmitting(true);
     setErrorMessage(null);
 
@@ -55,23 +59,11 @@ export default function BottomContactStripe() {
       }
 
       setSubmitted(true);
-    } catch (err: any) {
-      if (typeof window !== "undefined") {
-        const stored = window.localStorage.getItem("abuhanif-inquiries");
-        const list = stored ? JSON.parse(stored) : [];
-        list.unshift({
-          ...record,
-          id: `offline-${Date.now()}`,
-          status: "new",
-          createdAt: new Date().toISOString(),
-        });
-        window.localStorage.setItem("abuhanif-inquiries", JSON.stringify(list));
-        setSubmitted(true);
-      } else {
-        setErrorMessage(
-          err.message || "Something went wrong. Please email directly at abuhanifmain@gmail.com."
-        );
-      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Network error submitting form.";
+      setErrorMessage(
+        `${msg} Please email abuhanifmain@gmail.com or call +880 1724-010261 directly.`
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -103,7 +95,7 @@ export default function BottomContactStripe() {
               <form onSubmit={handleSubmit} className="form_designer" id="genericcontactform_bottom-scf" name="genericcontactform_bottom-scf">
                 <strong className="heading4 widget-title">
                   <a href="#bottom-scf">
-                    Comprehensive Project Consultation <span>Direct Principal Architect Scope Review</span>
+                    Direct Job, B2B &amp; Project Inquiry <span>Remote • Contract • On-Site (UK / EU / Global)</span>
                   </a>
                 </strong>
                 <div className="cfyaw">
@@ -136,35 +128,35 @@ export default function BottomContactStripe() {
                     <input
                       id="40_Phone_Required"
                       name="40_Phone_Required"
-                      placeholder="+1 (555) 000-0000 or +880 1XXX-XXXXXX"
+                      placeholder="+44 7700 900077 or +880 1XXX-XXXXXX"
                       type="text"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     />
                   </span>
                   <span className="option">
-                    <label htmlFor="bcf_CaseType">Project Scope:</label>
+                    <label htmlFor="bcf_CaseType">Inquiry Type / Scope:</label>
                     <select
                       id="bcf_CaseType"
                       name="project_scope"
-                      aria-label="Project Scope"
+                      aria-label="Inquiry Type"
                       value={formData.projectType}
                       onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
                     >
-                      <option value="Full-Stack Web App">Full-Stack Web App (Next.js/React)</option>
-                      <option value="Cloud Architecture">Cloud &amp; Edge Architecture</option>
-                      <option value="Database Optimization">Database Optimization &amp; Indexing</option>
-                      <option value="Architecture Audit">Architecture &amp; Codebase Audit</option>
-                      <option value="Fractional Tech Lead">Fractional Tech Lead Retainer</option>
+                      <option value="Full-Time Job / Interview Inquiry">Full-Time Job / Interview (Remote or On-Site)</option>
+                      <option value="Full-Stack Web App">Full-Stack Web App (Next.js/React/TypeScript)</option>
+                      <option value="Cloud Architecture">Cloudflare Edge &amp; Hosting Setup</option>
+                      <option value="Database Optimization">PostgreSQL / Supabase Database Work</option>
+                      <option value="Dedicated Engineering Retainer">B2B Contract / Retainer</option>
                     </select>
                   </span>
                   <span className="fld">
-                    <label htmlFor="70_Message">Project Scope Description</label>
+                    <label htmlFor="70_Message">Message / Role / Project Details</label>
                     <textarea
                       cols={20}
                       id="70_Message"
                       name="70_Message"
-                      placeholder="Brief description of the challenge or project requirements..."
+                      placeholder="Share details about the role, location/remote setup, or web project requirements..."
                       rows={5}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
@@ -181,7 +173,13 @@ export default function BottomContactStripe() {
                       onChange={(e) => setFormData({ ...formData, disclaimer: e.target.checked })}
                     />
                     <label htmlFor="bcf_Disclaimer">
-                      <span>I consent to be contacted regarding this technical project. (Required)</span>
+                      <span>
+                        I agree to the{" "}
+                        <Link href="/privacy" style={{ color: "#38bdf8", textDecoration: "underline" }}>
+                          Privacy &amp; GDPR Policy
+                        </Link>{" "}
+                        and consent to be contacted regarding this inquiry. (Required)
+                      </span>
                     </label>
                   </span>
                 </div>

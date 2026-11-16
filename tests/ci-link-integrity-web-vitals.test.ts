@@ -222,6 +222,8 @@ describe("Automated Link Integrity & Core Web Vitals CI Test", () => {
       "/admin/login",
       "/orders/tracker",
       "/orders/invoice",
+      "/privacy",
+      "/terms",
     ]);
 
     // Add projects

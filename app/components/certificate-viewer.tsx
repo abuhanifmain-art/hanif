@@ -27,6 +27,12 @@ export default function CertificateViewer() {
     };
     document.addEventListener("click", handleGlobalClick);
 
+    // Custom event dispatched by Command Palette (Ctrl+K)
+    const handleCustomOpen = () => {
+      setIsOpen(true);
+    };
+    window.addEventListener("open-certificate-modal", handleCustomOpen);
+
     // Escape key closes modal
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -38,6 +44,7 @@ export default function CertificateViewer() {
     return () => {
       window.removeEventListener("hashchange", checkHash);
       document.removeEventListener("click", handleGlobalClick);
+      window.removeEventListener("open-certificate-modal", handleCustomOpen);
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);

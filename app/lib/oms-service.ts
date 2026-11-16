@@ -94,7 +94,7 @@ export const initialOrders: OrderRecord[] = [
         approvalSignatureHash: "sig_sha256_8f93ab0192e8ca92bfa041",
         deliverableArtifacts: [
           { label: "Architecture Spec & RFC", url: "/lab", type: "docs" },
-          { label: "Supabase Schema Migration", url: "https://github.com/abuhanifmain-art/hanif", type: "github" },
+          { label: "GitHub Repository Showcase", url: "https://github.com/abuhanif254", type: "github" },
         ],
         createdAt: "2026-09-15T09:00:00Z",
       },
@@ -174,7 +174,7 @@ export const initialOrders: OrderRecord[] = [
         status: "submitted",
         deliverableArtifacts: [
           { label: "Live Cluster Benchmarks", url: "/status", type: "benchmark" },
-          { label: "Migration Pull Request", url: "https://github.com/abuhanifmain-art/hanif", type: "github" },
+          { label: "GitHub Repository Showcase", url: "https://github.com/abuhanif254", type: "github" },
         ],
         createdAt: "2026-10-01T09:00:00Z",
       },
@@ -476,8 +476,8 @@ export function generateInvoiceForOrder(
     },
     issuer: {
       name: "Abu Hanif Mia",
-      title: "Principal Full-Stack & Cloud Systems Architect",
-      email: "contact@abuhanifmia.com",
+      title: "Full-Stack Web Developer & Technical Services",
+      email: "abuhanifmain@gmail.com",
       address: "Sadar Upazila, Kishoreganj, Dhaka, Bangladesh",
       taxId: "TAX-ENG-2026-HANIF",
       wireDetails: {

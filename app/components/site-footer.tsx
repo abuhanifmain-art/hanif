@@ -14,13 +14,13 @@ export default function SiteFooter() {
         <div className="global-footer-container global-footer-ribbon-content">
           <div className="global-footer-ribbon-text">
             <span className="global-footer-ribbon-kicker">
-              Available for Strategic Engineering Contracts &amp; Advisory
+              Open to Remote, B2B Contract &amp; On-Site / Relocation Roles (UK &amp; Europe)
             </span>
             <h3 className="global-footer-ribbon-title">
-              Architecting High-Throughput, Fault-Tolerant Systems for Scale.
+              Full-Stack Web Development &amp; International Operations Readiness.
             </h3>
             <p className="global-footer-ribbon-sub">
-              Specialized in distributed backend pipelines, database optimization, Next.js 16 edge delivery, and full-stack technical leadership.
+              Creator of NexusCalculator.net (Next.js, TypeScript, i18n) with 7+ years of cross-cultural operations &amp; customer service experience in Oman and Bangladesh.
             </p>
           </div>
           <div className="global-footer-ribbon-actions">
@@ -40,17 +40,17 @@ export default function SiteFooter() {
           ========================================================================= */}
       <div className="global-footer-container">
         <div className="global-footer-grid">
-          {/* Column 1: Identity & Authority Profile */}
+          {/* Column 1: Identity & Availability Profile */}
           <div className="global-footer-col col-profile">
             <div className="footer-brand-header">
               <strong className="footer-author-name">MD Abu Hanif Mia</strong>
-              <span className="footer-author-title">Staff Software Engineer &amp; Systems Architect</span>
+              <span className="footer-author-title">Full-Stack Web Developer &amp; International Ops</span>
             </div>
             <p className="footer-bio-text">
-              Building mission-critical production platforms with high observability, deterministic database throughput, and sub-30ms global edge latency across startups and enterprise ecosystems.
+              Next.js 16 &amp; TypeScript developer (creator of NexusCalculator.net) with 7+ years of front-line hospitality, industrial operations, and sales experience in Oman &amp; Bangladesh.
             </p>
             <div className="footer-sla-badge">
-              <span className="badge-bullet">●</span> <strong>99.99% Production Uptime SLA</strong>
+              <span className="badge-bullet">●</span> <strong>Open: Remote • B2B • On-Site (UK / EU)</strong>
             </div>
             <div className="footer-contact-details">
               <div>
@@ -60,13 +60,16 @@ export default function SiteFooter() {
                 </a>
               </div>
               <div>
-                <strong>Direct Phone:</strong>{" "}
+                <strong>Public Phone:</strong>{" "}
                 <a href="tel:+8801724010261" className="footer-highlight-link">
                   +880 1724-010261
                 </a>
               </div>
               <div>
                 <strong>Address:</strong> Sadar Upazila, Kishoreganj, Dhaka, Bangladesh
+              </div>
+              <div>
+                <strong>Languages:</strong> Bengali (Native), English / Hindi / Urdu (Conv.)
               </div>
             </div>
             <div className="footer-social-links" style={{ display: "flex", flexWrap: "wrap", gap: "6px", margin: "12px 0 10px 0" }}>
@@ -87,76 +90,76 @@ export default function SiteFooter() {
               </a>
             </div>
             <div className="footer-ecosystem-badges">
-              <span className="eco-badge">Rust</span>
-              <span className="eco-badge">Go</span>
               <span className="eco-badge">TypeScript</span>
-              <span className="eco-badge">Python</span>
               <span className="eco-badge">Next.js 16</span>
               <span className="eco-badge">React 19</span>
               <span className="eco-badge">PostgreSQL</span>
+              <span className="eco-badge">Python</span>
+              <span className="eco-badge">Rust</span>
+              <span className="eco-badge">C++</span>
               <span className="eco-badge">Cloudflare</span>
             </div>
           </div>
 
-          {/* Column 2: Architecture & Focus Domains */}
+          {/* Column 2: Core Skills & Operations */}
           <div className="global-footer-col">
-            <h4 className="footer-col-title">Architecture Domains</h4>
+            <h4 className="footer-col-title">Core Capabilities</h4>
             <ul className="footer-links-list">
               <li>
-                <Link href="/#competencies">Distributed Systems &amp; Pipelines</Link>
+                <Link href="/projects/nexus-calculator-platform">NexusCalculator.net (312 Tools)</Link>
               </li>
               <li>
-                <Link href="/#competencies">Next.js 16 App Router &amp; React 19</Link>
+                <Link href="/#competencies">Next.js 16 App Router &amp; TypeScript</Link>
               </li>
               <li>
-                <Link href="/#competencies">PostgreSQL Query &amp; Index Tuning</Link>
+                <Link href="/#competencies">PostgreSQL &amp; Supabase Integration</Link>
               </li>
               <li>
-                <Link href="/#competencies">Cloudflare Pages &amp; Edge Compute</Link>
+                <Link href="/#competencies">Cloudflare Pages &amp; Web Performance</Link>
               </li>
               <li>
-                <Link href="/#competencies">Real-Time WebSockets &amp; Telemetry</Link>
+                <Link href="/resume">Programming Hero 2025 &amp; freeCodeCamp</Link>
               </li>
               <li>
-                <Link href="/#competencies">AI Document Search &amp; RAG (pgvector)</Link>
+                <Link href="/resume">International Hospitality &amp; Operations</Link>
               </li>
               <li>
-                <Link href="/#competencies">Microservices to Modular Monoliths</Link>
+                <Link href="/lab">Interactive SQL &amp; Edge Lab</Link>
               </li>
             </ul>
           </div>
 
-          {/* Column 3: Work Showcase & Case Studies */}
+          {/* Column 3: Live Work & Reference Blueprints */}
           <div className="global-footer-col">
-            <h4 className="footer-col-title">Work &amp; Case Studies</h4>
+            <h4 className="footer-col-title">Projects &amp; Blueprints</h4>
             <ul className="footer-links-list case-studies-list">
               <li>
+                <Link href="/projects/nexus-calculator-platform" className="footer-project-link">
+                  <strong>Nexus Calculator Platform</strong>
+                  <span className="footer-meta-pill">Live Product • 312 Tools • 4 Langs</span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/projects/financial-telemetry-pipeline" className="footer-project-link">
-                  <strong>Financial Telemetry Pipeline</strong>
-                  <span className="footer-meta-pill">$18,500 Scope • 12M events/s</span>
+                  <strong>Financial Telemetry Blueprint</strong>
+                  <span className="footer-meta-pill">Lab Blueprint • WebSockets &amp; Go</span>
                 </Link>
               </li>
               <li>
                 <Link href="/projects/cloudflare-edge-ecommerce" className="footer-project-link">
-                  <strong>Cloudflare Edge E-Commerce</strong>
-                  <span className="footer-meta-pill">$24,000 Scope • 95ms P99</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/projects/enterprise-ai-document-search" className="footer-project-link">
-                  <strong>Enterprise AI Document Search</strong>
-                  <span className="footer-meta-pill">$14,000 Scope • 500k+ Docs</span>
+                  <strong>Edge Storefront Reference</strong>
+                  <span className="footer-meta-pill">Reference Demo • Next.js 16 Edge</span>
                 </Link>
               </li>
               <li>
                 <Link href="/projects/postgres-performance-audit" className="footer-project-link">
-                  <strong>PostgreSQL Performance Audit</strong>
-                  <span className="footer-meta-pill">$11,000 Scope • 10x Throughput</span>
+                  <strong>PostgreSQL Indexing Study</strong>
+                  <span className="footer-meta-pill">Lab Reference • EXPLAIN ANALYZE</span>
                 </Link>
               </li>
               <li className="footer-cta-link-item">
                 <Link href="/projects" className="footer-view-all">
-                  View All Work Projects &rsaquo;
+                  View All Work &amp; Blueprints &rsaquo;
                 </Link>
               </li>
             </ul>
@@ -164,7 +167,7 @@ export default function SiteFooter() {
 
           {/* Column 4: Transparent Services & Pricing */}
           <div className="global-footer-col">
-            <h4 className="footer-col-title">Services &amp; Pricing</h4>
+            <h4 className="footer-col-title">B2B Services &amp; Rates</h4>
             <ul className="footer-links-list pricing-list">
               <li>
                 <Link href="/pricing" className="footer-price-item">
@@ -174,7 +177,7 @@ export default function SiteFooter() {
               </li>
               <li>
                 <Link href="/pricing" className="footer-price-item">
-                  <span className="service-name">PostgreSQL Performance Tuning</span>
+                  <span className="service-name">PostgreSQL Query Tuning</span>
                   <span className="price-tag">$4,500</span>
                 </Link>
               </li>
@@ -186,14 +189,14 @@ export default function SiteFooter() {
               </li>
               <li>
                 <Link href="/pricing" className="footer-price-item">
-                  <span className="service-name">Full-Stack MVP Engineering</span>
-                  <span className="price-tag">$14,500</span>
+                  <span className="service-name">Full-Stack MVP Sprint</span>
+                  <span className="price-tag">$12,500</span>
                 </Link>
               </li>
               <li>
                 <Link href="/pricing" className="footer-price-item">
-                  <span className="service-name">Fractional Tech Lead Retainer</span>
-                  <span className="price-tag">$6,500/mo</span>
+                  <span className="service-name">Full-Stack Dev Retainer</span>
+                  <span className="price-tag">$5,500/mo</span>
                 </Link>
               </li>
               <li>
@@ -258,24 +261,24 @@ export default function SiteFooter() {
             <span className="telemetry-value">Next.js 16.3 (Turbopack + SSG)</span>
           </div>
           <div className="telemetry-item">
-            <span className="telemetry-label">Edge Network:</span>
-            <span className="telemetry-value">Cloudflare Pages (330+ Cities)</span>
+            <span className="telemetry-label">Work Readiness:</span>
+            <span className="telemetry-value">UK &amp; Europe (Remote / B2B / On-Site)</span>
           </div>
           <div className="telemetry-item">
-            <span className="telemetry-label">Database Tier:</span>
-            <span className="telemetry-value">Supabase PostgreSQL 16 (RLS)</span>
+            <span className="telemetry-label">Platform Stack:</span>
+            <span className="telemetry-value">Next.js 16 • Supabase • Cloudflare</span>
           </div>
           <div className="telemetry-item">
-            <span className="telemetry-label">Delivery SLA:</span>
+            <span className="telemetry-label">Service Status:</span>
             <span className="telemetry-value">
-              <Link href="/status" style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "3px" }} title="View Real-Time Edge Health & Latency Dashboard">
-                99.99% Production Uptime (Status ↗)
+              <Link href="/status" style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "3px" }} title="View Live Diagnostics & Portfolio Health Dashboard">
+                Live Diagnostics (Status ↗)
               </Link>
             </span>
           </div>
           <div className="telemetry-item">
-            <span className="telemetry-label">Latency Metric:</span>
-            <span className="telemetry-value">&lt; 30ms Global P99</span>
+            <span className="telemetry-label">Live Flagship:</span>
+            <span className="telemetry-value">NexusCalculator.net (312 Tools)</span>
           </div>
         </div>
 
@@ -291,7 +294,7 @@ export default function SiteFooter() {
               <Link href="/#about">About Abu Hanif</Link>
             </li>
             <li>
-              <Link href="/#competencies">Engineering Focus</Link>
+              <Link href="/#competencies">Education &amp; Stack</Link>
             </li>
             <li>
               <Link href="/projects">Work Showcase</Link>
@@ -303,16 +306,19 @@ export default function SiteFooter() {
               <Link href="/lab">Systems Lab</Link>
             </li>
             <li>
-              <Link href="/status">Systems Status</Link>
+              <Link href="/status">Status</Link>
             </li>
             <li>
-              <Link href="/blog">Technical Blog</Link>
+              <Link href="/blog">Blog</Link>
             </li>
             <li>
               <Link href="/resume">Resume / CV</Link>
             </li>
             <li>
-              <Link href="/pricing#inquiry">Consultation Inquiry</Link>
+              <Link href="/privacy">Privacy &amp; GDPR</Link>
+            </li>
+            <li>
+              <Link href="/terms">Terms</Link>
             </li>
             <li className="last">
               <Link href="/admin" style={{ color: "#38bdf8", fontWeight: "700" }}>
@@ -323,26 +329,30 @@ export default function SiteFooter() {
         </div>
 
         {/* =========================================================================
-            TIER 5: Legal, Intellectual Property & Compliance Strip
+            TIER 5: Legal, GDPR & Compliance Strip
             ========================================================================= */}
         <div className="global-footer-legal">
           <div className="legal-sow-statement">
-            <strong>Professional Engagement Guarantee:</strong> All engineering contracts, architecture blueprints, and codebase implementations are executed under explicit Statement of Work (SOW) agreements with 100% intellectual property assignment and a comprehensive 30-day post-launch warranty.
+            <strong>UK / EU Engagement &amp; GDPR Transparency:</strong> Available for full-time employment (Remote or On-Site/Relocation) and fixed-scope B2B web engineering engagements under clear written agreements and 30-day warranty terms.
           </div>
           <div className="legal-meta-row">
             <div className="copyright-text">
-              &copy; {currentYear} <strong>MD Abu Hanif Mia (Abu Hanif)</strong>. All rights reserved. Deployed statically to Cloudflare Pages edge network.
+              &copy; {currentYear} <strong>MD Abu Hanif Mia (Abu Hanif)</strong>. Direct: abuhanifmain@gmail.com • +880 1724-010261.
             </div>
             <div className="compliance-links">
-              <span>MIT License for Open Source Snippets</span>
-              <span className="divider">•</span>
-              <Link href="/status" style={{ color: "#38bdf8", textDecoration: "underline" }}>
-                Live Systems Status
+              <Link href="/privacy" style={{ color: "#38bdf8", textDecoration: "underline" }}>
+                Privacy &amp; UK/EU GDPR Policy
               </Link>
               <span className="divider">•</span>
-              <span>Mutual NDA Protected</span>
+              <Link href="/terms" style={{ color: "#38bdf8", textDecoration: "underline" }}>
+                Terms of Service
+              </Link>
               <span className="divider">•</span>
-              <span>Zero Tracking Pixels</span>
+              <Link href="/status" style={{ color: "#38bdf8", textDecoration: "underline" }}>
+                Live Diagnostics
+              </Link>
+              <span className="divider">•</span>
+              <span>Zero Ad-Tech Trackers</span>
               <span className="divider">•</span>
               <Link href="/admin" className="admin-access-link">
                 Admin Console

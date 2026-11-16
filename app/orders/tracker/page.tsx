@@ -496,9 +496,9 @@ function OrderTrackerContent() {
 
           <div style={{ backgroundColor: "#0a192f", border: "1px solid #1e293b", borderRadius: "8px", padding: "20px", marginBottom: "16px" }}>
             <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "14px" }}>
-              <div style={{ textTransform: "uppercase", fontSize: "10px", fontWeight: "700", marginBottom: "2px" }}>Principal Architect:</div>
-              <strong style={{ color: "#ffffff", fontSize: "15px" }}>Abu Hanif Mia</strong>
-              <div style={{ color: "#38bdf8", marginTop: "2px" }}>contact@abuhanifmia.com</div>
+              <div style={{ textTransform: "uppercase", fontSize: "10px", fontWeight: "700", marginBottom: "2px" }}>Developer / Service Lead:</div>
+              <strong style={{ color: "#ffffff", fontSize: "15px" }}>MD Abu Hanif Mia</strong>
+              <div style={{ color: "#38bdf8", marginTop: "2px" }}>abuhanifmain@gmail.com</div>
             </div>
 
             <div style={{ borderTop: "1px solid #1e293b", paddingTop: "12px", fontSize: "12px", color: "#94a3b8", marginBottom: "14px" }}>
@@ -543,7 +543,7 @@ function OrderTrackerContent() {
             </Link>
 
             <a
-              href={`mailto:contact@abuhanifmia.com?subject=Regarding%20Engagement%20${order.orderNumber}`}
+              href={`mailto:abuhanifmain@gmail.com?subject=Regarding%20Engagement%20${order.orderNumber}`}
               style={{
                 display: "block",
                 padding: "10px",
@@ -557,7 +557,7 @@ function OrderTrackerContent() {
                 fontWeight: "600",
               }}
             >
-              ✉️ Contact Principal Architect
+              ✉️ Contact MD Abu Hanif Mia
             </a>
 
             <Link
@@ -639,7 +639,7 @@ function OrderTrackerContent() {
                   required
                   value={approverName}
                   onChange={(e) => setApproverName(e.target.value)}
-                  placeholder="e.g. Sarah Jenkins (VP of Engineering)"
+                  placeholder="e.g. Client Sponsor Name"
                   style={{
                     width: "100%",
                     padding: "8px 10px",

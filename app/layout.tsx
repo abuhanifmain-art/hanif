@@ -24,42 +24,41 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abuhanifmia.com";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Abu Hanif (MD Abu Hanif Mia) | Staff Software Engineer & Systems Architect",
+    default: "Abu Hanif (MD Abu Hanif Mia) | Full-Stack Developer & International Ops",
     template: "%s | Abu Hanif",
   },
   description:
-    "Portfolio of MD Abu Hanif Mia (Abu Hanif) - Staff Software Engineer & Systems Architect specializing in distributed systems, Next.js 16, PostgreSQL optimization, and Cloudflare edge architecture.",
+    "Portfolio of MD Abu Hanif Mia (Abu Hanif) — Full-Stack Web Developer (Next.js, TypeScript, PostgreSQL) & International Operations Professional. Open to Remote, B2B & On-Site roles in UK, Europe & worldwide.",
   keywords: [
     "Abu Hanif",
     "MD Abu Hanif Mia",
-    "Staff Software Engineer",
-    "Systems Architect",
+    "Full-Stack Web Developer",
+    "Next.js Developer",
+    "TypeScript Developer",
     "Cloudflare Pages",
-    "Next.js 16",
     "Supabase",
     "PostgreSQL",
-    "Software Portfolio",
-    "Distributed Systems",
-    "High-Throughput APIs",
-    "Full-Stack Engineer",
+    "UK Europe Remote B2B",
+    "NexusCalculator",
+    "Portfolio & Client Portal",
   ],
   authors: [{ name: "MD Abu Hanif Mia", url: siteUrl }],
   creator: "MD Abu Hanif Mia",
   publisher: "MD Abu Hanif Mia",
   openGraph: {
-    title: "Abu Hanif (MD Abu Hanif Mia) | Staff Software Engineer & Systems Architect",
+    title: "Abu Hanif (MD Abu Hanif Mia) | Full-Stack Developer & International Ops",
     description:
-      "Scalable Systems • Distributed Architecture • High-Performance Web Applications. View portfolio work showcase, transparent pricing, and technical blog.",
+      "Creator of NexusCalculator.net • Next.js, TypeScript, PostgreSQL • Open to Remote, B2B & On-Site Roles in UK & Europe.",
     url: siteUrl,
-    siteName: "Abu Hanif Engineering Portfolio",
+    siteName: "Abu Hanif Portfolio & Digital Services",
     type: "website",
-    locale: "en_US",
+    locale: "en_GB",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Abu Hanif (MD Abu Hanif Mia) | Staff Software Engineer & Systems Architect",
+    title: "Abu Hanif (MD Abu Hanif Mia) | Full-Stack Developer & International Ops",
     description:
-      "Scalable Systems • Distributed Architecture • High-Performance Web Applications. View portfolio work showcase, transparent pricing, and technical blog.",
+      "Creator of NexusCalculator.net • Next.js, TypeScript, PostgreSQL • Open to Remote, B2B & On-Site Roles in UK & Europe.",
     creator: "@MohammadBitull1",
   },
   alternates: {
@@ -88,8 +87,8 @@ const jsonLd = {
       "@type": "WebSite",
       "@id": `${siteUrl}/#website`,
       url: siteUrl,
-      name: "Abu Hanif Engineering Portfolio",
-      description: "Portfolio and technical architecture publications of Staff Software Engineer MD Abu Hanif Mia.",
+      name: "Abu Hanif Portfolio & Digital Services",
+      description: "Portfolio, live web projects (NexusCalculator.net), technical notes, and client portal of MD Abu Hanif Mia.",
       publisher: { "@id": `${siteUrl}/#person` },
     },
     {
@@ -97,9 +96,9 @@ const jsonLd = {
       "@id": `${siteUrl}/#person`,
       name: "MD Abu Hanif Mia",
       alternateName: ["Abu Hanif", "md abu hanif mia"],
-      jobTitle: "Staff Software Engineer & Systems Architect",
+      jobTitle: "Full-Stack Web Developer & International Operations Professional",
       description:
-        "Staff Software Engineer and Systems Architect with 9+ years experience designing high-throughput distributed applications, edge networks, and developer platforms.",
+        "Full-Stack Web Developer (Next.js, TypeScript, PostgreSQL) & International Operations Professional (Oman & Bangladesh). Creator of NexusCalculator.net, open to Remote, B2B & On-Site roles in the UK, Europe & worldwide.",
       url: siteUrl,
       image: `${siteUrl}/images/profile.png`,
       email: "abuhanifmain@gmail.com",
@@ -111,27 +110,29 @@ const jsonLd = {
         addressRegion: "Dhaka",
         addressCountry: "Bangladesh",
       },
-      alumniOf: {
-        "@type": "EducationalOrganization",
-        name: "Bachelor of Science in Computer Science & Engineering (B.Sc. in CSE)",
-      },
+      alumniOf: [
+        {
+          "@type": "EducationalOrganization",
+          name: "Wali Neowaj Khan College (HSC in Commerce, 2016–2017 • EIIN: 110495 • Dhaka Education Board)",
+        },
+      ],
       hasCredential: [
         {
           "@type": "EducationalOccupationalCredential",
-          name: "Complete Web Development Course with Excellence",
-          credentialCategory: "Certificate of Completion with Excellence",
+          name: "Web Development Course (Batch-12)",
+          credentialCategory: "Certificate of Completion",
           recognizedBy: {
             "@type": "Organization",
             name: "Programming Hero",
             url: "https://programming-hero.com",
           },
           identifier: "WEB12-3991",
-          description: "Batch-12 honor distinction certified by CEO Jhankar Mahbub.",
+          description: "Completed full-stack web development training in 2025 (Batch-12).",
         },
         {
           "@type": "EducationalOccupationalCredential",
-          name: "freeCodeCamp Verified Accreditations (JavaScript, TypeScript, Python)",
-          credentialCategory: "Developer Certification",
+          name: "Self-Directed Study: TypeScript, Python, Rust, and C++",
+          credentialCategory: "Independent Online Study",
           recognizedBy: {
             "@type": "Organization",
             name: "freeCodeCamp",
@@ -139,20 +140,19 @@ const jsonLd = {
           },
         },
       ],
+      knowsLanguage: ["Bengali", "English", "Hindi", "Urdu"],
       knowsAbout: [
-        "Distributed Systems",
-        "High-Throughput APIs",
-        "Rust Systems Architecture",
-        "Tokio Concurrency",
         "Next.js 16",
         "React 19",
-        "PostgreSQL 16 Optimization",
-        "Cloudflare Pages & Workers",
-        "Supabase",
-        "Go (Golang)",
         "TypeScript",
+        "PostgreSQL & Supabase",
+        "Cloudflare Pages",
         "Python",
-        "AI & LLM RAG Systems",
+        "Rust",
+        "C++",
+        "Hospitality & Catering Operations",
+        "Manufacturing Operations",
+        "Client Relationship Management",
       ],
       sameAs: [
         "https://github.com/abuhanif254",
@@ -165,7 +165,7 @@ const jsonLd = {
     {
       "@type": "ProfessionalService",
       "@id": `${siteUrl}/#service`,
-      name: "Abu Hanif Systems Architecture & Engineering Consulting",
+      name: "Abu Hanif Web Development & Digital Services",
       url: siteUrl,
       image: `${siteUrl}/images/profile.png`,
       email: "abuhanifmain@gmail.com",
@@ -184,8 +184,8 @@ const jsonLd = {
         "https://www.facebook.com/bitulla",
         "https://www.instagram.com/bitullah_aj",
       ],
-      priceRange: "$2,500 - $24,000+",
-      areaServed: "Worldwide",
+      priceRange: "$2,500 - $18,500",
+      areaServed: ["United Kingdom", "Europe", "Worldwide"],
       founder: { "@id": `${siteUrl}/#person` },
     },
   ],
@@ -197,7 +197,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
         />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} min-h-screen antialiased`}>

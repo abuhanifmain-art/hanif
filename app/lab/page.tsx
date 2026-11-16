@@ -9,16 +9,16 @@ import ArchitectureTopologyExplorer from "../components/architecture-topology-ex
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abuhanifmia.com";
 
 export const metadata: Metadata = {
-  title: "Systems Architecture Lab & Live Benchmarks",
+  title: "Interactive Systems Lab & Query Demonstrations",
   description:
-    "Interactive empirical systems telemetry, live browser edge latency testing, PostgreSQL EXPLAIN ANALYZE query plan simulator, and distributed systems architecture blueprints by Staff Software Engineer Abu Hanif.",
+    "Interactive browser latency diagnostics, simulated PostgreSQL EXPLAIN ANALYZE query plan explorer, and reference topology visualizers built by MD Abu Hanif Mia.",
   keywords: [
-    "Systems Architecture Lab",
-    "PostgreSQL Query Cost Simulator",
+    "Interactive Systems Lab",
+    "PostgreSQL Query Plan Explorer",
     "EXPLAIN ANALYZE Simulator",
-    "Edge Latency Benchmark",
-    "Cloudflare Edge P99",
-    "Distributed Systems Telemetry",
+    "Browser Edge Ping Tool",
+    "Cloudflare Pages Latency",
+    "Architecture Visualizer",
     "Abu Hanif",
     "MD Abu Hanif Mia",
   ],
@@ -26,18 +26,18 @@ export const metadata: Metadata = {
     canonical: `${siteUrl}/lab`,
   },
   openGraph: {
-    title: "Interactive Systems Architecture Lab & Live Benchmarks | Abu Hanif",
+    title: "Interactive Systems Lab & Diagnostics | Abu Hanif",
     description:
-      "Test live browser edge latency, simulate PostgreSQL 16 EXPLAIN ANALYZE index plans, and inspect distributed systems topologies.",
+      "Measure live browser edge latency, step through simulated PostgreSQL query plans, and inspect architecture blueprints.",
     url: `${siteUrl}/lab`,
     type: "website",
-    locale: "en_US",
+    locale: "en_GB",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Interactive Systems Architecture Lab | Abu Hanif",
+    title: "Interactive Systems Lab & Diagnostics | Abu Hanif",
     description:
-      "Test live browser edge latency and simulate PostgreSQL index plans with Staff Software Engineer Abu Hanif.",
+      "Measure live browser edge ping and explore SQL query plans in MD Abu Hanif Mia's interactive lab.",
     creator: "@MohammadBitull1",
   },
 };
@@ -46,15 +46,15 @@ export default function SystemsLabPage() {
   const labSchema = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    headline: "Interactive Systems Architecture Lab & Live Telemetry Benchmarks",
+    headline: "Interactive Systems Lab & Diagnostic Demonstrations",
     description:
-      "Interactive empirical telemetry and query planning simulators designed by Staff Software Engineer MD Abu Hanif Mia.",
+      "Interactive browser ping diagnostics and simulated PostgreSQL query planning visualizers built by Full-Stack Developer MD Abu Hanif Mia.",
     url: `${siteUrl}/lab`,
     author: {
       "@type": "Person",
       name: "MD Abu Hanif Mia",
       url: siteUrl,
-      jobTitle: "Staff Software Engineer & Systems Architect",
+      jobTitle: "Full-Stack Web Developer & International Operations",
     },
     publisher: {
       "@type": "Person",
@@ -221,7 +221,7 @@ export default function SystemsLabPage() {
                           <span>
                             <strong>Fixed Sprint:</strong>{" "}
                             <Link href="/pricing#distributed-telemetry-engine" style={{ color: "#16a34a", fontWeight: 700 }}>
-                              Telemetry Engine ($14,000) &rsaquo;
+                              Telemetry Engine ($18,500) &rsaquo;
                             </Link>
                           </span>
                         </div>
@@ -240,13 +240,13 @@ export default function SystemsLabPage() {
                         }}
                       >
                         <div style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "6px" }}>
-                          Architecture Diagnostic &amp; Tuning Sprints
+                          Web Development &amp; Database Practice
                         </div>
                         <h3 style={{ margin: "0 0 8px 0", fontSize: "20px", color: "#ffffff" }}>
-                          Facing a Production Database Bottleneck or High Edge Latency?
+                          Looking for a Next.js Developer or B2B Sprint Support?
                         </h3>
                         <p style={{ margin: "0 0 18px 0", fontSize: "13.5px", color: "#cbd5e1", lineHeight: "1.6" }}>
-                          I partner directly with venture-backed startups and engineering teams to audit slow queries, restructure database indexes, and deploy sub-25ms edge networks with zero downtime.
+                          Explore NexusCalculator.net live in production, review my full CV &amp; work history, or reach out for remote, B2B, or on-site roles in the UK and Europe.
                         </p>
                         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
                           <Link
@@ -262,10 +262,10 @@ export default function SystemsLabPage() {
                               transition: "background-color 0.15s ease",
                             }}
                           >
-                            Book PostgreSQL Sprint ($4,500) &rsaquo;
+                            View B2B Pricing ($4,500+) &rsaquo;
                           </Link>
                           <Link
-                            href="/projects"
+                            href="/projects/nexus-calculator-platform"
                             style={{
                               padding: "10px 18px",
                               backgroundColor: "#111e38",
@@ -277,7 +277,7 @@ export default function SystemsLabPage() {
                               textDecoration: "none",
                             }}
                           >
-                            View Shipped Production Systems &rsaquo;
+                            View Live NexusCalculator.net Case &rsaquo;
                           </Link>
                         </div>
                       </div>
@@ -287,27 +287,27 @@ export default function SystemsLabPage() {
 
                 {/* Secondary Sidebar */}
                 <div className="sidebar secondary-sidebar">
-                  {/* Verified Credentials */}
+                  {/* Verified Education & Training */}
                   <div className="widget" id="wdgt-credentials">
                     <strong className="heading4 widget-title">
-                      <a href="/resume">Verified Accreditations</a>
+                      <a href="/resume">Education &amp; Training</a>
                     </strong>
                     <div className="description" style={{ fontSize: "12.5px", lineHeight: "1.6" }}>
                       <div style={{ marginBottom: "8px" }}>
-                        <strong>B.Sc. in Computer Science &amp; Eng.</strong><br />
-                        <span style={{ color: "#475569" }}>Formal 4-Year Engineering Degree</span>
+                        <strong>HSC in Commerce (2016–2017)</strong><br />
+                        <span style={{ color: "#475569" }}>Wali Neowaj Khan College (EIIN: 110495)</span>
                       </div>
                       <div style={{ marginBottom: "8px" }}>
-                        <strong>Programming Hero Honor</strong><br />
-                        <span style={{ color: "#047857", fontWeight: "bold" }}>Batch-12 • WEB12-3991 (Verified)</span>
+                        <strong>Programming Hero (2025)</strong><br />
+                        <span style={{ color: "#047857", fontWeight: "bold" }}>Batch-12 • ID: WEB12-3991</span>
                       </div>
                       <div style={{ marginBottom: "8px" }}>
-                        <strong>freeCodeCamp Certified</strong><br />
-                        <span style={{ color: "#475569" }}>JS Algorithms, TypeScript, Python</span>
+                        <strong>freeCodeCamp Self-Study</strong><br />
+                        <span style={{ color: "#475569" }}>TypeScript, Python, Rust, C++</span>
                       </div>
                       <div>
-                        <strong>Systems Specialization</strong><br />
-                        <span style={{ color: "#2563eb", fontWeight: "bold" }}>Rust, Go Concurrency, Postgres 16</span>
+                        <strong>Spoken Languages</strong><br />
+                        <span style={{ color: "#2563eb", fontWeight: "bold" }}>Bengali, English, Hindi &amp; Urdu</span>
                       </div>
                     </div>
                   </div>
@@ -315,11 +315,11 @@ export default function SystemsLabPage() {
                   {/* Quick Booking Widget */}
                   <div className="widget" id="wdgt-contact">
                     <strong className="heading4 widget-title">
-                      <a href="/pricing#inquiry">Schedule Architecture Review</a>
+                      <a href="/pricing#inquiry">Contact Abu Hanif</a>
                     </strong>
                     <div className="description">
                       <p style={{ fontSize: "13px", color: "#334155", margin: "0 0 12px 0" }}>
-                        Direct engagement with Staff Software Engineer Abu Hanif. Guaranteed response within 24 hours.
+                        Direct communication for UK/EU employment, Remote/B2B projects, or On-Site roles: abuhanifmain@gmail.com.
                       </p>
                       <Link
                         className="btn"

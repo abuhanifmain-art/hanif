@@ -35,11 +35,11 @@ export default function ProjectCaseStudyActions({ project }: ProjectCaseStudyAct
   const handleCopyDossier = () => {
     const tech = (project.techStack || []).join(", ");
     const dossierMarkdown = [
-      `# Architecture Dossier: ${project.title}`,
-      `> Staff Systems Architecture & Engineering Case Study`,
+      `# Project & Architecture Dossier: ${project.title}`,
+      `> Full-Stack Development & Systems Case Study`,
       ``,
-      `* **Lead Architect:** MD Abu Hanif Mia (Staff Software Engineer & Systems Architect)`,
-      `* **Client / Organization:** ${project.clientName || "Confidential Enterprise Client"}`,
+      `* **Author / Developer:** MD Abu Hanif Mia (Full-Stack Web Developer)`,
+      `* **Context / Label:** ${project.clientName || "Portfolio Project / Blueprint"}`,
       `* **Verified SLA / Metric:** ${project.impactMetric}`,
       `* **Scope Tag:** ${project.priceTag || "Custom Scoped"}`,
       `* **Core Tech Stack:** ${tech}`,

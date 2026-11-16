@@ -78,9 +78,10 @@ export default function BlogClientView({
 
                   <div className="bodytext">
                     <div className="description">
-                      <h2>Production Architectures, Engineering Decisions &amp; Benchmarks</h2>
+                      <h2>Full-Stack Builds, Database Study Notes &amp; Live Web Performance</h2>
                       <p>
-                        Welcome to the personal technical publication of <strong>Abu Hanif (MD Abu Hanif Mia)</strong>, Staff Software Engineer &amp; Systems Architect. Here I document deep-dive engineering explorations, database query plan analyses, low-latency edge deployments, and architectural trade-offs learned shipping high-throughput production systems.
+                        Welcome to the technical notes of <strong>Abu Hanif (MD Abu Hanif Mia)</strong>, Full-Stack Web Developer. Here I share real case lessons from shipping{" "}
+                        <a href="https://nexuscalculator.net" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", fontWeight: 600 }}>NexusCalculator.net</a> alongside reference study notes on Next.js 16, PostgreSQL indexing, Cloudflare Pages, and modular design.
                       </p>
 
                       {/* Category Filter Pills Strip */}
@@ -451,16 +452,16 @@ export default function BlogClientView({
                         MD Abu Hanif Mia
                       </h3>
                       <div style={{ fontSize: "12px", color: "#2563eb", fontWeight: "700", marginBottom: "8px" }}>
-                        Staff Software Engineer &amp; Systems Architect
+                        Full-Stack Web Developer &amp; Int&apos;l Ops
                       </div>
                       <div style={{ fontSize: "12px", color: "#475569", lineHeight: "1.6", marginBottom: "10px" }}>
-                        • <strong>B.Sc. in CSE</strong> (Formal 4-Year Degree)<br />
-                        • <strong>Programming Hero Honor</strong> (Batch-12 • WEB12-3991)<br />
-                        • <strong>freeCodeCamp Certified</strong> (JS, TS, Python)<br />
-                        • <strong>Rust &amp; Go Concurrency</strong>, Next.js 16, Postgres
+                        • <strong>HSC in Commerce (2016–2017)</strong> — Wali Neowaj Khan College (EIIN: 110495)<br />
+                        • <strong>Programming Hero (2025)</strong> (Batch-12 • WEB12-3991)<br />
+                        • <strong>freeCodeCamp Self-Study</strong> (TypeScript, Python, Rust, C++)<br />
+                        • <strong>Live Product:</strong> NexusCalculator.net (312 tools, 4 langs)
                       </div>
                       <Link href="/resume" style={{ fontSize: "12px", color: "#2563eb", fontWeight: "700", textDecoration: "underline" }}>
-                        View Verified Credentials &rsaquo;
+                        View CV &amp; Work History &rsaquo;
                       </Link>
                     </div>
 
@@ -503,16 +504,16 @@ export default function BlogClientView({
                       </ul>
                     </div>
 
-                    {/* Production Track Record */}
+                    {/* UK & EU Readiness Card */}
                     <div className="block" style={{ backgroundColor: "#0b132b", color: "#ffffff", padding: "18px", borderRadius: "8px", border: "1px solid #1e293b", marginBottom: "20px" }}>
                       <div style={{ fontSize: "11px", fontWeight: "bold", color: "#10b981", textTransform: "uppercase" }}>
-                        Verified Track Record
+                        Open Work Availability
                       </div>
-                      <div style={{ fontSize: "24px", fontWeight: "800", margin: "4px 0", color: "#ffffff" }}>
-                        99.99% UPTIME
+                      <div style={{ fontSize: "20px", fontWeight: "800", margin: "4px 0", color: "#ffffff" }}>
+                        UK &amp; EUROPE READY
                       </div>
                       <div style={{ fontSize: "12px", color: "#cbd5e1", lineHeight: "1.4" }}>
-                        Over 50+ high-concurrency production deployments across Cloudflare Pages, Supabase, and distributed backends.
+                        Available for Remote, B2B Contract, and On-Site / Relocation roles. Direct contact: abuhanifmain@gmail.com.
                       </div>
                     </div>
 

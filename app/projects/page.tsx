@@ -5,15 +5,15 @@ import ProjectsClientView from "./projects-client-view";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abuhanifmia.com";
 
 export const metadata: Metadata = {
-  title: "Engineering Projects & Systems Showcase",
+  title: "Web Projects & Systems Showcase",
   description:
-    "Explore production systems, distributed pipelines, Next.js edge applications, and database optimization case studies delivered by Staff Software Engineer Abu Hanif.",
+    "Explore live web platforms including NexusCalculator.net alongside full-stack Next.js, TypeScript, and PostgreSQL architecture reference builds by MD Abu Hanif Mia.",
   keywords: [
     "Software Engineering Projects",
-    "Systems Architecture Portfolio",
-    "Next.js 16 Production Systems",
-    "PostgreSQL Optimization Case Studies",
-    "Distributed Systems Telemetry",
+    "NexusCalculator.net",
+    "Next.js 16 Portfolio",
+    "PostgreSQL Reference Studies",
+    "Full-Stack Web Developer",
     "Abu Hanif",
     "MD Abu Hanif Mia",
   ],
@@ -21,18 +21,18 @@ export const metadata: Metadata = {
     canonical: `${siteUrl}/projects`,
   },
   openGraph: {
-    title: "Engineering Projects & Systems Showcase | Abu Hanif",
+    title: "Web Projects & Systems Showcase | Abu Hanif",
     description:
-      "Explore production systems, distributed pipelines, and database optimization case studies delivered by Staff Software Engineer Abu Hanif.",
+      "Explore live platforms like NexusCalculator.net and full-stack Next.js & PostgreSQL case studies by Abu Hanif.",
     url: `${siteUrl}/projects`,
     type: "website",
-    locale: "en_US",
+    locale: "en_GB",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Engineering Projects & Systems Showcase | Abu Hanif",
+    title: "Web Projects & Systems Showcase | Abu Hanif",
     description:
-      "Explore production systems, distributed pipelines, and database optimization case studies delivered by Staff Software Engineer Abu Hanif.",
+      "Explore live platforms like NexusCalculator.net and full-stack Next.js & PostgreSQL case studies by Abu Hanif.",
     creator: "@MohammadBitull1",
   },
 };
@@ -43,9 +43,9 @@ export default async function ProjectsIndexPage() {
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Engineering Projects & Systems Showcase",
+    name: "Web Projects & Systems Showcase",
     description:
-      "Production case studies and architecture blueprints delivered by Staff Software Engineer MD Abu Hanif Mia.",
+      "Live web products and technical architecture blueprints built by MD Abu Hanif Mia.",
     url: `${siteUrl}/projects`,
     publisher: {
       "@type": "Person",

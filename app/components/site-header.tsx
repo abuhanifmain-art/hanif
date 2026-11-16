@@ -170,7 +170,7 @@ export default function SiteHeader({ activePath = "/" }: SiteHeaderProps) {
                 }}
               />
               <span>
-                Available for Q4 Contracts • 2 Dedicated Slots •{" "}
+                Open to UK &amp; Europe (Remote • B2B • On-Site) •{" "}
                 <Link
                   href="/status"
                   style={{
@@ -179,9 +179,9 @@ export default function SiteHeader({ activePath = "/" }: SiteHeaderProps) {
                     textDecoration: "underline",
                     textUnderlineOffset: "3px",
                   }}
-                  title="View Real-Time Edge Health & Latency Dashboard"
+                  title="View Live Diagnostics & Portfolio Health Dashboard"
                 >
-                  99.99% Production SLA ↗
+                  Live Diagnostics ↗
                 </Link>
                 {" "}• Direct:{" "}
                 <strong style={{ color: "#ffffff" }}>abuhanifmain@gmail.com</strong>
@@ -239,23 +239,23 @@ export default function SiteHeader({ activePath = "/" }: SiteHeaderProps) {
           <div id="head">
             <div id="logo">
               <Link
-                data-title="Abu Hanif - Staff Software Engineer"
+                data-title="Abu Hanif - Full-Stack Web Developer & International Operations"
                 href="/"
                 title="Back to Home"
               >
                 <img
-                  alt="Abu Hanif - Staff Software Engineer"
+                  alt="Abu Hanif - Full-Stack Web Developer"
                   id="mainlogo"
                   src="/images/abuhanif-logo-v3.svg"
                   width={326}
                   height={79}
                 />
-                Abu Hanif Staff Software Engineer Home
+                Abu Hanif Portfolio Home
               </Link>
             </div>
             <div id="tagline">
-              <Link href="/pricing#inquiry" title="Discuss an Engineering Project">
-                Discuss an Engineering Project with Abu Hanif
+              <Link href="/pricing#inquiry" title="Discuss a Role or Web Project">
+                Open to UK &amp; Europe Roles or Web Projects
               </Link>
             </div>
 
@@ -408,10 +408,10 @@ export default function SiteHeader({ activePath = "/" }: SiteHeaderProps) {
                     MD Abu Hanif Mia
                   </strong>
                   <span style={{ fontSize: "11px", color: "#38bdf8", fontWeight: 700 }}>
-                    Staff Software Engineer
+                    Full-Stack Developer &amp; Int&apos;l Ops
                   </span>
                   <span style={{ fontSize: "10px", color: "#94a3b8" }}>
-                    Programming Hero Batch-12 • WEB12-3991
+                    Programming Hero 2025 • WEB12-3991
                   </span>
                 </div>
               </div>

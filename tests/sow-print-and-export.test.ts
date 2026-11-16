@@ -47,7 +47,7 @@ describe("Automated SOW PDF & Print Engine", () => {
     expect(html).toContain("Acme Corp International");
     expect(html).toContain("Sarah Jenkins, VP of Engineering");
     expect(html).toContain("MD Abu Hanif Mia");
-    expect(html).toContain("B.Sc. in CSE");
+    expect(html).toContain("Wali Neowaj Khan College");
     expect(html).toContain("WEB12-3991");
     expect(html).toContain("abuhanifmain@gmail.com");
 
@@ -65,7 +65,7 @@ describe("Automated SOW PDF & Print Engine", () => {
     expect(html).toContain("Direct Execution");
 
     // Verify dual signature block
-    expect(html).toContain("Verified Principal Architect");
+    expect(html).toContain("Verified Service Provider");
     expect(html).toContain("Client Acceptance Signature");
     expect(html).toContain("window.print()");
   });

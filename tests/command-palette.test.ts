@@ -29,15 +29,24 @@ describe("Global Command Palette & Quick Discovery Hub", () => {
     expect(paletteSource).toContain("/pricing#sow-builder");
     expect(paletteSource).toContain("Statement of Work (SOW) Builder");
     expect(paletteSource).toContain("/status");
-    expect(paletteSource).toContain("Live Systems Status &amp; Edge PoP Health");
+    expect(paletteSource).toContain("Live Systems Status &amp; Edge Diagnostics");
+    expect(paletteSource).toContain("/privacy");
+    expect(paletteSource).toContain("/terms");
   });
 
-  it("indexes verified academic credentials and formal certifications", () => {
+  it("indexes verified formal education, 2025 course credentials, and self-learning", () => {
     expect(paletteSource).toContain("Verified Accreditations & Credentials");
-    expect(paletteSource).toContain("Programming Hero Certificate of Excellence");
+    expect(paletteSource).toContain("Programming Hero Web Development Course (2025)");
     expect(paletteSource).toContain("WEB12-3991");
-    expect(paletteSource).toContain("Bachelor of Science in Computer Science");
-    expect(paletteSource).toContain("freeCodeCamp Certified");
+    expect(paletteSource).toContain("HSC in Commerce");
+    expect(paletteSource).toContain("Wali Neowaj Khan College");
+    expect(paletteSource).toContain("freeCodeCamp Self-Study");
+
+    const viewerSource = fs.readFileSync(
+      path.resolve(process.cwd(), "app/components/certificate-viewer.tsx"),
+      "utf8"
+    );
+    expect(viewerSource).toContain('"open-certificate-modal"');
   });
 
   it("indexes quick executive actions (email copy, LinkedIn copy, ATS PDF)", () => {

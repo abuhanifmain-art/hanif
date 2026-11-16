@@ -49,17 +49,24 @@ export default function CookieBanner() {
       </div>
 
       <p className="privacy-text">
-        Essential browser storage is used for UI preferences and Cloudflare edge latency benchmarks.{" "}
-        <strong className="text-white">Zero third-party marketing pixels or tracking cookies are deployed.</strong>
+        Only essential local browser storage is used for UI preferences and admin session security.{" "}
+        <strong className="text-white">Zero third-party ad trackers or analytics cookies are deployed.</strong>
       </p>
 
       <div className="privacy-actions-row">
         <Link
-          href="/status"
+          href="/privacy"
           onClick={handleDismiss}
           className="privacy-link"
         >
-          View Live SLA &amp; Telemetry &rsaquo;
+          Privacy &amp; UK/EU GDPR Policy &rsaquo;
+        </Link>
+        <Link
+          href="/terms"
+          onClick={handleDismiss}
+          className="privacy-link"
+        >
+          Terms &rsaquo;
         </Link>
         <button
           onClick={handleDismiss}

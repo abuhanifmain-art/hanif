@@ -143,12 +143,15 @@ table {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
   padding: 0 24px;
+  box-sizing: border-box;
 }
 
 #logo {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
   margin: 0;
   padding: 0;
 }
@@ -158,7 +161,7 @@ table {
   align-items: center;
   overflow: hidden;
   text-indent: -9001px;
-  width: 326px;
+  width: 312px;
   height: 76px;
 }
 
@@ -171,6 +174,7 @@ table {
 #tagline {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 }
 
 #tagline a {
@@ -179,10 +183,21 @@ table {
   text-indent: -99999px;
   background-image: url("/images/abuhanif-tagline-v3.svg?v=2");
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: right center;
   background-size: contain;
-  width: 320px;
+  width: 300px;
   height: 62px;
+}
+
+@media (min-width: 769px) and (max-width: 1080px) {
+  #logo a {
+    width: 246px;
+    height: 60px;
+  }
+  #tagline a {
+    width: 242px;
+    height: 52px;
+  }
 }
 
 /* =============================================================================

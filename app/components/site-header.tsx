@@ -258,43 +258,6 @@ export default function SiteHeader({
                 </svg>
                 <span>LinkedIn</span>
               </a>
-              <button
-                type="button"
-                onClick={() => {
-                  if (typeof window !== "undefined") {
-                    window.dispatchEvent(new CustomEvent("open-command-palette"));
-                  }
-                }}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  background: "#0b132b",
-                  color: "#e2e8f0",
-                  border: "1px solid #1e293b",
-                  padding: "6px 12px",
-                  borderRadius: "6px",
-                  fontSize: "12px",
-                  fontWeight: "bold",
-                  cursor: "pointer",
-                  transition: "border-color 0.15s ease",
-                }}
-                title="Press Ctrl+K or Cmd+K to open global search palette"
-              >
-                <span>🔍 Quick Search</span>
-                <kbd
-                  style={{
-                    fontSize: "10px",
-                    backgroundColor: "#050e1d",
-                    padding: "2px 6px",
-                    borderRadius: "4px",
-                    border: "1px solid #1e293b",
-                    color: "#38bdf8",
-                  }}
-                >
-                  Ctrl+K
-                </kbd>
-              </button>
               <Link className="top-status-btn" href="/resume">
                 CV &amp; Hire / Contact
               </Link>
@@ -323,6 +286,45 @@ export default function SiteHeader({
                 Abu Hanif Portfolio Home
               </Link>
             </div>
+
+            {/* Center Global Search Box (Desktop) */}
+            <button
+              type="button"
+              className="desktop-header-search-box"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new CustomEvent("open-command-palette"));
+                }
+              }}
+              aria-label="Search projects, skills, case studies, or commands (Ctrl+K)"
+              title="Press Ctrl+K or Cmd+K to search"
+            >
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  minWidth: 0,
+                  overflow: "hidden",
+                }}
+              >
+                <Search size={17} strokeWidth={2.4} style={{ color: "#38bdf8", flexShrink: 0 }} />
+                <span
+                  style={{
+                    color: "#e2e8f0",
+                    fontSize: "13px",
+                    fontWeight: 500,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  Search projects, skills, case studies...
+                </span>
+              </span>
+              <kbd className="desktop-header-search-kbd">Ctrl+K</kbd>
+            </button>
+
             <div id="tagline">
               <Link href="/pricing#inquiry" title="Discuss a Role or Web Project">
                 Open to UK &amp; Europe Roles or Web Projects

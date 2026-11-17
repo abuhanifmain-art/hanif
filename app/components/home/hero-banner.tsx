@@ -69,14 +69,12 @@ const defaultCommands: TerminalCommand[] = [
 
 export default function HeroBanner({ profile }: { profile?: ProfileData }) {
   const heroSlides = buildHeroSlides(profile);
-  const profilePhoto = profile?.visualAssets?.profilePhotoUrl || "/images/profile.png";
   const displayName = profile?.fullName || "MD Abu Hanif Mia";
   const displayHeadline =
     profile?.headline ||
     "Next.js & TypeScript Builder • Multi-Sector Operations • Open to UK & Europe";
 
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [spotlightSlide, setSpotlightSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [activeValueProp, setActiveValueProp] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
@@ -105,15 +103,6 @@ export default function HeroBanner({ profile }: { profile?: ProfileData }) {
     }, 4000);
     return () => clearInterval(timer);
   }, []);
-
-  // Right-hand hero 2-slide showcase auto-play (5 seconds, paused on hero hover)
-  useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(() => {
-      setSpotlightSlide((prev) => (prev + 1) % 2);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [isPaused]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -400,7 +389,7 @@ export default function HeroBanner({ profile }: { profile?: ProfileData }) {
         {/* Layer 3: Foreground Main Content */}
         <div className="text-wrapper" style={{ position: "relative", zIndex: 4 }}>
           {/* Left Column: Core Engineering Value Proposition + Interactive Terminal */}
-          <div style={{ minWidth: 0 }}>
+          <div style={{ minWidth: 0, maxWidth: "660px" }}>
             <h1
               style={{
                 fontSize: "clamp(20px, 2.3vw, 27px)",
@@ -545,7 +534,7 @@ export default function HeroBanner({ profile }: { profile?: ProfileData }) {
                   justifyContent: "center",
                   gap: "6px",
                   minHeight: "44px",
-                  padding: "10px 18px",
+                  padding: "10px 14px",
                   background: "#2563eb",
                   color: "#ffffff",
                   borderRadius: "8px",
@@ -554,7 +543,7 @@ export default function HeroBanner({ profile }: { profile?: ProfileData }) {
                   textDecoration: "none",
                   boxShadow: "0 2px 10px rgba(37,99,235,0.4)",
                   transition: "all 0.15s ease",
-                  flex: "1 1 140px",
+                  flex: "1 1 175px",
                 }}
               >
                 Explore Case Studies ⚡
@@ -568,7 +557,7 @@ export default function HeroBanner({ profile }: { profile?: ProfileData }) {
                   justifyContent: "center",
                   gap: "6px",
                   minHeight: "44px",
-                  padding: "10px 16px",
+                  padding: "10px 14px",
                   background: "rgba(15, 23, 42, 0.88)",
                   color: "#f8fafc",
                   border: "1px solid #38bdf8",
@@ -577,7 +566,7 @@ export default function HeroBanner({ profile }: { profile?: ProfileData }) {
                   fontSize: "13px",
                   textDecoration: "none",
                   transition: "all 0.15s ease",
-                  flex: "1 1 140px",
+                  flex: "1 1 175px",
                 }}
               >
                 Instant SOW Builder 📋
@@ -591,8 +580,8 @@ export default function HeroBanner({ profile }: { profile?: ProfileData }) {
                   justifyContent: "center",
                   gap: "6px",
                   minHeight: "44px",
-                  padding: "10px 16px",
-                  background: "rgba(15, 23, 42, 0.6)",
+                  padding: "10px 14px",
+                  background: "rgba(15, 23, 42, 0.72)",
                   color: "#cbd5e1",
                   border: "1px solid #475569",
                   borderRadius: "8px",
@@ -600,222 +589,10 @@ export default function HeroBanner({ profile }: { profile?: ProfileData }) {
                   fontSize: "13px",
                   textDecoration: "none",
                   transition: "all 0.15s ease",
-                  flex: "1 1 100%",
+                  flex: "1 1 175px",
                 }}
               >
                 Book Discovery Call 📅
-              </Link>
-            </div>
-          </div>
-
-          {/* Right Column: 2-Slide Portrait & Live Product Showcase Box */}
-          <div
-            style={{
-              backgroundColor: "rgba(10, 18, 38, 0.9)",
-              border: "1px solid rgba(56, 189, 248, 0.4)",
-              borderRadius: "10px",
-              overflow: "hidden",
-              display: "flex",
-              flexDirection: "column",
-              boxShadow: "0 12px 32px rgba(0, 0, 0, 0.55)",
-              maxWidth: "276px",
-              marginLeft: "auto",
-              marginRight: "auto",
-              width: "100%",
-              backdropFilter: "blur(12px)",
-            }}
-          >
-            {/* 2-Slide Media Frame */}
-            <div
-              style={{
-                position: "relative",
-                width: "100%",
-                height: "204px",
-                backgroundColor: "#060b19",
-                overflow: "hidden",
-              }}
-            >
-              {[
-                {
-                  id: "portrait",
-                  src: profilePhoto,
-                  alt: `${displayName} — Full-Stack Web Developer`,
-                  badge: "Open: UK & EU",
-                  badgeColor: "#10b981",
-                  title: displayName,
-                  subtitle: "Full-Stack Dev & Int'l Ops",
-                  objectPosition: "center top",
-                  href: "/resume",
-                },
-                {
-                  id: "nexus-live",
-                  src: "/images/nexuscalculator-homepage.png",
-                  alt: "NexusCalculator.net — 312 Interactive Tools Across 4 Languages",
-                  badge: "Live Platform",
-                  badgeColor: "#38bdf8",
-                  title: "NexusCalculator.net",
-                  subtitle: "312 Tools • 4 Languages • Next.js",
-                  objectPosition: "center top",
-                  href: "/projects/nexus-calculator-platform",
-                },
-              ].map((item, idx) => {
-                const isActive = idx === spotlightSlide;
-                return (
-                  <Link
-                    key={item.id}
-                    href={item.href}
-                    aria-hidden={!isActive}
-                    tabIndex={isActive ? 0 : -1}
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      opacity: isActive ? 1 : 0,
-                      pointerEvents: isActive ? "auto" : "none",
-                      transition: "opacity 500ms ease",
-                      display: "block",
-                      textDecoration: "none",
-                    }}
-                  >
-                    <Image
-                      src={item.src}
-                      alt={item.alt}
-                      fill
-                      unoptimized={!item.src.startsWith("/")}
-                      sizes="276px"
-                      style={{
-                        objectFit: "cover",
-                        objectPosition: item.objectPosition,
-                      }}
-                    />
-                    <div
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        background:
-                          "linear-gradient(180deg, rgba(6,11,25,0.28) 0%, rgba(6,11,25,0.05) 45%, rgba(6,11,25,0.92) 100%)",
-                      }}
-                    />
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: "10px",
-                        left: "10px",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "5px",
-                        padding: "3px 8px",
-                        borderRadius: "999px",
-                        backgroundColor: "rgba(6, 11, 25, 0.85)",
-                        border: "1px solid rgba(56, 189, 248, 0.35)",
-                        fontSize: "10px",
-                        fontWeight: 700,
-                        color: item.badgeColor,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.4px",
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: "5px",
-                          height: "5px",
-                          borderRadius: "50%",
-                          backgroundColor: item.badgeColor,
-                        }}
-                      />
-                      {item.badge}
-                    </span>
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: "12px",
-                        right: "12px",
-                        bottom: "10px",
-                        textAlign: "left",
-                      }}
-                    >
-                      <div style={{ fontSize: "14px", fontWeight: 800, color: "#ffffff", lineHeight: 1.2 }}>
-                        {item.title}
-                      </div>
-                      <div style={{ fontSize: "11px", fontWeight: 600, color: "#cbd5e1", marginTop: "2px" }}>
-                        {item.subtitle}
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-
-              {/* 2-Slide Switcher Dots */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: "10px",
-                  right: "10px",
-                  zIndex: 5,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "4px",
-                  padding: "3px 6px",
-                  borderRadius: "999px",
-                  backgroundColor: "rgba(6, 11, 25, 0.82)",
-                  border: "1px solid rgba(148, 163, 184, 0.3)",
-                }}
-              >
-                {[0, 1].map((idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    aria-label={`Show hero card slide ${idx + 1}`}
-                    onClick={() => setSpotlightSlide(idx)}
-                    style={{
-                      width: spotlightSlide === idx ? "14px" : "6px",
-                      height: "6px",
-                      borderRadius: "3px",
-                      border: "none",
-                      padding: 0,
-                      cursor: "pointer",
-                      backgroundColor:
-                        spotlightSlide === idx ? "#38bdf8" : "rgba(148, 163, 184, 0.45)",
-                      transition: "all 200ms ease",
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Slim Quick Links Bar */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-around",
-                alignItems: "center",
-                width: "100%",
-                padding: "9px 10px",
-                borderTop: "1px solid rgba(30, 41, 59, 0.9)",
-                backgroundColor: "rgba(7, 15, 30, 0.95)",
-                fontSize: "11px",
-                fontWeight: 700,
-              }}
-            >
-              <a
-                href={profile?.socialLinks?.github || "https://github.com/abuhanif254"}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "#cbd5e1", textDecoration: "none" }}
-              >
-                GitHub ↗
-              </a>
-              <span style={{ color: "#334155" }}>•</span>
-              <a
-                href={profile?.socialLinks?.linkedin || "https://www.linkedin.com/in/md-abu-hanif-mia"}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "#cbd5e1", textDecoration: "none" }}
-              >
-                LinkedIn ↗
-              </a>
-              <span style={{ color: "#334155" }}>•</span>
-              <Link href="/resume" style={{ color: "#38bdf8", textDecoration: "none" }}>
-                Resume ›
               </Link>
             </div>
           </div>

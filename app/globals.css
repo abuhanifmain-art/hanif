@@ -84,7 +84,7 @@ button:after,
 
 /* Tagline header right CTA */
 #tagline a {
-  background-image: url("/images/abuhanif-tagline-v3.svg") !important;
+  background-image: url("/images/abuhanif-tagline-v3.svg?v=2") !important;
 }
 
 /* Hero Banner: Compact 2-Column Executive Engineering Architecture */
@@ -121,19 +121,9 @@ button:after,
 #index .imgwrap #img1 .text-wrapper {
   width: 100% !important;
   position: relative !important;
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) 260px !important;
-  gap: 24px !important;
-  align-items: center !important;
+  display: block !important;
   padding: 0 !important;
   box-sizing: border-box !important;
-}
-
-@media (max-width: 900px) {
-  #index .imgwrap #img1 .text-wrapper {
-    grid-template-columns: 1fr !important;
-    gap: 18px !important;
-  }
 }
 
 .imgwrap #img1 #banner-tagline,
